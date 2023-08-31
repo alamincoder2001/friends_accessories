@@ -98,12 +98,12 @@ class Wholesales extends CI_Controller {
                 if($packagename == $proname){
                     $sqqS = mysql_query("SELECT tbl_package_create.*, tbl_product.* FROM tbl_package_create left join tbl_product on tbl_product.product_create_pack_id = tbl_package_create.create_ID WHERE tbl_package_create.create_pacageID = '$packagecode'");
                     while($romS = mysql_fetch_array($sqqS)){
-                        $proids = $romS['Product_SlNo'];
-                        $sellPRICE = $romS['create_sell_price'];
+                        $proids           = $romS['Product_SlNo'];
+                        $sellPRICE        = $romS['create_sell_price'];
                         $PurchpackagPRICE = $romS['create_purch_price'];
-                        $packagNAME = $romS['create_item'];
-                        $packqty = $romS['cteate_qty']*$item['qty'];
-                        $order_detail = array(
+                        $packagNAME       = $romS['create_item'];
+                        $packqty          = $romS['cteate_qty']*$item['qty'];
+                        $order_detail     = array(
                             'SaleMaster_IDNo'               => $sales_id,
                             'Product_IDNo'                  => $proids,
                             'SaleDetails_TotalQuantity'     => $packqty,
@@ -115,10 +115,10 @@ class Wholesales extends CI_Controller {
                             'Purchase_Rate'                 => $PurchpackagPRICE
                         );
                         $this->Billing_model->insert_sales_detail($order_detail);
-                        $sql = mysql_query("SELECT * FROM tbl_saleinventory WHERE sellProduct_IdNo = '".$proids."'");
-                        $rox = mysql_fetch_array($sql);
-                        $id = $rox['SaleInventory_SlNo'];
-                        $oldStock = $rox['SaleInventory_TotalQuantity'];
+                        $sql          = mysql_query("SELECT * FROM tbl_saleinventory WHERE sellProduct_IdNo = '".$proids."'");
+                        $rox          = mysql_fetch_array($sql);
+                        $id           = $rox['SaleInventory_SlNo'];
+                        $oldStock     = $rox['SaleInventory_TotalQuantity'];
                         $oldpackStock = $rox['SaleInventory_qty'];
 
                         if($rox['sellProduct_IdNo']== $proids){
