@@ -403,6 +403,9 @@
                 this.selectedMaterial.total = this.selectedMaterial.quantity * this.selectedMaterial.purchase_rate;
             },
             setFocus(){
+                if (this.selectedMaterial.material_id == '') {
+                    return
+                }
                 this.$refs.quantity.focus();
             },
             addToCart(){
@@ -448,6 +451,9 @@
                 }
             },
             onChangeProduct(){
+                if (this.selectedProduct.Product_SlNo == '') {
+                    return
+                }
                 this.$refs.productQuantity.focus();
             },
             calculateProductTotal() {

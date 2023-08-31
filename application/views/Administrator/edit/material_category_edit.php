@@ -3,18 +3,18 @@
 	<!-- PAGE CONTENT BEGINS -->
 	<div class="form-horizontal">
 		
-		<div class="form-group">
+		<div class="form-group" style="margin-bottom: 5px;">
 			<label class="col-sm-3 control-label no-padding-right" for="form-field-1">Material Category Name  </label>
 			<label class="col-sm-1 control-label no-padding-right">:</label>
 			<div class="col-sm-8">
-				<input type="text" id="catname" name="catname" placeholder="Material Category Name"  value="<?php echo $selected->ProductCategory_Name; ?>" class="col-xs-10 col-sm-4" />
 				<input name="id" id="id" type="hidden" value="<?php echo $selected->ProductCategory_SlNo; ?>"/>
+				<input type="text" id="catname" name="catname" placeholder="Material Category Name"  value="<?php echo $selected->ProductCategory_Name; ?>" class="col-xs-10 col-sm-4" />
 				<span id="msg"></span>
 				<span style="color:red;font-size:15px;">
 			</div>
 		</div>
 		
-		<div class="form-group">
+		<div class="form-group" style="margin-bottom: 5px;">
 			<label class="col-sm-3 control-label no-padding-right" for="description">Description </label>
 			<label class="col-sm-1 control-label no-padding-right">:</label>
 			<div class="col-sm-8">

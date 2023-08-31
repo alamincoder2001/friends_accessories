@@ -148,14 +148,14 @@
                                         <label class="col-xs-4 control-label no-padding-right" for="MaterialRATE"> Pur.
                                             Rate
                                         </label>
-                                        <div class="col-xs-3">
+                                        <div class="col-xs-3 no-padding-right">
                                             <input type="text" id="PurchaseRate" name="PurchaseRate" class="form-control" placeholder="Pur. Rate" v-model="selectedMaterial.purchase_rate" />
                                         </div>
 
                                         <label class="col-xs-2" for="PurchaseQTY">
                                             Qty
                                         </label>
-                                        <div class="col-xs-3">
+                                        <div class="col-xs-3 no-padding-left">
                                             <input type="text" id="PurchaseQTY" name="PurchaseQTY" ref="quantity" required class="form-control" placeholder="Quantity" v-model="selectedMaterial.quantity" v-on:input="materialTotal" />
                                         </div>
                                     </div>
@@ -407,7 +407,7 @@
                 },
                 selectedMaterial: {
                     material_id: '',
-                    name: '',
+                    name: 'Select Material',
                     purchase_rate: 0.00
                 },
                 purchaseInProgress: false
@@ -474,6 +474,10 @@
                     })
             },
             setFocus() {
+                if (this.selectedMaterial.material_id == '') {
+                    console.log(this.selectedMaterial);
+                    return;
+                }
                 this.$refs.quantity.focus();
             },
             materialTotal() {
