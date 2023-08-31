@@ -1093,7 +1093,7 @@ if ($module == 'dashboard' or $module == '') { ?>
 					<h3> HR & Payroll Module </h3>
 				</div>
 				<?php if (array_search("salary_payment", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
-					<div class="col-md-2 col-xs-6 ">
+					<div class="col-md-2 col-xs-12">
 						<div class="col-md-12 section20">
 							<a href="<?php echo base_url(); ?>salary_payment">
 								<div class="logo">
@@ -1179,7 +1179,7 @@ if ($module == 'dashboard' or $module == '') { ?>
 				<?php endif; ?>
 
 				<?php if (array_search("salary_payment_report", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
-					<div class="col-md-2 col-xs-6 ">
+					<div class="col-md-2 col-xs-12">
 						<div class="col-md-12 section20">
 							<a href="<?php echo base_url(); ?>salary_payment_report">
 								<div class="logo">
@@ -1590,7 +1590,7 @@ if ($module == 'dashboard' or $module == '') { ?>
 					</div>
 				<?php endif; ?>
 				<?php if (array_search("salary_payment_report", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
-					<div class="col-md-2 col-xs-6">
+					<div class="col-md-2 col-xs-12">
 						<div class="col-md-12 section20">
 							<a href="<?php echo base_url(); ?>salary_payment_report">
 								<div class="logo">
