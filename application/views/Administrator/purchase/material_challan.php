@@ -44,15 +44,15 @@
         <div class="col-xs-12 col-md-12 col-lg-12" style="border-bottom:1px #ccc solid;margin-bottom:5px;">
             <div class="row">
                 <div class="form-group">
-                    <label class="col-sm-1 control-label no-padding-right" for="age"> Invoice no </label>
-                    <div class="col-sm-2">
+                    <label class="col-xs-4 col-md-1 control-label no-padding-right" for="age"> Challan no </label>
+                    <div class="col-xs-8 col-md-2">
                         <input type="text" id="purchInvoice" name="purchInvoice" class="form-control" readonly v-model="purchase.invoice_no" />
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-2 control-label no-padding-right" for="PurchaseFor"> Purchase For </label>
-                    <div class="col-sm-3">
+                    <label class="col-xs-4 col-md-2 control-label no-padding-right" for="PurchaseFor"> Purchase For </label>
+                    <div class="col-xs-8 col-md-3">
                         <select class="chosen-select form-control" name="PurchaseFor" id="PurchaseFor">
                             <option value="<?php echo $this->session->userdata('BRANCHid'); ?>">
                                 <?php echo $this->session->userdata('Brunch_name'); ?></option>
@@ -61,15 +61,15 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-1 control-label no-padding-right" for="Purchase_date"> Date </label>
-                    <div class="col-sm-3">
+                    <label class="col-xs-4 col-md-1 control-label no-padding-right" for="Purchase_date"> Date </label>
+                    <div class="col-xs-8 col-md-3">
                         <input class="form-control" id="Purchase_date" name="Purchase_date" type="date" class="form-control" v-model="purchase.purchase_date" />
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-xs-9 col-md-9 col-lg-9">
+        <div class="col-xs-12 col-md-9 col-lg-9">
             <div class="widget-box">
                 <div class="widget-header">
                     <h4 class="widget-title">Supplier & Raw Material Information</h4>
@@ -86,98 +86,96 @@
 
                 <div class="widget-body">
                     <div class="widget-main">
-
                         <div class="row">
-                            <div class="col-sm-6">
+                            <div class="col-xs-12 col-md-6">
                                 <div class="form-group">
-                                    <label class="col-sm-4 control-label no-padding-right" for="SupplierID"> Supplier
+                                    <label class="col-xs-4 control-label no-padding-right" for="SupplierID"> Supplier
                                     </label>
-                                    <div class="col-sm-7">
+                                    <div class="col-xs-7">
                                         <v-select label="display_name" v-bind:options="suppliers" v-model="selectedSupplier" placeholder="Select Supplier" v-on:input="onChangeSupplier"></v-select>
                                     </div>
-                                    <div class="col-sm-1" style="padding: 0;">
+                                    <div class="col-xs-1" style="padding: 0;">
                                         <a href="supplier" title="Add New Supplier" class="btn btn-xs btn-danger" style="height: 25px; border: 0; width: 27px; margin-left: -10px;" target="_blank"><i class="fa fa-plus" aria-hidden="true" style="margin-top: 5px;"></i></a>
                                     </div>
                                 </div>
 
                                 <div class="form-group" style="display:none;" v-bind:style="{display: selectedSupplier.Supplier_Type == 'G' ? '' : 'none'}">
-                                    <label class="col-sm-4 control-label no-padding-right"> Name </label>
-                                    <div class="col-sm-8">
+                                    <label class="col-xs-4 control-label no-padding-right"> Name </label>
+                                    <div class="col-xs-8">
                                         <input type="text" placeholder="Supplier Name" class="form-control" v-model="selectedSupplier.Supplier_Name" />
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-sm-4 control-label no-padding-right"> Mobile No </label>
-                                    <div class="col-sm-8">
+                                    <label class="col-xs-4 control-label no-padding-right"> Mobile No </label>
+                                    <div class="col-xs-8">
                                         <input type="text" placeholder="Mobile No" class="form-control" v-model="selectedSupplier.Supplier_Mobile" v-bind:disabled="selectedSupplier.Supplier_Type == 'G' ? false : true" />
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-sm-4 control-label no-padding-right"> Address </label>
-                                    <div class="col-sm-8">
+                                    <label class="col-xs-4 control-label no-padding-right"> Address </label>
+                                    <div class="col-xs-8">
                                         <textarea class="form-control" v-model="selectedSupplier.Supplier_Address" v-bind:disabled="selectedSupplier.Supplier_Type == 'G' ? false : true"></textarea>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="col-sm-6">
-
+                            <div class="col-xs-12 col-md-6">
                                 <div class="form-group">
-                                    <label class="col-sm-4 control-label no-padding-right" for="patient_id"> Raw Material
+                                    <label class="col-xs-5 col-md-4 control-label no-padding-right" for="patient_id"> Raw Material
                                     </label>
-                                    <div class="col-sm-7">
-                                        <v-select label="display_text" v-bind:options="materials" v-on:input="setFocus" v-model="selectedMaterial" placeholder="Select Material"></v-select>
+                                    <div class="col-xs-6 col-md-7">
+                                        <v-select label="display_text" v-bind:options="materials" id="materials" v-on:input="setFocus" v-model="selectedMaterial" placeholder="Select Material"></v-select>
                                     </div>
-                                    <div class="col-sm-1" style="padding: 0;">
+                                    <div class="col-xs-1 col-md-1" style="padding: 0;">
                                         <a href="<?= base_url('materials') ?>" title="Add New Raw Material" class="btn btn-xs btn-danger" style="height: 25px; border: 0; width: 27px; margin-left: -10px;" target="_blank"><i class="fa fa-plus" aria-hidden="true" style="margin-top: 5px;"></i></a>
                                     </div>
                                 </div>
 
                                 <form id="MaterialsResult" v-on:submit.prevent="addToCart">
                                     <div class="form-group">
-                                        <label class="col-sm-4 control-label no-padding-right" for="materialName">
+                                        <label class="col-xs-5 col-md-4 control-label no-padding-right" for="materialName">
                                             Material Name
                                         </label>
-                                        <div class="col-sm-8">
+                                        <div class="col-xs-7 col-md-8">
                                             <input type="text" id="materialName" name="materialName" placeholder="Raw Material Name" class="form-control" readonly v-model="selectedMaterial.name" />
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="col-sm-4 control-label no-padding-right" for="MaterialRATE"> Pur.
+                                        <label class="col-xs-5 col-md-4 control-label no-padding-right" for="MaterialRATE"> Pur.
                                             Rate
                                         </label>
-                                        <div class="col-sm-8">
+                                        <div class="col-xs-7 col-md-8">
                                             <input type="text" id="PurchaseRate" name="PurchaseRate" class="form-control" placeholder="Pur. Rate" v-model="selectedMaterial.purchase_rate" />
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="col-sm-4 control-label no-padding-right"> Quantity </label>
-                                        <div class="col-sm-3">
+                                        <label class="col-xs-5 col-md-4 control-label no-padding-right"> Quantity </label>
+                                        <div class="col-xs-7 col-md-8">
                                             <input type="number" step="0.01" min="0" ref="quantity" class="form-control" placeholder="Qty" v-model="selectedMaterial.qty" v-on:input="materialTotal" />
                                         </div>
 
-                                        <label class="col-sm-2 control-label no-padding-right"> {{ selectedMaterial.convert_text }} </label>
-                                        <div class="col-sm-3">
+                                        <!-- <label class="col-xs-2 control-label no-padding-right"> {{ selectedMaterial.convert_text }} </label>
+                                        <div class="col-xs-3">
                                             <input type="number" step="0.01" min="0" id="quantity" name="quantity" class="form-control" placeholder="Conv" v-model="selectedMaterial.unitQty" v-on:input="materialTotal" />
-                                        </div>
+                                        </div> -->
                                     </div>
 
 
                                     <div class="form-group">
-                                        <label class="col-sm-4 control-label no-padding-right" for="totalAmount"> Total
+                                        <label class="col-xs-5 col-md-4 control-label no-padding-right" for="totalAmount"> Total
                                             Amount </label>
-                                        <div class="col-sm-8">
+                                        <div class="col-xs-7 col-md-8">
                                             <input type="text" id="totalAmount" name="totalAmount" class="form-control" readonly v-model="selectedMaterial.total" />
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="col-sm-4 control-label no-padding-right"> </label>
-                                        <div class="col-sm-8">
+                                        <label class="col-xs-5 col-md-4 control-label no-padding-right"> </label>
+                                        <div class="col-xs-7 col-md-8">
                                             <button type="submit" class="btn btn-default pull-right">Add Cart</button>
                                         </div>
                                     </div>
@@ -232,7 +230,7 @@
             </div>
         </div>
 
-        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+        <div class="col-xs-12 col-md-3 col-lg-3">
             <div class="widget-box">
                 <div class="widget-header">
                     <h4 class="widget-title">Amount Details</h4>
@@ -250,14 +248,14 @@
                 <div class="widget-body">
                     <div class="widget-main">
                         <div class="row">
-                            <div class="col-sm-12">
+                            <div class="col-xs-12">
                                 <div class="table-responsive">
                                     <table class="" cellspacing="0" cellpadding="0" style="color:#000;margin-bottom: 0px;">
                                         <tr>
                                             <td>
                                                 <div class="form-group">
-                                                    <label class="col-sm-12 control-label no-padding-right" for="subTotalDisabled">Sub Total</label>
-                                                    <div class="col-sm-12">
+                                                    <label class="col-xs-12 control-label no-padding-right" for="subTotalDisabled">Sub Total</label>
+                                                    <div class="col-xs-12">
                                                         <input type="number" id="subTotalDisabled" name="subTotalDisabled" class="form-control" readonly v-model="purchase.sub_total" />
                                                     </div>
                                                 </div>
@@ -267,11 +265,13 @@
                                         <tr>
                                             <td>
                                                 <div class="form-group">
-                                                    <label class="col-sm-12 control-label no-padding-right" for="subTotalDisabled"> Vat </label>
-                                                    <div class="col-sm-12">
-                                                        <input type="number" id="vatPersent" name="vatPersent" class="" style="width:50px;height:25px;" v-model="vatPercent" v-on:input="calculateTotal" />
-                                                        <span style="width:20px;"> % </span>
-                                                        <input type="number" id="purchVat" readonly="" name="purchVat" class="" style="width:140px;height:25px;" v-model="purchase.vat" />
+                                                    <label class="col-xs-12 control-label no-padding-right" for="subTotalDisabled"> Vat </label>
+                                                    <div class="col-xs-5 no-padding-right">
+                                                        <input type="number" id="vatPersent" name="vatPersent" class="form-control" v-model="vatPercent" v-on:input="calculateTotal" />
+                                                    </div>
+                                                    <label class="col-xs-1 no-padding-left"> % </label>
+                                                    <div class="col-xs-6">
+                                                        <input type="number" id="purchVat" readonly="" name="purchVat" class="form-control" v-model="purchase.vat" />
                                                     </div>
                                                 </div>
                                             </td>
@@ -280,8 +280,8 @@
                                         <tr>
                                             <td>
                                                 <div class="form-group">
-                                                    <label class="col-sm-12 control-label no-padding-right" for="subTotalDisabled">Transport / Labour Cost</label>
-                                                    <div class="col-sm-12">
+                                                    <label class="col-xs-12 control-label no-padding-right" for="subTotalDisabled">Transport / Labour Cost</label>
+                                                    <div class="col-xs-12">
                                                         <input type="number" id="purchFreight" name="purchFreight" class="form-control" v-model="purchase.transport_cost" v-on:input="calculateTotal" />
                                                     </div>
                                                 </div>
@@ -291,8 +291,8 @@
                                         <tr>
                                             <td>
                                                 <div class="form-group">
-                                                    <label class="col-sm-12 control-label no-padding-right" for="subTotalDisabled">Discount</label>
-                                                    <div class="col-sm-12">
+                                                    <label class="col-xs-12 control-label no-padding-right" for="subTotalDisabled">Discount</label>
+                                                    <div class="col-xs-12">
                                                         <input type="number" id="purchDiscount" name="purchDiscount" class="form-control" v-model="purchase.discount" v-on:input="calculateTotal" />
                                                     </div>
                                                 </div>
@@ -302,8 +302,8 @@
                                         <tr>
                                             <td>
                                                 <div class="form-group">
-                                                    <label class="col-sm-12 control-label no-padding-right" for="subTotalDisabled">Total</label>
-                                                    <div class="col-sm-12">
+                                                    <label class="col-xs-12 control-label no-padding-right" for="subTotalDisabled">Total</label>
+                                                    <div class="col-xs-12">
                                                         <input type="number" id="purchTotaldisabled" class="form-control" readonly v-model="purchase.total" />
                                                     </div>
                                                 </div>
@@ -313,8 +313,8 @@
                                         <tr>
                                             <td>
                                                 <div class="form-group">
-                                                    <label class="col-sm-12 control-label no-padding-right" for="subTotalDisabled">Paid</label>
-                                                    <div class="col-sm-12">
+                                                    <label class="col-xs-12 control-label no-padding-right" for="subTotalDisabled">Paid</label>
+                                                    <div class="col-xs-12">
                                                         <input type="number" id="PurchPaid" class="form-control" v-model="purchase.paid" v-on:input="calculateTotal" />
                                                     </div>
                                                 </div>
@@ -324,8 +324,19 @@
                                         <tr>
                                             <td>
                                                 <div class="form-group">
-                                                    <label class="col-sm-12 control-label no-padding-right" for="previousDue">Previous Due</label>
-                                                    <div class="col-sm-12">
+                                                    <label class="col-xs-6 control-label no-padding-right" for="subTotalDisabled">Due</label>
+                                                    <label class="col-xs-6 control-label no-padding-right" for="previousDue">Prev. Due</label>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <div class="form-group">
+                                                    <div class="col-xs-6">
+                                                        <input type="number" id="purchaseDue2" name="purchaseDue2" class="form-control" readonly v-model="purchase.due" />
+                                                    </div>
+                                                    <div class="col-xs-6">
                                                         <input type="number" id="previousDue" name="previousDue" class="form-control" v-model="purchase.previous_due" readonly style="color:red;" />
                                                     </div>
                                                 </div>
@@ -335,22 +346,11 @@
                                         <tr>
                                             <td>
                                                 <div class="form-group">
-                                                    <label class="col-sm-12 control-label no-padding-right" for="subTotalDisabled">Due</label>
-                                                    <div class="col-sm-12">
-                                                        <input type="number" id="purchaseDue2" name="purchaseDue2" class="form-control" readonly v-model="purchase.due" />
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>
-                                                <div class="form-group">
-                                                    <div class="col-sm-4">
+                                                    <div class="col-xs-6">
                                                         <input type="button" class="btn btn-success" value="Purchase" style="background:#000;color:#fff;" v-on:click="savePurchase" v-bind:disabled="purchaseInProgress ? true : false">
                                                     </div>
-                                                    <div class="col-sm-4 col-sm-offset-1">
-                                                        <a class="btn btn-info" href="<?php echo base_url(); ?>material_purchase" style="background:#000;color:#fff;">New Purchase</a>
+                                                    <div class="col-xs-6">
+                                                        <a class="btn btn-info" href="<?php echo base_url(); ?>material_challan" style="background:#000;color:#fff;width:100%;">New</a>
                                                     </div>
                                                 </div>
                                             </td>
@@ -410,11 +410,12 @@
                 selectedMaterial: {
                     material_id: '',
                     name: '',
+                    display_text: 'Select Material',
                     purchase_rate: 0.00,
-					quantity: 0,
-					unitQty: 0,
-					qty: 0,
-					convert_text: 'Conver',
+                    quantity: 0,
+                    unitQty: 0,
+                    qty: 0,
+                    convert_text: 'Conver',
                 },
                 purchaseInProgress: false
             }
@@ -480,21 +481,28 @@
                     })
             },
             setFocus() {
+                if (this.selectedMaterial.material_id == '') {
+                    return
+                }
                 this.$refs.quantity.focus();
             },
             materialTotal() {
-                // this.selectedMaterial.total = (this.selectedMaterial.purchase_rate * this.selectedMaterial.quantity).toFixed(2);
-                // this.calculateTotal();
+                let unitQty = this.selectedMaterial.unitQty ? this.selectedMaterial.per_unit * this.selectedMaterial.unitQty : 0;
+                let pcsQty = this.selectedMaterial.qty ? this.selectedMaterial.qty : 0;
 
-                
-				let unitQty = this.selectedMaterial.unitQty ? this.selectedMaterial.per_unit * this.selectedMaterial.unitQty : 0;
-				let pcsQty = this.selectedMaterial.qty ? this.selectedMaterial.qty : 0;
-
-				this.selectedMaterial.quantity = parseFloat(unitQty) + parseFloat(pcsQty);
-				this.selectedMaterial.total = (this.selectedMaterial.purchase_rate * this.selectedMaterial.quantity).toFixed(2);
+                this.selectedMaterial.quantity = parseFloat(unitQty) + parseFloat(pcsQty);
+                this.selectedMaterial.total = (this.selectedMaterial.purchase_rate * this.selectedMaterial.quantity).toFixed(2);
                 this.calculateTotal();
             },
             addToCart() {
+                if (this.selectedMaterial.material_id == '') {
+                    alert('Select a material')
+                    return
+                }
+                if (this.selectedMaterial.quantity == '' || this.selectedMaterial.quantity == 0 || this.selectedMaterial.quantity == undefined) {
+                    alert('Quantity is required')
+                    return
+                }
                 let ind = this.cart.findIndex(m => m.material_id == this.selectedMaterial.material_id);
                 if (ind > -1) {
                     this.clearMaterial();
@@ -503,6 +511,7 @@
                 this.cart.push(this.selectedMaterial);
                 this.clearMaterial();
                 this.calculateTotal();
+                document.querySelector("#materials [type='search']").focus();
             },
             removeFromCart(material) {
                 let ind = this.cart.findIndex(m => m.material_id == material.material_id);
@@ -527,7 +536,8 @@
                 this.selectedMaterial = {
                     material_id: '',
                     name: '',
-                    purchase_rate: 0.00
+                    display_text: 'Select Material',
+                    purchase_rate: 0
                 }
             },
             savePurchase() {
@@ -542,9 +552,9 @@
                     return;
                 }
 
-                let url = '/add_material_purchase';
+                let url = '/add_material_challan';
                 if (this.purchase.purchase_id != 0) {
-                    url = '/update_material_purchase';
+                    url = '/update_material_challan';
                 }
 
                 let data = {
@@ -564,22 +574,22 @@
                         if (r.success) {
                             let invoiceConf = confirm('Do you want to view invoice?');
                             if (invoiceConf) {
-                                window.open(`/material_purchase_invoice/${r.purchaseId}`, '_blank');
+                                window.open(`/material_challan_invoice/${r.purchaseId}`, '_blank');
                                 await new Promise(resolve => setTimeout(resolve, 1000));
                             }
-                            window.location = '<?php echo base_url(); ?>material_purchase';
+                            window.location = '<?php echo base_url(); ?>material_challan';
                         }
                     })
             },
             async getPurchase() {
                 let options = {
-                    purchase_id: this.purchase.purchase_id
+                    challan_Id: this.purchase.purchase_id
                 }
-                await axios.post('/get_material_purchase', options)
+                await axios.post('/get_material_challan', options)
                     .then(res => {
-                        this.purchase = res.data.purchases[0];
-                        this.oldSupplierId = res.data.purchases[0].supplier_id;
-                        this.oldPreviousDue = res.data.purchases[0].previous_due;
+                        this.purchase = res.data[0];
+                        this.oldSupplierId = res.data[0].supplier_id;
+                        this.oldPreviousDue = res.data[0].previous_due;
                         this.selectedSupplier = {
                             display_name: this.purchase.supplier_type == 'G' ? 'General Supplier' : `${this.purchase.supplier_code} - ${this.purchase.supplier_name}`,
                             Supplier_SlNo: this.purchase.supplier_id,
@@ -590,7 +600,7 @@
                         }
                     });
 
-                await axios.post('/get_material_purchase_details', {
+                await axios.post('/get_material_challan_details', {
                         purchase_id: this.purchase.purchase_id
                     })
                     .then(res => {

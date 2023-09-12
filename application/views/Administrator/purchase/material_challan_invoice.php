@@ -11,7 +11,7 @@
                 <div id="invoiceContent">
                     <div class="row">
                         <div class="col-xs-12">
-                            <div class="heading">Purchase Invoice</div>
+                            <div class="heading">Challan Invoice</div>
                         </div>
                     </div>
 
@@ -21,22 +21,22 @@
                                 <tr>
                                     <td>Supplier Id</td>
                                     <td>&nbsp;:&nbsp;</td>
-                                    <td>{{ purchase.Supplier_Code }}</td>
+                                    <td>{{ purchase.supplier_code }}</td>
                                 </tr>
                                 <tr>
                                     <td>Supplier Name</td>
                                     <td>&nbsp;:&nbsp;</td>
-                                    <td>{{ purchase.Supplier_Name }}</td>
+                                    <td>{{ purchase.supplier_name }}</td>
                                 </tr>
                                 <tr>
                                     <td>Address</td>
                                     <td>&nbsp;:&nbsp;</td>
-                                    <td>{{ purchase.Supplier_Address }}</td>
+                                    <td>{{ purchase.supplier_address }}</td>
                                 </tr>
                                 <tr>
                                     <td>Mobile</td>
                                     <td>&nbsp;:&nbsp;</td>
-                                    <td>{{ purchase.Supplier_Mobile }}</td>
+                                    <td>{{ purchase.supplier_mobile }}</td>
                                 </tr>
                             </table>
                         </div>
@@ -231,7 +231,7 @@
             },
 
             getPurchase() {
-                axios.post('/get_material_purchase', {
+                axios.post('/get_material_challan', {
                     challan_Id: this.purchaseId
                 }).then(res => {
                     this.purchase = res.data[0];
@@ -239,7 +239,7 @@
             },
 
             getPurchaseDetails() {
-                axios.post('/get_material_purchase_details', {
+                axios.post('/get_material_challan_details', {
                     purchase_id: this.purchaseId
                 }).then(res => {
                     this.purchaseDetails = res.data;
@@ -269,7 +269,6 @@
                 reportWindow.focus();
                 await new Promise(resolve => setTimeout(resolve, 1000));
                 reportWindow.print();
-                await new Promise(resolve => setTimeout(resolve, 1000));
                 reportWindow.close();
             },
 

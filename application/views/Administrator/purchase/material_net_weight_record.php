@@ -57,14 +57,9 @@
                     <select class="form-conrol" v-model="searchType" @change="onChangeSearchType">
                         <option value="all">All</option>
                         <option value="bySupplier">By Supplier</option>
-                        <!-- <option value="byCategory">By Category</option>
-                        <option value="byMaterial">By Material</option>
-                        <option value="byMRR">By MRR</option> -->
+                        <!-- <option value="byCategory">By Category</option> -->
+                        <!-- <option value="byMaterial">By Material</option> -->
                     </select>
-                </div>
-                <div class="form-group" v-if="searchType == 'byMRR'" style="display:none;" v-bind:style="{display: searchType == 'byMRR' ? '' : 'none'}">
-                    <label>MRR No.</label><br>
-                    <v-select label="MRR_No" v-bind:options="mrrs" v-model="selectedMRR" placeholder="Select MRR"></v-select>
                 </div>
 
                 <div class="form-group" v-if="searchType == 'bySupplier'" style="display:none;" v-bind:style="{display: searchType == 'bySupplier' ? '' : 'none'}">
@@ -106,7 +101,6 @@
                     <thead>
                         <tr>
                             <th>Invoice No.</th>
-                            <th>MRR No.</th>
                             <th>Date</th>
                             <th>Supplier Id</th>
                             <th>Supplier Name</th>
@@ -123,10 +117,9 @@
                     <tbody>
                         <tr v-for="purchase in purchases">
                             <td>{{ purchase.invoice_no }}</td>
-                            <td>{{ purchase.MRR_No }}</td>
                             <td>{{ purchase.purchase_date }}</td>
-                            <td>{{ purchase.Supplier_Code }}</td>
-                            <td>{{ purchase.Supplier_Name }}</td>
+                            <td>{{ purchase.supplier_code }}</td>
+                            <td>{{ purchase.supplier_name }}</td>
                             <td>{{ purchase.sub_total }}</td>
                             <td>{{ purchase.vat }}</td>
                             <td>{{ purchase.discount }}</td>
@@ -136,14 +129,14 @@
                             <td>{{ purchase.note }}</td>
                             <td>
                                 <?php if ($this->session->userdata('accountType') != 'u') { ?>
-                                    <a href="" v-bind:href="`material_purchase_invoice/${purchase.purchase_id}`" target="_blank"><i class="fa fa-file-text fa-2x"></i></a>
-                                    <!-- <a href="" v-on:click.prevent="editReceived(purchase.purchase_id)"><i class="fa fa-pencil-square fa-2x"></i></a> -->
-                                    <a href="" v-on:click.prevent="deleteReceived(purchase.purchase_id, purchase.invoice_no)"><i class="fa fa-trash fa-2x"></i></a>
+                                    <a href="" v-bind:href="`material_net_weight_invoice/${purchase.purchase_id}`" target="_blank"><i class="fa fa-file-text fa-2x"></i></a>
+                                    <!-- <a href="" v-bind:href="`material_purchase/${purchase.purchase_id}`"><i class="fa fa-pencil-square fa-2x"></i></a> -->
+                                    <a href="" v-on:click.prevent="deleteNetWeight(purchase.purchase_id, purchase.invoice_no)"><i class="fa fa-trash fa-2x"></i></a>
                                 <?php } ?>
                             </td>
                         </tr>
                         <tr style="font-weight: 600;">
-                            <td colspan="5">Total</td>
+                            <td colspan="4">Total</td>
                             <td>{{ purchases.reduce((p, c) => { return +p + +c.sub_total }, 0) }}</td>
                             <td>{{ purchases.reduce((p, c) => { return +p + +c.vat }, 0) }}</td>
                             <td>{{ purchases.reduce((p, c) => { return +p + +c.discount }, 0) }}</td>
@@ -162,7 +155,6 @@
                     <thead>
                         <tr>
                             <th>Invoice No.</th>
-                            <th>MRR No.</th>
                             <th>Date</th>
                             <th>Supplier Id</th>
                             <th>Supplier Name</th>
@@ -176,7 +168,6 @@
                     <tbody>
                         <tr v-for="purchase in purchases">
                             <td>{{ purchase.invoice_no }}</td>
-                            <td>{{ purchase.MRR_No }}</td>
                             <td>{{ purchase.purchase_date }}</td>
                             <td>{{ purchase.supplier_code }}</td>
                             <td>{{ purchase.supplier_name }}</td>
@@ -214,8 +205,6 @@
                 selectedMaterial: null,
                 categories: [],
                 selectedCategory: null,
-                mrrs: [],
-                selectedMRR: null,
                 dateFrom: moment().format('YYYY-MM-DD'),
                 dateTo: moment().format('YYYY-MM-DD'),
                 purchases: [],
@@ -239,12 +228,6 @@
                 axios.get('/get_materials').then(res => {
                     this.materials = res.data;
                 })
-            },
-            getMRR() {
-                axios.get('get_material_purchase')
-                    .then(res => {
-                        this.mrrs = res.data.filter(m => m.MRR_No != null)
-                    })
             },
             getCategories() {
                 axios.get('/get_categories').then(res => {
@@ -294,16 +277,15 @@
                 }
                 let options = {
                     supplier_id: supplier_id,
-                    mrsNo: this.selectedMRR != null ? this.selectedMRR.MRR_No : null,
                     dateFrom: this.dateFrom,
                     dateTo: this.dateTo
                 }
                 axios.post('get_material_purchase', options)
                     .then(res => {
-                        this.purchases = res.data;
-                        this.totalPurchase = res.data.totalPurchase;
-                        this.totalPaid = res.data.totalPaid;
-                        this.totalDue = res.data.totalDue;
+                        this.purchases = res.data.filter(m => m.net_weight > 0);
+                        // this.totalPurchase = res.data.totalPurchase;
+                        // this.totalPaid = res.data.totalPaid;
+                        // this.totalDue = res.data.totalDue;
                     })
             },
             getPurchaseDetails() {
@@ -318,32 +300,12 @@
                     options.materialId = this.selectedMaterial.material_id;
                 }
 
-                axios.post('/get_material_purchase_details', options)
+                axios.post('/get_material_challan_details', options)
                     .then(res => {
                         this.purchases = res.data;
                     })
             },
-            // editReceived(purchase_id, invoice_no) {
-            //     let conf = confirm('Are you sure to edit ?');
-            //     if (conf == false) {
-            //         return;
-            //     }
-            //     let options = {
-            //         purchase_id,
-            //         invoice_no
-            //     }
-            //     axios.post('/get_material_net_weight', options)
-            //         .then(res => {
-            //             if (res.data.length == 0) {
-            //                 window.location.href = "//" + purchase_id
-
-            //             } else {
-            //                 alert("edit not possible. Net Weight found")
-            //                 return;
-            //             }
-            //         })
-            // },
-            deleteReceived(purchase_id, invoice_no) {
+            deleteNetWeight(purchase_id, invoice_no) {
                 let conf = confirm('Are you sure?');
                 if (conf == false) {
                     return;
@@ -352,7 +314,7 @@
                     purchase_id,
                     invoice_no
                 }
-                axios.post('/delete_material_purchase', options)
+                axios.post('/delete_net_weight', options)
                     .then(res => {
                         let r = res.data;
                         alert(r.message);

@@ -11,7 +11,7 @@
                 <div id="invoiceContent">
                     <div class="row">
                         <div class="col-xs-12">
-                            <div class="heading">Purchase Invoice</div>
+                            <div class="heading">Material Net Weight Invoice</div>
                         </div>
                     </div>
 
@@ -81,7 +81,7 @@
 
                     <div class="row">
                         <div class="col-xs-4">
-                            <table class="bottom-table">
+                            <!-- <table class="bottom-table">
                                 <tr>
                                     <td>Previous Due</td>
                                     <td>&nbsp;:&nbsp;</td>
@@ -102,11 +102,11 @@
                                     <td>&nbsp;:&nbsp;</td>
                                     <td>{{ parseFloat(purchase.previous_due) + parseFloat(purchase.due) }}</td>
                                 </tr>
-                            </table>
+                            </table> -->
                         </div>
                         <div class="col-xs-5 col-xs-offset-3">
                             <table class="bottom-table">
-                                <tr>
+                                <!-- <tr>
                                     <td>Sub Total</td>
                                     <td>&nbsp;:&nbsp;</td>
                                     <td>{{ purchase.sub_total }}</td>
@@ -130,13 +130,13 @@
                                     <td colspan="3">
                                         <div class="line"></div>
                                     </td>
-                                </tr>
+                                </tr> -->
                                 <tr>
                                     <td>Total</td>
                                     <td>&nbsp;:&nbsp;</td>
-                                    <td>{{ purchase.total }}</td>
+                                    <td>{{ purchaseDetails.reduce((prev,curr) => { return +prev + +curr.total},0) }}</td>
                                 </tr>
-                                <tr>
+                                <!-- <tr>
                                     <td>Paid</td>
                                     <td>&nbsp;:&nbsp;</td>
                                     <td>{{ purchase.paid }}</td>
@@ -150,16 +150,16 @@
                                     <td>Due</td>
                                     <td>&nbsp;:&nbsp;</td>
                                     <td>{{ purchase.due }}</td>
-                                </tr>
+                                </tr> -->
                             </table>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-12">
-                            <strong>Total (In Amount): </strong>{{ convertNumberToWords(purchase.total) }}
+                            <strong>Total (In Amount): </strong>{{ convertNumberToWords(purchaseDetails.reduce((prev,curr) => { return +prev + +curr.total},0)) }}
                             <br>
-                            <strong>Note: </strong>{{ purchase.note }}
+                            <!-- <strong>Note: </strong>{{ purchase.note }} -->
                         </div>
                     </div>
                 </div>
@@ -232,14 +232,14 @@
 
             getPurchase() {
                 axios.post('/get_material_purchase', {
-                    challan_Id: this.purchaseId
+                    purchase_id: this.purchaseId
                 }).then(res => {
                     this.purchase = res.data[0];
                 })
             },
 
             getPurchaseDetails() {
-                axios.post('/get_material_purchase_details', {
+                axios.post('/get_material_net_weight_details', {
                     purchase_id: this.purchaseId
                 }).then(res => {
                     this.purchaseDetails = res.data;

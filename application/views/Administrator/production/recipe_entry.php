@@ -2,7 +2,7 @@
     .v-select {
         margin-top: -2.5px;
         float: right;
-        /* min-width: 180px; */
+        min-width: 180px;
         width: 100%;
         margin-left: 5px;
     }
@@ -30,7 +30,7 @@
     }
 
     .v-select .vs__actions {
-        /* margin-top: -5px; */
+        margin-top: -5px;
     }
 
     .v-select .dropdown-menu {
@@ -38,8 +38,9 @@
         overflow-y: auto;
     }
 </style>
-<div id="production">
+<div id="recipe">
     <div class="row">
+        <!-- Raw Materials -->
         <div class="col-xs-12 col-md-5">
             <div class="widget-box">
                 <div class="widget-header">
@@ -59,17 +60,17 @@
                     <div class="widget-main">
                         <div class="row">
                             <div class="col-xs-12">
-                                <form id="materialForm" v-on:submit.prevent="addToCart">
-                                    <div class="form-group clearfix clearfix">
+                                <form id="materialForm" v-on:submit.prevent="addToCartMaterial">
+                                    <div class="form-group clearfix">
                                         <label class="col-xs-4 control-label">
                                             Raw Material
                                         </label>
                                         <div class="col-xs-8">
-                                            <v-select label="display_text" v-bind:options="materials" v-model="selectedMaterial" placeholder="Select Material" v-on:input="setFocus();getMaterialStock()"></v-select>
+                                            <v-select label="display_text" v-bind:options="materials" v-model="selectedMaterial" placeholder="Select Material" v-on:input="materialOnChange()"></v-select>
                                         </div>
                                     </div>
 
-                                    <div class="form-group clearfix clearfix">
+                                    <div class="form-group clearfix">
                                         <label class="col-xs-4 control-label">
                                             Quantity <span v-if="selectedMaterial.material_id != ''" style="display:none;" v-bind:style="{display: selectedMaterial.material_id != '' ? '' : 'none'}">({{ selectedMaterial.unit_name }})</span>
                                         </label>
@@ -94,12 +95,13 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group clearfix">
+                                    <div class="form-group">
                                         <div class="col-xs-4" v-if="selectedMaterial.material_id != ''">
                                             <p style="text-align:right;">Stock: {{ stock_quantity }}</p>
                                         </div>
+
                                         <div class="col-xs-8 pull-right">
-                                            <button type="submit" class="btn btn-default pull-right">Add to Cart</button>
+                                            <button type="submit" class="btn btn-default pull-right" style="border: none;height: 30px;background: rgb(135, 184, 127) !important;">Add to Cart</button>
                                         </div>
                                     </div>
                                 </form>
@@ -115,10 +117,9 @@
                         <thead>
                             <tr>
                                 <th style="width:4%;color:#000;">SL</th>
-                                <th style="width:10%;color:#000;">Code</th>
                                 <th style="width:20%;color:#000;">Material Name</th>
                                 <th style="width:13%;color:#000;">Category</th>
-                                <th style="width:5%;color:#000;">Qty</th>
+                                <th style="width:10%;color:#000;">Qty</th>
                                 <th style="width:5%;color:#000;">Amount</th>
                                 <th style="width:10%;color:#000;">Action</th>
                             </tr>
@@ -126,19 +127,27 @@
                         <tbody style="display:none;" v-bind:style="{display: cart.length > 0 ? '' : 'none'}">
                             <tr v-for="(material, sl) in cart">
                                 <td>{{ sl + 1}}</td>
-                                <td>{{ material.code }}</td>
                                 <td>{{ material.name }}</td>
                                 <td>{{ material.category_name }}</td>
                                 <td>{{ material.quantity }} {{ material.unit_name }}</td>
-                                <td>{{ material.total }}</td>
+                                <td>{{ parseFloat(material.total).toFixed(2) }}</td>
                                 <td><a href="" v-on:click.prevent="removeFromCart(material)"><i class="fa fa-trash"></i></a></td>
                             </tr>
                         </tbody>
+                        <tfoot>
+                            <tr style="font-weight: 600;">
+                                <td style="text-align: right;" colspan="3">Total</td>
+                                <td>{{ (cart.reduce((prev,curr) => {return +prev + +curr.quantity},0)).toFixed(2) }}</td>
+                                <td>{{ (cart.reduce((prev,curr) => {return +prev + +curr.total},0)).toFixed(2) }}</td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>
         </div>
 
+        <!-- Finish Products -->
         <div class="col-xs-12 col-md-4">
             <div class="widget-box">
                 <div class="widget-header">
@@ -147,7 +156,6 @@
                         <a href="#" data-action="collapse">
                             <i class="ace-icon fa fa-chevron-up"></i>
                         </a>
-
                         <a href="#" data-action="close">
                             <i class="ace-icon fa fa-times"></i>
                         </a>
@@ -158,12 +166,6 @@
                         <div class="row">
                             <div class="col-xs-12">
                                 <form id="productForm" v-on:submit.prevent="addToProductCart">
-                                    <div class="form-group clearfix" style="margin-bottom: 3px;">
-                                        <label class="col-xs-4 control-label">Recipe</label>
-                                        <div class="col-xs-8">
-                                            <v-select label="recipe_name" v-bind:options="recipes" v-model="selectedRecipe" @input="onChangeRecipe"></v-select>
-                                        </div>
-                                    </div>
                                     <div class="form-group clearfix">
                                         <label class="col-xs-4 control-label">Product</label>
                                         <div class="col-xs-8">
@@ -188,7 +190,7 @@
                                     <div class="form-group clearfix">
                                         <label class="col-xs-4 control-label"></label>
                                         <div class="col-xs-8">
-                                            <button type="submit" class="btn btn-default pull-right">Add to Cart</button>
+                                            <button type="submit" class="btn btn-default pull-right" style="border: none;height: 30px;background: rgb(135, 184, 127) !important;">Add to Cart</button>
                                         </div>
                                     </div>
                                 </form>
@@ -205,6 +207,7 @@
                                 <th style="width:4%;color:#000;">SL</th>
                                 <th style="width:20%;color:#000;">Product Name</th>
                                 <th style="width:5%;color:#000;">Qty</th>
+                                <th style="width:5%;color:#000;">Price</th>
                                 <th style="width:5%;color:#000;">Amount</th>
                                 <th style="width:10%;color:#000;">Action</th>
                             </tr>
@@ -213,24 +216,31 @@
                             <tr v-for="(product, sl) in cartProducts">
                                 <td>{{ sl + 1}}</td>
                                 <td>{{ product.name }}</td>
-                                <!-- <td>{{ product.quantity }} {{ product.unit_name }}</td> -->
-                                <td style="padding: 0;">
-                                    <input type="text" v-model.number="product.quantity" v-on:input="calculateAll(sl)" style="width: 60px;padding: 0px;border: none;text-align: center;vertical-align: -webkit-baseline-middle;">
-                                    {{ product.unit_name }}
-                                </td>
+                                <td>{{ product.quantity }} {{ product.unit_name }}</td>
+                                <td>{{ product.price }}</td>
                                 <td>{{ product.total }}</td>
                                 <td><a href="" v-on:click.prevent="removeFromProductCart(product)"><i class="fa fa-trash"></i></a></td>
                             </tr>
                         </tbody>
+                        <tfoot>
+                            <tr style="font-weight: 600;">
+                                <td style="text-align: right;" colspan="2">Total</td>
+                                <td>{{ (cartProducts.reduce((prev,curr) => {return +prev + +curr.quantity},0)).toFixed(2) }}</td>
+                                <td>{{ (cartProducts.reduce((prev,curr) => {return +prev + +curr.price},0)).toFixed(2) }}</td>
+                                <td>{{ (cartProducts.reduce((prev,curr) => {return +prev + +curr.total},0)).toFixed(2) }}</td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>
         </div>
 
+        <!-- Recipe Details -->
         <div class="col-xs-12 col-md-3">
             <div class="widget-box">
                 <div class="widget-header">
-                    <h4 class="widget-title">Production</h4>
+                    <h4 class="widget-title">Recipe Details</h4>
                     <div class="widget-toolbar">
                         <a href="#" data-action="collapse">
                             <i class="ace-icon fa fa-chevron-up"></i>
@@ -243,77 +253,86 @@
                 </div>
                 <div class="widget-body">
                     <div class="widget-main">
-                        <form v-on:submit.prevent="saveProduction">
-                            <div class="form-group clearfix">
-                                <label class="col-xs-12 control-label">Production Id</label>
-                                <div class="col-xs-12">
-                                    <input type="text" class="form-control" placeholder="Production Id" v-model="production.production_sl">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="form-group clearfix">
+                                    <label class="control-label">Recipe Name</label>
+                                    <input type="text" class="form-control" v-model="inputField.recipe_name" placeholder="Recipe name">
+                                </div>
+                                <div class="form-group clearfix">
+                                    <label class="control-label">Date</label>
+                                    <input type="date" class="form-control" v-model="inputField.date" readonly>
+                                </div>
+                                <div class="form-group clearfix">
+                                    <label class="control-label">User</label>
+                                    <input type="text" class="form-control" v-model="userName" readonly>
+                                </div>
+                                <div class="form-group clearfix">
+                                    <button type="submit" class="btn btn-default pull-right" style="border: none;background: #438eb9 !important;" @click.prevent="saveRecipe" :disabled="isProcess">Save Recipe</button>
                                 </div>
                             </div>
-                            <div class="form-group clearfix">
-                                <label class="col-xs-12 control-label">Date</label>
-                                <div class="col-xs-12">
-                                    <input type="date" class="form-control" v-model="production.date" required>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-xs-12 control-label">Incharge</label>
-                                <div class="col-xs-10 no-padding-right">
-                                    <v-select label="display_name" v-bind:options="employees" v-model="selectedEmployee" placeholder="Select Incharge"></v-select>
-                                </div>
-                                <div class="col-xs-1">
-                                    <a href="<?= base_url('employee') ?>" class="btn btn-xs btn-danger" style="height: 25px; border: 0; width: 27px; margin-left: -10px;margin-top: -2px;" target="_blank" title="Add New Employee"><i class="fa fa-plus" aria-hidden="true"></i></a>
-                                </div>
-                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                            <div class="form-group clearfix">
-                                <label class="col-xs-12 control-label">Shift</label>
-                                <div class="col-xs-10 no-padding-right">
-                                    <select class="form-control" v-model="production.shift" style="padding:0px 3px;" required>
-                                        <option value="">Select Shift</option>
-                                        <option v-for="shift in shifts" v-bind:value="shift.name">{{ shift.name }}</option>
-                                    </select>
-                                </div>
-                                <div class="col-xs-2">
-                                    <a href="<?= base_url('shift') ?>" class="btn btn-xs btn-danger" style="height: 25px; border: 0; width: 27px; margin-left: -10px;" target="_blank" title="Add New Shift"><i class="fa fa-plus" aria-hidden="true" style="margin-top: 5px;"></i></a>
+    <div class="row">
+        <div class="col-xs-12">
+            <hr />
+        </div>
+    </div>
+
+    <!-- Recipe List -->
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="widget-box">
+                <div class="widget-header">
+                    <h4 class="widget-title">Table</h4>
+                    <div class="widget-toolbar">
+                        <a href="#" data-action="collapse">
+                            <i class="ace-icon fa fa-chevron-up"></i>
+                        </a>
+
+                        <a href="#" data-action="close">
+                            <i class="ace-icon fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="widget-body">
+                    <div class="widget-main">
+                        <div class="col-xs-12 form-inline no-padding">
+                            <div class="form-group">
+                                <label for="filter" class="sr-only">Filter</label>
+                                <input type="text" class="form-control" v-model="filter" placeholder="Filter">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table-responsive">
+                                    <datatable :columns="columns" :data="recipes" :filter-by="filter">
+                                        <template scope="{ row }">
+                                            <tr>
+                                                <td>{{ row.recipe_id }}</td>
+                                                <td>{{ row.recipe_name }}</td>
+                                                <td>
+                                                    <?php if ($this->session->userdata('accountType') != 'u') { ?>
+                                                        <button type="button" class="edit" @click="editItem(row)">
+                                                            <i class="fa fa-pencil"></i>
+                                                        </button>
+                                                        <button type="button" class="button" @click="deleteItem(row.recipe_id)">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
+                                                    <?php } ?>
+                                                </td>
+                                            </tr>
+                                        </template>
+                                    </datatable>
+                                    <datatable-pager v-model="page" type="abbreviated" :per-page="per_page"></datatable-pager>
                                 </div>
                             </div>
-                            <div class="form-group clearfix">
-                                <label class="col-xs-12 control-label">Labour Cost</label>
-                                <div class="col-xs-12">
-                                    <input type="text" class="form-control" v-model="production.labour_cost" v-on:input="calculateTotal">
-                                </div>
-                            </div>
-                            <div class="form-group clearfix">
-                                <label class="col-xs-12 control-label">Material Cost</label>
-                                <div class="col-xs-12">
-                                    <input type="text" class="form-control" v-model="production.material_cost" disabled>
-                                </div>
-                            </div>
-                            <div class="form-group clearfix">
-                                <label class="col-xs-12 control-label">Other Cost</label>
-                                <div class="col-xs-12">
-                                    <input type="text" class="form-control" v-model="production.other_cost" v-on:input="calculateTotal">
-                                </div>
-                            </div>
-                            <div class="form-group clearfix">
-                                <label class="col-xs-12 control-label"><strong>Total Cost</strong></label>
-                                <div class="col-xs-12">
-                                    <input type="text" class="form-control" v-model="production.total_cost" readonly>
-                                </div>
-                            </div>
-                            <div class="form-group clearfix">
-                                <label class="col-xs-12 control-label">Note</label>
-                                <div class="col-xs-12">
-                                    <textarea class="form-control" placeholder="Note" v-model="production.note"></textarea>
-                                </div>
-                            </div>
-                            <div class="form-group clearfix">
-                                <div class="col-xs-7 col-xs-offset-5">
-                                    <button type="submit" class="btn btn-success pull-right" v-bind:disabled="productionInProgress ? true : false">Save</button>
-                                </div>
-                            </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -323,42 +342,34 @@
 
 <script src="<?php echo base_url(); ?>assets/js/vue/vue.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/vue/axios.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/js/vue/vuejs-datatable.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/vue/vue-select.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
 <script>
     Vue.component('v-select', VueSelect.VueSelect);
     new Vue({
-        el: '#production',
+        el: '#recipe',
         data() {
             return {
-                production: {
-                    production_id: parseInt('<?php echo $production_id; ?>'),
-                    production_sl: '<?php echo $productionSl; ?>',
+                inputField: {
+                    recipe_id: parseInt('<?php echo $recipe_id; ?>'),
+                    recipe_name: '',
                     date: '',
-                    incharge_id: '',
-                    shift: '',
-                    note: '',
-                    labour_cost: 0.00,
-                    material_cost: 0.00,
-                    other_cost: 0.00,
-                    total_cost: 0.00
                 },
-                employees: [],
-                shifts: [],
+                total_cost: 0,
+                userName: '<?= $this->session->userdata("FullName"); ?>',
                 products: [],
-                materials: [],
-                selectedEmployee: null,
                 selectedProduct: {
-                    Product_SlNo: 0,
+                    Product_SlNo: '',
                     Product_Name: '',
                     display_text: 'Select Product',
-                    quantity: '',
+                    quantity: 0,
                     Product_Purchase_Rate: 0.00,
                     total: 0,
                 },
+                materials: [],
                 selectedMaterial: {
                     material_id: '',
-                    name: 'Select Material',
                     display_text: 'Select Material',
                     purchase_rate: 0.00,
                     quantity: 0,
@@ -370,48 +381,49 @@
                 cart: [],
                 stock_quantity: 0,
                 cartProducts: [],
-                productionInProgress: false,
+                isProcess: false,
                 recipes: [],
-                selectedRecipe: {
-                    recipe_id: '',
-                    recipe_name: 'Select Recipe'
-                },
+                columns: [{
+                        label: 'Recipe Id',
+                        field: 'recipe_id',
+                        align: 'center',
+                        filterable: false
+                    },
+                    {
+                        label: 'Recipe Name',
+                        field: 'recipe_name',
+                        align: 'center'
+                    },
+                    {
+                        label: 'Action',
+                        align: 'center',
+                        filterable: false
+                    }
+                ],
+                page: 1,
+                per_page: 10,
+                filter: ''
             }
         },
         created() {
             this.getRecipes();
-            this.getEmployees();
-            this.getShifts();
             this.getProducts();
             this.getMaterials();
-            this.production.date = moment().format('YYYY-MM-DD');
+            this.inputField.date = moment().format('YYYY-MM-DD');
 
-            if (this.production.production_id != 0) {
-                this.getProduction();
+            if (this.inputField.recipe_id != 0) {
+                this.getRecipe();
             }
         },
         methods: {
             getRecipes() {
-                axios.post('/get_recipes').then(res => {
-                    this.recipes = res.data;
-                })
-            },
-            getEmployees() {
-                axios.get('/get_employees')
+                axios.get('/get_recipes')
                     .then(res => {
-                        this.employees = res.data;
-                    })
-            },
-            getShifts() {
-                axios.get('/get_shifts')
-                    .then(res => {
-                        this.shifts = res.data;
+                        this.recipes = res.data;
                     })
             },
             getProducts() {
-                axios.post('/get_products', {
-                        isService: 'false'
-                    })
+                axios.get('/get_products')
                     .then(res => {
                         this.products = res.data;
                     })
@@ -422,7 +434,7 @@
                         this.materials = res.data;
                     })
             },
-            getMaterialStock() {
+            materialOnChange() {
                 if (this.selectedMaterial.material_id == '') {
                     return;
                 }
@@ -432,6 +444,8 @@
                     .then(res => {
                         this.stock_quantity = res.data[0].stock_quantity;
                     })
+                this.$refs.quantity.focus();
+                this.clearMaterial;
             },
             calculateMaterialTotal() {
                 // this.selectedMaterial.total = this.selectedMaterial.quantity * this.selectedMaterial.purchase_rate;
@@ -442,28 +456,14 @@
                 this.selectedMaterial.quantity = parseFloat(unitQty) + parseFloat(pcsQty);
                 this.selectedMaterial.total = this.selectedMaterial.quantity * this.selectedMaterial.purchase_rate;
             },
-            async calculateAll(sl) {
-                this.cartProducts[sl].total = (parseFloat(this.cartProducts[sl].price) * this.cartProducts[sl].quantity).toFixed(2);
-                let mainProduct = this.recipes.find(p => p.recipe_id == this.selectedRecipe.recipe_id);
-                let original_difference = mainProduct.product[0].quantity / this.cartProducts[sl].quantity;
-                this.cart.map((p, i) => {
-                    let mainMaterial = mainProduct.materials.find(m => m.material_id == p.material_id)
-                    let newQty = parseFloat(mainMaterial.quantity) / original_difference
-                    p.quantity = newQty;
-                    p.total = parseFloat(newQty) * parseFloat(p.purchase_rate);
-                })
-                this.calculateTotal();
-
-            },
-            setFocus() {
-                if (this.selectedMaterial.material_id == '') {
-                    return
-                }
-                this.$refs.quantity.focus();
-            },
-            addToCart() {
+            addToCartMaterial() {
                 if (this.selectedMaterial == null || this.selectedMaterial.material_id == '') {
                     alert('Please Select Material');
+                    return;
+                }
+
+                if (this.selectedMaterial.quantity == 0) {
+                    alert('Material Quantity is Required');
                     return;
                 }
 
@@ -479,13 +479,25 @@
                         alert('Materials Stock unavailable');
                         return;
                     }
-                    this.cart.push(this.selectedMaterial);
+                    let material = {
+                        material_id: this.selectedMaterial.material_id,
+                        name: this.selectedMaterial.name,
+                        code: this.selectedMaterial.code,
+                        display_text: this.selectedMaterial.name,
+                        category_name: this.selectedMaterial.category_name,
+                        color_id: this.selectedMaterial.color_id,
+                        color_name: this.selectedMaterial.color_name,
+                        purchase_rate: this.selectedMaterial.purchase_rate,
+                        quantity: this.selectedMaterial.quantity,
+                        total: this.selectedMaterial.total
+                    }
+
+                    this.cart.push(material);
                 }
                 this.clearMaterial();
                 this.calculateTotal();
             },
             removeFromCart(material) {
-
                 let ind = this.cart.findIndex(m => m.material_id == material.material_id);
                 if (ind > -1) {
                     this.cart.splice(ind, 1);
@@ -493,68 +505,26 @@
                 }
 
             },
+            calculateTotal() {
+                this.total_cost = this.cart.reduce((p, c) => {
+                    return +p + +c.total
+                }, 0);
+
+            },
             clearMaterial() {
                 this.selectedMaterial = {
                     material_id: '',
-                    name: '',
                     display_text: 'Select Material',
                     purchase_rate: 0.00,
-                    quantity: ''
+                    quantity: 0,
+                    unitQty: 0,
+                    qty: 0,
+                    convert_text: 'Conver',
+                    total: 0,
                 }
-            },
-            async onChangeRecipe() {
-
-                if (this.selectedRecipe.recipe_id == '') {
-                    return
-                }
-
-                this.cart = [];
-                this.selectedRecipe.materials.map(async item => {
-
-                    let stockQty = 0;
-                    await axios.post('/get_material_stock', {
-                            material_id: item.material_id
-                        })
-                        .then(res => {
-                            stockQty = res.data[0].stock_quantity;
-                        })
-
-                    let material = {
-                        material_id: item.material_id,
-                        name: item.name,
-                        code: item.code,
-                        display_text: item.name,
-                        category_name: item.ProductCategory_Name,
-                        color_id: item.color_id,
-                        color_name: item.color_name,
-                        purchase_rate: item.purchase_rate,
-                        quantity: item.quantity,
-                        total: item.total,
-                        sQty: stockQty,
-                    }
-                    this.cart.push(material);
-                });
-
-                this.cartProducts = [];
-                this.selectedRecipe.product.map(item => {
-                    let prod = {
-                        product_id: item.product_id,
-                        name: item.Product_Name,
-                        color_id: item.color,
-                        color_name: item.color_name,
-                        size_id: item.size,
-                        size_name: item.size_name,
-                        category_name: item.category_name,
-                        quantity: item.quantity,
-                        price: item.price,
-                        total: item.total,
-                    }
-                    this.cartProducts.push(prod);
-                });
-                // this.calculateTotal();
             },
             onChangeProduct() {
-                if (this.selectedProduct.Product_SlNo == 0) {
+                if (this.selectedProduct.Product_SlNo == '') {
                     return
                 }
                 this.$refs.productQuantity.focus();
@@ -565,6 +535,11 @@
             addToProductCart() {
                 if (this.selectedProduct == null || this.selectedProduct.Product_SlNo == 0) {
                     alert('Select product');
+                    return;
+                }
+
+                if (this.selectedProduct.quantity == 0) {
+                    alert('Product quantity is required');
                     return;
                 }
 
@@ -590,49 +565,22 @@
 
                 this.clearProduct();
             },
-            async removeFromProductCart(product) {
-
+            removeFromProductCart(product) {
                 let ind = this.cartProducts.findIndex(p => p.product_id == product.product_id);
                 if (ind > -1) {
-                    if (this.cartProducts[ind].production_products_id) {
-                        let stock = await axios.post('/get_product_stock', {
-                            productId: this.cartProducts[ind].product_id
-                        }).then(res => res.data);
-                        if (this.cartProducts[ind].quantity > stock) {
-                            alert('Stock unavailable');
-                            return;
-                        }
-                    }
                     this.cartProducts.splice(ind, 1);
                 }
             },
             clearProduct() {
                 this.selectedProduct = {
-                    Product_SlNo: 0,
+                    Product_SlNo: '',
                     Product_Name: '',
                     display_text: 'Select Product',
-                    quantity: '',
-                    Product_Purchase_Rate: 0.00
+                    quantity: 0,
+                    Product_Purchase_Rate: 0.00,
                 }
             },
-            calculateTotal() {
-                this.production.material_cost = this.cart.reduce((p, c) => {
-                    return +p + +c.total
-                }, 0);
-                this.production.total_cost =
-                    parseFloat(this.production.labour_cost) +
-                    parseFloat(this.production.material_cost) +
-                    parseFloat(this.production.other_cost);
-            },
-            async saveProduction() {
-
-
-                this.productionInProgress = true;
-
-                if (this.selectedEmployee == null) {
-                    alert('Select production incharge');
-                    return;
-                }
+            saveRecipe() {
                 if (this.cart.length == 0) {
                     alert('Material cart is empty');
                     return;
@@ -641,84 +589,98 @@
                     alert('Product cart is empty');
                     return;
                 }
-
-
-                let stock_unavailable = false;
-                let stock_unavailable_product = '';
-
-                for (let index = 0; index < this.cart.length; index++) {
-                    await axios.post('/get_material_stock', {
-                            material_id: this.cart[index].material_id
-                        })
-                        .then(async res => {
-                            let stock_quantity = res.data[0].stock_quantity;
-                            if (parseFloat(stock_quantity) < parseFloat(this.cart[index].quantity)) {
-                                stock_unavailable = true;
-                                stock_unavailable_product = this.cart[index].display_text;
-                            }
-                        })
-                    if (stock_unavailable) {
-                        break;
-                    }
+                if (this.inputField.recipe_name == '') {
+                    alert('Recipe Name is Empty!');
+                    return
                 }
 
-                if (stock_unavailable) {
-                    alert(stock_unavailable_product + ' stock unavailable');
-                    return;
-                }
 
-                this.production.incharge_id = this.selectedEmployee.Employee_SlNo;
-
-                let url = '/add_production';
-                if (this.production.production_id != 0) {
-                    url = '/update_production';
+                let url = '/add_recipe';
+                if (this.inputField.recipe_id != 0) {
+                    url = '/update_recipe';
                 }
 
                 let data = {
-                    production: this.production,
+                    recipe: this.inputField,
                     materials: this.cart,
                     products: this.cartProducts
                 }
 
-                axios.post(url, data).then(async res => {
+                this.isProcess = true;
+
+                let ind = this.recipes.findIndex(p => p.recipe_name == this.inputField.recipe_name);
+                if (this.inputField.recipe_id != 0) {
+                    ind = this.recipes.findIndex(p => p.recipe_name == this.inputField.recipe_name && p.recipe_id != this.inputField.recipe_id);
+                }
+                if (ind > -1) {
+                    alert('Recipe name already exist');
+                    this.isProcess = false;
+                    return;
+                } else {
+                    axios.post(url, data).then(async res => {
+                        let r = res.data;
+                        alert(r.message);
+                        if (r.success) {
+                            window.location = '/recipe_entry';
+                        }
+                    })
+                }
+            },
+            editItem(data) {
+
+                console.log(data);
+                this.inputField.recipe_id = data.recipe_id;
+                this.inputField.recipe_name = data.recipe_name;
+                this.inputField.date = data.date;
+
+                this.cart = [];
+
+                data.materials.map(item => {
+                    let material = {
+                        material_id: item.material_id,
+                        name: item.name,
+                        code: item.code,
+                        display_text: item.name,
+                        category_name: item.ProductCategory_Name,
+                        color_id: item.color_id,
+                        color_name: item.color_name,
+                        purchase_rate: item.purchase_rate,
+                        quantity: item.quantity,
+                        total: item.total,
+                    }
+                    this.cart.push(material);
+                });
+
+                this.cartProducts = [];
+                data.product.map(item => {
+                    let product = {
+                        product_id: item.product_id,
+                        name: item.Product_Name,
+                        category_name: item.category_name,
+                        quantity: item.quantity,
+                        price: item.price,
+                        total: item.total,
+                    }
+                    this.cartProducts.push(product);
+                });
+
+                this.calculateTotal();
+            },
+            deleteItem(id) {
+                let conf = confirm('Are you sure to delete recipe?')
+                if (!conf) {
+                    return
+                }
+
+                axios.post("/delete_recipe", {
+                    recipeId: id
+                }).then(res => {
                     let r = res.data;
                     alert(r.message);
                     if (r.success) {
-                        let conf = confirm('Production success, Do you want to view invoice?');
-                        if (conf) {
-                            window.open('/production_invoice/' + r.productionId, '_blank');
-                            await new Promise(r => setTimeout(r, 1000));
-                        }
-                        window.location = '/production';
-                    } else {
-                        this.productionInProgress = false;
+                        this.getRecipes();
                     }
                 })
-            },
-            async getProduction() {
-                await axios.post('/get_productions', {
-                        production_id: this.production.production_id
-                    })
-                    .then(res => {
-                        this.production = res.data[0];
-                        this.selectedEmployee = {
-                            Employee_SlNo: this.production.incharge_id,
-                            display_name: this.production.incharge_name + ' - ' + this.production.incharge_id,
-                        }
-                    })
-                await axios.post('/get_production_details', {
-                        production_id: this.production.production_id
-                    })
-                    .then(res => {
-                        this.cart = res.data;
-                    })
-
-                await axios.post('/get_production_products', {
-                        production_id: this.production.production_id
-                    })
-                    .then(res => {
-                        this.cartProducts = res.data;
-                    })
             }
         }
     })

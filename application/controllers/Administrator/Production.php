@@ -44,16 +44,16 @@ class Production extends CI_Controller{
             }
             $production = array(
                 'production_sl' => $data->production->production_sl,
-                'date'          => $data->production->date,
-                'incharge_id'   => $data->production->incharge_id,
-                'shift'         => $data->production->shift,
-                'note'          => $data->production->note,
-                'labour_cost'   => $data->production->labour_cost,
+                'date' => $data->production->date,
+                'incharge_id' => $data->production->incharge_id,
+                'shift' => $data->production->shift,
+                'note' => $data->production->note,
+                'labour_cost' => $data->production->labour_cost,
                 'material_cost' => $data->production->material_cost,
-                'other_cost'    => $data->production->other_cost,
-                'total_cost'    => $data->production->total_cost,
-                'status'        => 'a',
-                'branch_id'     => $this->sbrunch
+                'other_cost' => $data->production->other_cost,
+                'total_cost' => $data->production->total_cost,
+                'status' => 'a',
+                'branch_id' => $this->sbrunch
             );
     
             $this->db->insert('tbl_productions', $production);
@@ -64,12 +64,12 @@ class Production extends CI_Controller{
             foreach($data->materials as $material){
                 $material = array(
                     'production_id' => $productionId,
-                    'material_id'   => $material->material_id,
-                    'quantity'      => $material->quantity,
+                    'material_id' => $material->material_id,
+                    'quantity' => $material->quantity,
                     'purchase_rate' => $material->purchase_rate,
-                    'total'         => $material->total,
-                    'status'        => 'a',
-                    'branch_id'     => $this->sbrunch
+                    'total' => $material->total,
+                    'status' => 'a',
+                    'branch_id' => $this->sbrunch
                 );
                 $this->db->insert('tbl_production_details', $material);
             }
@@ -77,28 +77,28 @@ class Production extends CI_Controller{
             foreach($data->products as $product){
                 $productionProduct = array(
                     'production_id' => $productionId,
-                    'product_id'    => $product->product_id,
-                    'quantity'      => $product->quantity,
-                    'price'         => $product->price,
-                    'total'         => $product->total,
-                    'status'        => 'a',
-                    'branch_id'     => $this->sbrunch
+                    'product_id' => $product->product_id,
+                    'quantity' => $product->quantity,
+                    'price' => $product->price,
+                    'total' => $product->total,
+                    'status' => 'a',
+                    'branch_id' => $this->sbrunch
                 );
 
                 $this->db->insert('tbl_production_products', $productionProduct);
                 $previousStock = $this->mt->productStock($product->product_id);
 
-                $productInventoryCount = $this->db->query("select * from tbl_currentinventory ci where ci.product_id = ? and ci.branch_id = ?", [$product->product_id, $this->sbrunch])->num_rows();
+                $productInventoryCount = $this->db->query("select * from tbl_currentinventory ci where ci.product_id = ? and ci.branch_id = ?", [$product->product_id, $this->session->userdata('BRANCHid')])->num_rows();
                 if($productInventoryCount == 0){
                     $inventory = array(
                         'product_id' => $product->product_id,
                         'production_quantity' => $product->quantity,
-                        'branch_id' => $this->sbrunch
+                        'branch_id' => $this->session->userdata('BRANCHid')
                     );
 
                     $this->db->insert('tbl_currentinventory', $inventory);
                 } else {
-                    $this->db->query("update tbl_currentinventory set production_quantity = production_quantity + ? where product_id = ? and branch_id = ?", [$product->quantity, $product->product_id, $this->sbrunch]);
+                    $this->db->query("update tbl_currentinventory set production_quantity = production_quantity + ? where product_id = ? and branch_id = ?", [$product->quantity, $product->product_id, $this->session->userdata('BRANCHid')]);
                 }
 
                 $this->db->query("
@@ -159,7 +159,7 @@ class Production extends CI_Controller{
             foreach($oldProducts as $oldProduct){
                 $previousStock = $this->mt->productStock($oldProduct->product_id);
 
-                $this->db->query("update tbl_currentinventory set production_quantity = production_quantity - ? where product_id = ? and branch_id = ?", [$oldProduct->quantity, $oldProduct->product_id, $this->sbrunch]);
+                $this->db->query("update tbl_currentinventory set production_quantity = production_quantity - ? where product_id = ? and branch_id = ?", [$oldProduct->quantity, $oldProduct->product_id, $this->session->userdata('BRANCHid')]);
 
                 $this->db->query("
                     update tbl_product set 
@@ -181,23 +181,23 @@ class Production extends CI_Controller{
                     'price' => $product->price,
                     'total' => $product->total,
                     'status' => 'a',
-                    'branch_id' => $this->sbrunch
+                    'branch_id' => '$this->sbrunch'
                 );
 
                 $this->db->insert('tbl_production_products', $productionProduct);
                 $previousStock = $this->mt->productStock($product->product_id);
 
-                $productInventoryCount = $this->db->query("select * from tbl_currentinventory ci where ci.product_id = ? and ci.branch_id = ?", [$product->product_id, $this->sbrunch])->num_rows();
+                $productInventoryCount = $this->db->query("select * from tbl_currentinventory ci where ci.product_id = ? and ci.branch_id = ?", [$product->product_id, $this->session->userdata('BRANCHid')])->num_rows();
                 if($productInventoryCount == 0){
                     $inventory = array(
                         'product_id' => $product->product_id,
                         'production_quantity' => $product->quantity,
-                        'branch_id' => $this->sbrunch
+                        'branch_id' => $this->session->userdata('BRANCHid')
                     );
 
                     $this->db->insert('tbl_currentinventory', $inventory);
                 } else {
-                    $this->db->query("update tbl_currentinventory set production_quantity = production_quantity + ? where product_id = ? and branch_id = ?", [$product->quantity, $product->product_id, $this->sbrunch]);
+                    $this->db->query("update tbl_currentinventory set production_quantity = production_quantity + ? where product_id = ? and branch_id = ?", [$product->quantity, $product->product_id, $this->session->userdata('BRANCHid')]);
                 }
 
                 $this->db->query("
@@ -251,7 +251,7 @@ class Production extends CI_Controller{
             from tbl_productions pr
             join tbl_employee e on e.Employee_SlNo = pr.incharge_id
             where pr.status = 'a'
-            and pr.branch_id = $this->sbrunch
+            and pr.branch_id = '$this->sbrunch'
             $idClause $dateClause
         ")->result();
         echo json_encode($productions);
@@ -270,9 +270,9 @@ class Production extends CI_Controller{
             pr.*,
             e.Employee_Name as incharge_name
             from tbl_productions pr
-            left join tbl_employee e on e.Employee_SlNo = pr.incharge_id
+            join tbl_employee e on e.Employee_SlNo = pr.incharge_id
             where pr.status = 'a'
-            and pr.branch_id = $this->sbrunch
+            and pr.branch_id = '$this->sbrunch'
             $dateClause
         ")->result();
 
@@ -311,7 +311,7 @@ class Production extends CI_Controller{
             join tbl_unit u on u.Unit_SlNo = m.unit_id
             where pd.status = 'a' 
             and pd.production_id = '$options->production_id'
-            and pd.branch_id = $this->sbrunch
+            and pd.branch_id = '$this->sbrunch'
         ")->result();
 
         echo json_encode($productionDetails);
@@ -348,7 +348,7 @@ class Production extends CI_Controller{
             foreach($oldProducts as $detail) {
                 $stock = $this->mt->productStock($detail->product_id);
                 if($detail->quantity > $stock) {
-                    $res = ['success'=>false, 'message'=>'Product out of stock, Production can not be deleted'];   
+                    $res = ['success'=>false, 'message'=>'Product out of stock, Production can not be deleted','stock' => $stock];   
                     echo json_encode($res);
                     exit;
                 }
@@ -357,7 +357,7 @@ class Production extends CI_Controller{
             foreach($oldProducts as $oldProduct){
                 $previousStock = $this->mt->productStock($oldProduct->product_id);
 
-                $this->db->query("update tbl_currentinventory set production_quantity = production_quantity - ? where product_id = ? and branch_id = ?", [$oldProduct->quantity, $oldProduct->product_id, $this->sbrunch]);
+                $this->db->query("update tbl_currentinventory set production_quantity = production_quantity - ? where product_id = ? and branch_id = ?", [$oldProduct->quantity, $oldProduct->product_id, $this->session->userdata('BRANCHid')]);
 
                 $this->db->query("
                     update tbl_product set 
@@ -390,4 +390,191 @@ class Production extends CI_Controller{
         $data['content'] = $this->load->view("Administrator/production/production_invoice", $data, true);
         $this->load->view("Administrator/index", $data);
     }
+
+    //Recipe
+    public function recipeEntry()
+    {
+        $access = $this->mt->userAccess();
+        if (!$access) {
+            redirect(base_url());
+        }
+        $data['title'] = "Recipe Entry";
+        $data['recipe_id'] = 0;
+        $data['content'] = $this->load->view('Administrator/production/recipe_entry', $data, TRUE);
+        $this->load->view('Administrator/index', $data);
+    }
+
+    public function getRecipes()
+    {
+        $data = json_decode($this->input->raw_input_stream);
+
+        $recipes = $this->db->query("SELECT * FROM `tbl_recipe` WHERE `status` = 'a' and `branch_id` = ?", $this->session->userdata('BRANCHid'))->result();
+
+        foreach ($recipes as $key => $value) {
+
+            $value->materials = $this->db->query("SELECT
+                    rm.*,
+                    m.name,
+                    m.code,
+                    pc.ProductCategory_Name
+                    FROM tbl_recipe_materials rm
+                    left join tbl_materials m on m.material_id = rm.material_id
+                    left join tbl_materialcategory pc on pc.ProductCategory_SlNo = m.category_id
+                    WHERE rm.status = 'a'
+                    and rm.recipe_id = ?
+                    and rm.branch_id = ?
+                 ", [$value->recipe_id, $this->session->userdata('BRANCHid')])->result();
+
+            $value->product = $this->db->query("SELECT
+                    rp.*,
+                    p.Product_Name,
+                    p.Product_Code as product_code,
+                    p.ProductCategory_ID as category_id,
+                    pc.ProductCategory_Name as category_name,
+                    u.Unit_Name as unit_name
+                    FROM tbl_recipe_product rp
+                    left join tbl_product p on p.Product_SlNo = rp.product_id
+                    left join tbl_productcategory pc on pc.ProductCategory_SlNo = p.ProductCategory_ID
+                    left join tbl_unit u on u.Unit_SlNo = p.unit_id
+                    WHERE rp.status = 'a'
+                    and rp.recipe_id = ?
+                    and rp.branch_id = ?
+                ", [$value->recipe_id, $this->session->userdata('BRANCHid')])->result();
+        }
+
+        echo json_encode($recipes);
+    }
+
+    public function addRecipe()
+    {
+        $data = json_decode($this->input->raw_input_stream);
+
+        try {
+
+            $recipeData = (array)$data->recipe;
+            unset($recipeData['recipe_id']);
+            $recipeData['date']      = date('Y-m-d');
+            $recipeData['status']    = 'a';
+            $recipeData['AddBy']     = $this->session->userdata('userId');
+            $recipeData['AddTime']   = date('Y-m-d H:i:s');
+            $recipeData['branch_id'] = $this->session->userdata('BRANCHid');
+
+            $this->db->insert('tbl_recipe', $recipeData);
+            $recipeId = $this->db->insert_id();
+
+
+            foreach ($data->materials as $material) {
+                $material = array(
+                    'recipe_id'     => $recipeId,
+                    'material_id'   => $material->material_id,
+                    'purchase_rate' => $material->purchase_rate,
+                    'quantity'      => $material->quantity,
+                    'total'         => $material->total,
+                    'date'          => date('Y-m-d'),
+                    'status'        => 'a',
+                    'AddBy'         => $this->session->userdata('userId'),
+                    'AddTime'       => date('Y-m-d H:i:s'),
+                    'branch_id'     => $this->session->userdata('BRANCHid'),
+                );
+                $this->db->insert('tbl_recipe_materials', $material);
+            }
+
+            foreach ($data->products as $product) {
+                $productionProduct = array(
+                    'recipe_id'     => $recipeId,
+                    'product_id'    => $product->product_id,
+                    'price'         => $product->price,
+                    'quantity'      => $product->quantity,
+                    'total'         => $product->total,
+                    'date'          => date('Y-m-d'),
+                    'status'        => 'a',
+                    'AddBy'         => $this->session->userdata('userId'),
+                    'AddTime'       => date('Y-m-d H:i:s'),
+                    'branch_id'     => $this->session->userdata('BRANCHid'),
+                );
+                $this->db->insert('tbl_recipe_product', $productionProduct);
+            }
+
+            $res = ['success' => true, 'message' => 'Recipe added successfully'];
+        } catch (Exception $ex) {
+            $res = ['success' => false, 'message' => $ex->getMessage()];
+        }
+
+        echo json_encode($res);
+    }
+
+    public function updateRecipe()
+    {
+        $data = json_decode($this->input->raw_input_stream);
+        $recipeId = $data->recipe->recipe_id;
+
+        try {
+            $recipeData = (array)$data->recipe;
+            unset($recipeData['recipe_id']);
+            $recipeData['UpdateBy']     = $this->session->userdata('userId');
+            $recipeData['UpdateTime']   = date('Y-m-d H:i:s');
+            $recipeData['branch_id'] = $this->session->userdata('BRANCHid');
+
+            $this->db->where('recipe_id', $recipeId)->update('tbl_recipe', $recipeData);
+            // $recipeId = $this->db->insert_id();
+
+            $this->db->where('recipe_id', $recipeId)->delete('tbl_recipe_materials');
+            foreach ($data->materials as $material) {
+                $material = array(
+                    'recipe_id'     => $recipeId,
+                    'material_id'   => $material->material_id,
+                    'purchase_rate' => $material->purchase_rate,
+                    'quantity'      => $material->quantity,
+                    'total'         => $material->total,
+                    'date'          => date('Y-m-d'),
+                    'status'        => 'a',
+                    'AddBy'         => $this->session->userdata('userId'),
+                    'AddTime'       => date('Y-m-d H:i:s'),
+                    'branch_id'     => $this->session->userdata('BRANCHid'),
+                );
+                $this->db->insert('tbl_recipe_materials', $material);
+            }
+
+            $this->db->where('recipe_id', $recipeId)->delete('tbl_recipe_product');
+            foreach ($data->products as $product) {
+                $productionProduct = array(
+                    'recipe_id'     => $recipeId,
+                    'product_id'    => $product->product_id,
+                    'price'         => $product->price,
+                    'quantity'      => $product->quantity,
+                    'total'         => $product->total,
+                    'date'          => date('Y-m-d'),
+                    'status'        => 'a',
+                    'AddBy'         => $this->session->userdata('userId'),
+                    'AddTime'       => date('Y-m-d H:i:s'),
+                    'branch_id'     => $this->session->userdata('BRANCHid'),
+                );
+                $this->db->insert('tbl_recipe_product', $productionProduct);
+            }
+
+            $res = ['success' => true, 'message' => 'Recipe Updated successfully'];
+        } catch (Exception $ex) {
+            $res = ['success' => false, 'message' => $ex->getMessage()];
+        }
+
+        echo json_encode($res);
+    }
+
+    public function deleteRecipe()
+    {
+        $data = json_decode($this->input->raw_input_stream);
+
+        try {
+            $this->db->where('recipe_id', $data->recipeId)->set('status', 'd')->update('tbl_recipe');
+            $this->db->where('recipe_id', $data->recipeId)->set('status', 'd')->update('tbl_recipe_materials');
+            $this->db->where('recipe_id', $data->recipeId)->set('status', 'd')->update('tbl_recipe_product');
+
+            $res = ['success' => true, 'message' => 'Recipe Delete successfully'];
+        } catch (Exception $ex) {
+            $res = ['success' => false, 'message' => $ex->getMessage()];
+        }
+
+        echo json_encode($res);
+    }
+
 }

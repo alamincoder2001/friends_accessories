@@ -97,15 +97,15 @@
                             <td>{{ material.name }}</td>
                             <td>{{ material.category_name }}</td>
                             <td>{{ material.purchased_quantity }} {{ material.unit_name}}</td>
-                            <td>{{ material.production_quantity }} {{ material.unit_name}}</td>
+                            <td>{{ parseFloat(material.production_quantity).toFixed(2) }} {{ material.unit_name}}</td>
                             <td>{{ material.damage_quantity }} {{ material.unit_name}}</td>
-                            <td>{{ material.stock_quantity }} {{ material.unit_name}}</td>
-                            <td>{{ material.stock_value }}</td>
+                            <td>{{ parseFloat(material.stock_quantity).toFixed(2) }} {{ material.unit_name}}</td>
+                            <td>{{ parseFloat(material.stock_value).toFixed(2) }}</td>
                         </tr>
                         <tr>
                             <th colspan="8" style="text-align:right;">Total=</th>
                             <th>{{ stock.reduce((prev, curr) => {
-                                    return prev + parseFloat(curr.stock_value)
+                                    return prev + +parseFloat(curr.stock_value)
                                 },0).toFixed(2) }}
                             </th>
                         </tr>
