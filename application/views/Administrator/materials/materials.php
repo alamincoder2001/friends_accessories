@@ -1,10 +1,38 @@
 <style>
     .v-select {
         margin-bottom: 5px;
+        max-width: 250px;
     }
 
-    .v-select .form-control {
-        height: 17px;
+    .v-select .dropdown-toggle {
+        padding: 0px;
+    }
+
+    .v-select input[type=search],
+    .v-select input[type=search]:focus {
+        margin: 0px;
+    }
+
+    .v-select .vs__selected-options {
+        overflow: hidden;
+        flex-wrap: nowrap;
+    }
+
+    .v-select .selected-tag {
+        margin: 2px 0px;
+        white-space: nowrap;
+        position: absolute;
+        left: 0px;
+    }
+
+    .v-select .vs__actions {
+        margin-top: -5px;
+    }
+
+    .v-select .dropdown-menu {
+        width: auto;
+        min-width: 235px;
+        overflow-y: auto;
     }
 
     .button {
@@ -39,7 +67,7 @@
                         <label class="control-label col-sm-4">Category</label>
                         <label class="control-label col-sm-1"> : </label>
                         <div class="col-sm-6">
-                            <v-select multiple label="ProductCategory_Name" v-bind:options="categories" v-model="selectedCategory" placeholder="Select Category"></v-select>
+                            <v-select label="ProductCategory_Name" v-bind:options="categories" v-model="selectedCategory" placeholder="Select Category"></v-select>
                         </div>
                         <div class="col-sm-1" style="padding: 0;">
                             <a href="/material_category" title="Add New Category" class="btn btn-xs btn-danger" style="height: 25px; border: 0; width: 27px; margin-left: -10px;margin-top:2px;" target="_blank"><i class="fa fa-plus" aria-hidden="true" style="margin-top: 5px;"></i></a>
@@ -108,9 +136,7 @@
                             <td>{{ row.created_at | date_format }}</td>
                             <td>{{ row.code }}</td>
                             <td>{{ row.name }}</td>
-                            <td>
-                                <span v-for="(item, sl) in row.categories">{{item.ProductCategory_Name}}, &nbsp;</span>
-                            </td>
+                            <td>{{ row.category_name }}</td>
                             <td>{{ row.reorder_level }}</td>
                             <td>{{ row.purchase_rate }}</td>
                             <td>{{ row.unit_name }}</td>
@@ -253,21 +279,16 @@
                     return;
                 }
 
-                const uniqueSelectedCategory = [...new Set(this.selectedCategory)];
-                this.material.unit_id = this.selectedUnit.Unit_SlNo;
-                // this.material.category_id = this.selectedCategory.ProductCategory_SlNo;
 
-                let filter = {
-                    material: this.material,
-                    categories: uniqueSelectedCategory
-                }
+                this.material.unit_id = this.selectedUnit.Unit_SlNo;
+                this.material.category_id = this.selectedCategory.ProductCategory_SlNo;
 
                 let url = '/add_material';
                 if (this.material.material_id != 0) {
                     url = '/update_material';
                 }
 
-                axios.post(url, filter)
+                axios.post(url, this.material)
                     .then(res => {
                         let r = res.data;
                         alert(r.message);
@@ -285,15 +306,10 @@
                 this.material.purchase_rate = material.purchase_rate;
                 this.material.unit_id = material.unit_id;
 
-                let categories = [];
-                material.categories.forEach(cat => {
-                    let category = {
-                        ProductCategory_SlNo: cat.category_id,
-                        ProductCategory_Name: cat.ProductCategory_Name
-                    }
-                    categories.push(category);
-                })
-                this.selectedCategory = categories;
+                this.selectedCategory = {
+                    ProductCategory_SlNo: material.category_id,
+                    ProductCategory_Name: material.category_name
+                };
                 this.selectedUnit = {
                     Unit_SlNo: material.unit_id,
                     Unit_Name: material.unit_name

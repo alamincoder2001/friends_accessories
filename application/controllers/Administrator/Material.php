@@ -58,14 +58,6 @@ class Material extends CI_Controller
             where m.branch_id = '$this->brunch'
             $clauses
         ")->result();
-        foreach ($materials as $item) {
-            $item->categories = $this->db->query("SELECT
-                mmc.*,
-                    mc.ProductCategory_Name
-                FROM tbl_material_multicategory mmc
-                LEFT JOIN tbl_materialcategory mc ON mc.ProductCategory_SlNo = mmc.category_id
-                WHERE mmc.material_id = ?", [$item->material_id])->result();
-        }
         echo json_encode($materials);
     }
 
@@ -75,43 +67,32 @@ class Material extends CI_Controller
         try {
             $data = json_decode($this->input->raw_input_stream);
 
-            $nameQuery = $this->db->query("select * from tbl_materials where name = ? and branch_id = '$this->brunch'", [$data->material->name]);
+            $nameQuery = $this->db->query("select * from tbl_materials where name = ? and branch_id = '$this->brunch'", [$data->name]);
             $nameCount = $nameQuery->num_rows();
             if ($nameCount != 0) {
-                $res = ['success' => false, 'message' => 'Duplicate material name ' . $data->material->name];
+                $res = ['success' => false, 'message' => 'Duplicate material name ' . $data->name];
                 echo json_encode($res);
                 exit;
             }
 
-            $codeQuery = $this->db->query("select * from tbl_materials where code = ?", [$data->material->code]);
+            $codeQuery = $this->db->query("select * from tbl_materials where code = ?", [$data->code]);
             $codeCount = $codeQuery->num_rows();
             if ($codeCount != 0) {
-                $res = ['success' => false, 'message' => 'Duplicate material code ' . $data->material->code];
+                $res = ['success' => false, 'message' => 'Duplicate material code ' . $data->code];
                 echo json_encode($res);
                 exit;
             }
 
             $material = array(
-                "code"          => $data->material->code,
-                "name"          => $data->material->name,
-                // "category_id"   => $data->material->category_id,
-                "reorder_level" => $data->material->reorder_level,
-                "purchase_rate" => $data->material->purchase_rate,
-                "unit_id"       => $data->material->unit_id,
+                "code"          => $data->code,
+                "name"          => $data->name,
+                "category_id"   => $data->category_id,
+                "reorder_level" => $data->reorder_level,
+                "purchase_rate" => $data->purchase_rate,
+                "unit_id"       => $data->unit_id,
                 "branch_id"     => $this->brunch,
             );
             $this->db->insert('tbl_materials', $material);
-
-            $materialId = $this->db->insert_id();
-
-            foreach ($data->categories as $cat) {
-                $multicategory = array(
-                    "material_id" => $materialId,
-                    "category_id" => $cat->ProductCategory_SlNo,
-                    "addTime" => date("Y-m-d H:i:s"),
-                );
-                $this->db->insert('tbl_material_multicategory', $multicategory);
-            }
 
             $res = ['success' => true, 'message' => 'Material added successfully'];
         } catch (Exception $ex) {
@@ -126,43 +107,34 @@ class Material extends CI_Controller
         try {
             $data = json_decode($this->input->raw_input_stream);
 
-            $nameQuery = $this->db->query("select * from tbl_materials where name = ? and material_id != ?", [$data->material->name, $data->material->material_id]);
+            $nameQuery = $this->db->query("select * from tbl_materials where name = ? and material_id != ?", [$data->name, $data->material_id]);
             $nameCount = $nameQuery->num_rows();
             if ($nameCount != 0) {
-                $res = ['success' => false, 'message' => 'Duplicate material name ' . $data->material->name];
+                $res = ['success' => false, 'message' => 'Duplicate material name ' . $data->name];
                 echo json_encode($res);
                 exit;
             }
 
-            $codeQuery = $this->db->query("select * from tbl_materials where code = ? and material_id != ?", [$data->material->code, $data->material->material_id]);
+            $codeQuery = $this->db->query("select * from tbl_materials where code = ? and material_id != ?", [$data->code, $data->material_id]);
             $codeCount = $codeQuery->num_rows();
             if ($codeCount != 0) {
-                $res = ['success' => false, 'message' => 'Duplicate material code ' . $data->material->code];
+                $res = ['success' => false, 'message' => 'Duplicate material code ' . $data->code];
                 echo json_encode($res);
                 exit;
             }
 
             $material = array(
-                "code"          => $data->material->code,
-                "name"          => $data->material->name,
-                "reorder_level" => $data->material->reorder_level,
-                "purchase_rate" => $data->material->purchase_rate,
-                "unit_id"       => $data->material->unit_id,
+                "code"          => $data->code,
+                "name"          => $data->name,
+                "category_id"   => $data->category_id,
+                "reorder_level" => $data->reorder_level,
+                "purchase_rate" => $data->purchase_rate,
+                "unit_id"       => $data->unit_id,
                 "branch_id"     => $this->brunch,
             );
-            $this->db->where('material_id', $data->material->material_id);
+            $this->db->where('material_id', $data->material_id);
             $this->db->set($material);
             $this->db->update('tbl_materials');
-
-            $this->db->query("DELETE FROM tbl_material_multicategory WHERE material_id = ?", [$data->material->material_id]);
-            foreach ($data->categories as $cat) {
-                $multicategory = array(
-                    "material_id" => $data->material->material_id,
-                    "category_id" => $cat->ProductCategory_SlNo,
-                    "addTime" => date("Y-m-d H:i:s"),
-                );
-                $this->db->insert('tbl_material_multicategory', $multicategory);
-            }
 
             $res = ['success' => true, 'message' => 'Material updated successfully'];
         } catch (Exception $ex) {
@@ -204,6 +176,8 @@ class Material extends CI_Controller
     {
         $data = json_decode($this->input->raw_input_stream);
 
+        $branchId = $this->session->userdata('BRANCHid');
+
         $material_id = null;
         $materialClause = "";
         if (isset($data->material_id) && $data->material_id != null) {
@@ -218,37 +192,50 @@ class Material extends CI_Controller
             select
                 m.*,
                 pc.ProductCategory_Name as category_name,
-                u.Unit_Name as unit_name,
-                
-                ifnull(
-                    (select sum(quantity) 
-                    from tbl_material_purchase_details 
-                    where material_id = m.material_id 
-                    and status = 'a'), 0.00
-                ) as purchased_quantity,
+                u.Unit_Name as unit_name,                
 
-                ifnull(
-                    (select sum(quantity) 
-                    from tbl_production_details 
-                    where material_id = m.material_id 
-                    and status = 'a'), 0.00
+                (select ifnull(sum(pd.quantity), 0) 
+                    from tbl_material_purchase_details pd 
+                    join tbl_material_purchase pm on pm.purchase_id = pd.purchase_id
+                    where pd.material_id = m.material_id
+                    and pd.branch_id = '$branchId'
+                    and pd.Status = 'a'
+                ) as purchased_quantity,                
+
+                (select ifnull(sum(mpnw.quantity), 0) 
+                    from tbl_material_purchase_net_weight mpnw
+                    join tbl_material_purchase pm on pm.purchase_id = mpnw.purchase_id
+                    where mpnw.material_id = m.material_id
+                    and mpnw.branch_id = '$branchId'
+                    and mpnw.Status = 'a'
+                    " . (isset($data->date) && $data->date != null ? " and pm.purchase_date <= '$data->date'" : "") . "
+                ) as purchased_net_weight_quantity,
+                        
+                (select ifnull(sum(pd.quantity), 0) 
+                    from tbl_production_details pd
+                    join tbl_productions pr on pr.production_id = pd.production_id
+                    where pd.material_id = m.material_id
+                    and pd.branch_id  = '$branchId'
+                    and pd.Status = 'a'
                 ) as production_quantity,
 
-                ifnull(
-                    (select sum(damage_quantity) 
-                    from tbl_material_damage_details 
-                    where material_id = m.material_id 
-                    and status = 'a'), 0.00
+                
+                (select ifnull(sum(dmd.damage_quantity), 0) 
+                    from tbl_material_damage_details dmd
+                    join tbl_material_damage dm on dm.damage_id = dmd.damage_id
+                    where dmd.material_id = m.material_id
+                    and dmd.status = 'a'
+                    and dm.branch_id = '$branchId'
                 ) as damage_quantity,
+                
+                (select purchased_quantity - purchased_net_weight_quantity) as wastage_qty,
 
-                (select purchased_quantity - (production_quantity + damage_quantity)) as stock_quantity,
-
-                (select( m.purchase_rate * stock_quantity )) as stock_value
+                (select (purchased_net_weight_quantity) - (production_quantity + damage_quantity)) as stock_quantity,
+                (select m.purchase_rate * stock_quantity) as stock_value
 
             from tbl_materials m
             join tbl_materialcategory pc on pc.ProductCategory_SlNo = m.category_id
             join tbl_unit u on u.Unit_SlNo = m.unit_id
-            where m.branch_id = '$this->brunch'
             $materialClause
         ")->result();
 
@@ -282,6 +269,15 @@ class Material extends CI_Controller
                     and pd.Status = 'a'
                     " . (isset($data->date) && $data->date != null ? " and pm.purchase_date <= '$data->date'" : "") . "
                 ) as purchased_quantity,
+
+                (select ifnull(sum(mpnw.quantity), 0) 
+                    from tbl_material_purchase_net_weight mpnw
+                    join tbl_material_purchase pm on pm.purchase_id = mpnw.purchase_id
+                    where mpnw.material_id = m.material_id
+                    and mpnw.branch_id = '$branchId'
+                    and mpnw.Status = 'a'
+                    " . (isset($data->date) && $data->date != null ? " and pm.purchase_date <= '$data->date'" : "") . "
+                ) as purchased_net_weight_quantity,
                         
                 (select ifnull(sum(pd.quantity), 0) 
                     from tbl_production_details pd
@@ -300,8 +296,10 @@ class Material extends CI_Controller
                     and dm.branch_id = '$branchId'
                     " . (isset($data->date) && $data->date != null ? " and dm.damage_date <= '$data->date'" : "") . "
                 ) as damage_quantity,
+                
+                (select purchased_quantity - purchased_net_weight_quantity) as wastage_qty,
                         
-                (select purchased_quantity - (production_quantity + damage_quantity)) as stock_quantity,
+                (select (purchased_net_weight_quantity) - (production_quantity + damage_quantity)) as stock_quantity,
                 (select m.purchase_rate * stock_quantity) as stock_value
             from tbl_materials m
             left join tbl_materialcategory pc on pc.ProductCategory_SlNo = m.category_id
