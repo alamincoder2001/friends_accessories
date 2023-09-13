@@ -389,6 +389,7 @@
                     previous_due: 0.00,
                     note: ''
                 },
+                requisition_id: parseInt("<?php echo $requisition_id; ?>"),
                 oldSupplierId: null,
                 oldPreviousDue: 0,
                 vatPercent: 0,
@@ -419,6 +420,10 @@
 
             if (this.purchase.purchase_id != 0) {
                 this.getPurchase();
+            }
+
+            if (this.requisition_id != 0) {
+                this.getRequisition();
             }
         },
         methods: {
@@ -582,6 +587,20 @@
                     })
                     .then(res => {
                         this.cart = res.data;
+                    })
+
+            },
+
+            getRequisition() {
+                axios.post('/get_material_requisition_details', {
+                        requisition_id: this.requisition_id
+                    })
+                    .then(res => {
+                        if (res.data[0].status == 'p') {
+                            this.cart = res.data;
+                            this.purchase.requisition_id = this.requisition_id;
+                            this.calculateTotal();
+                        }
                     })
 
             }

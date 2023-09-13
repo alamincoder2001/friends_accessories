@@ -822,6 +822,15 @@ if ($module == 'dashboard' or $module == '') {
 			</li>
 		<?php endif; ?>
 
+		<?php if (array_search("material_requisition", $access) > -1  || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
+			<li class="">
+				<a href="<?php echo base_url(); ?>material_requisition">
+					<i class="menu-icon fa fa-registered"></i>
+					<span class="menu-text"> Meterial Requisition </span>
+				</a>
+				<b class="arrow"></b>
+			</li>
+		<?php endif; ?>
 		<?php if (array_search("material_purchase", $access) > -1  || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
 			<li class="">
 				<a href="<?php echo base_url(); ?>material_purchase">
@@ -891,6 +900,16 @@ if ($module == 'dashboard' or $module == '') {
 						</li>
 					<?php endif; ?>
 
+					<?php if (array_search("material_requisition_record", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
+						<li class="">
+							<a href="<?php echo base_url(); ?>material_requisition_record">
+								<i class="menu-icon fa fa-caret-right"></i>
+								Requisition Record
+							</a>
+							<b class="arrow"></b>
+						</li>
+					<?php endif; ?>
+					
 					<?php if (array_search("material_purchase_record", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
 						<li class="">
 							<a href="<?php echo base_url(); ?>material_purchase_record">

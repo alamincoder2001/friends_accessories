@@ -53,6 +53,18 @@ class Model_Table extends CI_Model{
 		
 		return $invoice;
     }
+    public function generateRequisitionInvoice(){
+		$invoice = 'REQ-' . date('Y') . "00001";
+        $year = date('Y');
+        $quotations = $this->db->query("select * from tbl_material_requisition rm where rm.requisition_invoice like 'REQ-$year%'");
+        if($quotations->num_rows() != 0){
+            $newQuotationId = $quotations->num_rows() + 1;
+            $zeros = array('0', '00', '000', '0000');
+            $invoice = 'REQ-' . date('Y') . (strlen($newQuotationId) > count($zeros) ? $newQuotationId : $zeros[count($zeros) - strlen($newQuotationId)] . $newQuotationId);
+		}
+		
+		return $invoice;
+    }
     
     public function generatePurchaseInvoice(){
         $invoice = date('Y') . "000001";
@@ -1029,4 +1041,3 @@ class Model_Table extends CI_Model{
     }
 	
   }
-?>
