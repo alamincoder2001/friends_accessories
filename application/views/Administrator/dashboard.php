@@ -348,7 +348,7 @@ if ($module == 'dashboard' or $module == '') { ?>
 						</div>
 					</div>
 				<?php endif; ?>
-				
+
 				<?php if (array_search("shift", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
 					<div class="col-md-2 ">
 						<div class="col-md-12 section20">
@@ -363,9 +363,9 @@ if ($module == 'dashboard' or $module == '') { ?>
 						</div>
 					</div>
 				<?php endif; ?>
-				
-				
-				<?php if($this->session->userdata('BRANCHid') == 1 && (isset($CheckSuperAdmin) || isset($CheckAdmin))) : ?>
+
+
+				<?php if ($this->session->userdata('BRANCHid') == 1 && (isset($CheckSuperAdmin) || isset($CheckAdmin))) : ?>
 					<div class="col-md-2 ">
 						<div class="col-md-12 section20">
 							<a href="<?php echo base_url(); ?>companyProfile">
@@ -1676,7 +1676,7 @@ if ($module == 'dashboard' or $module == '') { ?>
 								<div class="logo">
 									<i class="menu-icon fa fa-save"></i>
 								</div>
-								<div class="textModule" style="line-height: 13px;">
+								<div class="textModule" style="line-height: 13px; margin-top: 0;">
 									Production Record
 								</div>
 							</a>
@@ -1684,45 +1684,15 @@ if ($module == 'dashboard' or $module == '') { ?>
 					</div>
 				<?php endif; ?>
 
-				<?php if (array_search("material_challan", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
+				<?php if (array_search("material_purchase", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
 					<div class="col-md-2">
 						<div class="col-md-12 section20">
-							<a href="<?php echo base_url(); ?>material_challan">
+							<a href="<?php echo base_url(); ?>material_purchase">
 								<div class="logo">
 									<i class="menu-icon fa fa-cart-plus"></i>
 								</div>
-								<div class="textModule" style="line-height: 13px;">
-									Meterial Challan
-								</div>
-							</a>
-						</div>
-					</div>
-				<?php endif; ?>
-
-				<?php if (array_search("material_receive", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
-					<div class="col-md-2">
-						<div class="col-md-12 section20">
-							<a href="<?php echo base_url(); ?>material_receive">
-								<div class="logo">
-									<i class="menu-icon fa fa-stack-overflow"></i>
-								</div>
-								<div class="textModule" style="line-height: 13px;">
-									Meterial Receive
-								</div>
-							</a>
-						</div>
-					</div>
-				<?php endif; ?>
-
-				<?php if (array_search("material_net_weight", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
-					<div class="col-md-2">
-						<div class="col-md-12 section20">
-							<a href="<?php echo base_url(); ?>material_net_weight">
-								<div class="logo">
-									<i class="menu-icon fa fa-balance-scale"></i>
-								</div>
-								<div class="textModule" style="line-height: 13px;">
-									Meterial New Weight
+								<div class="textModule" style="line-height: 13px; margin-top: 0;">
+									Meterial Purchase
 								</div>
 							</a>
 						</div>
@@ -1736,8 +1706,8 @@ if ($module == 'dashboard' or $module == '') { ?>
 								<div class="logo">
 									<i class="menu-icon fa fa-save"></i>
 								</div>
-								<div class="textModule" style="line-height: 13px;">
-									Received Record
+								<div class="textModule" style="line-height: 13px; margin-top: 0;">
+									Purchase Record
 								</div>
 							</a>
 						</div>
@@ -1751,14 +1721,14 @@ if ($module == 'dashboard' or $module == '') { ?>
 								<div class="logo">
 									<i class="menu-icon fa fa-th-list"></i>
 								</div>
-								<div class="textModule" style="line-height: 13px;">
+								<div class="textModule" style="line-height: 13px; margin-top: 0;">
 									Meterial Category
 								</div>
 							</a>
 						</div>
 					</div>
 				<?php endif; ?>
-				
+
 				<?php if (array_search("materials", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
 					<div class="col-md-2">
 						<div class="col-md-12 section20">
@@ -1767,13 +1737,13 @@ if ($module == 'dashboard' or $module == '') { ?>
 									<i class="menu-icon fa fa-cubes"></i>
 								</div>
 								<div class="textModule" style="line-height: 13px; margin-top: 0;">
-								Raw Meterial Entry
+									Raw Meterial Entry
 								</div>
 							</a>
 						</div>
 					</div>
 				<?php endif; ?>
-				
+
 				<?php if (array_search("material_list", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
 					<div class="col-md-2">
 						<div class="col-md-12 section20">
@@ -1782,13 +1752,13 @@ if ($module == 'dashboard' or $module == '') { ?>
 									<i class="menu-icon fa fa-file"></i>
 								</div>
 								<div class="textModule" style="line-height: 13px; margin-top: 0;">
-								Raw Meterial List
+									Raw Meterial List
 								</div>
 							</a>
 						</div>
 					</div>
-				<?php endif; ?>	
-				
+				<?php endif; ?>
+
 				<?php if (array_search("material_damage", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
 					<div class="col-md-2">
 						<div class="col-md-12 section20">
@@ -1797,13 +1767,13 @@ if ($module == 'dashboard' or $module == '') { ?>
 									<i class="menu-icon fa fa-chain-broken"></i>
 								</div>
 								<div class="textModule" style="line-height: 13px; margin-top: 0;">
-								Damage Materials
+									Damage Materials
 								</div>
 							</a>
 						</div>
 					</div>
 				<?php endif; ?>
-				
+
 				<?php if (array_search("material_stock", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
 					<div class="col-md-2">
 						<div class="col-md-12 section20">
@@ -1812,13 +1782,13 @@ if ($module == 'dashboard' or $module == '') { ?>
 									<i class="menu-icon fa fa-th-list"></i>
 								</div>
 								<div class="textModule" style="line-height: 13px; margin-top: 0;">
-								Raw Meterial Stock
+									Raw Meterial Stock
 								</div>
 							</a>
 						</div>
 					</div>
 				<?php endif; ?>
-				
+
 				<?php if (array_search("material_ledger", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
 					<div class="col-md-2">
 						<div class="col-md-12 section20">
@@ -1827,7 +1797,7 @@ if ($module == 'dashboard' or $module == '') { ?>
 									<i class="menu-icon fa fa-cubes"></i>
 								</div>
 								<div class="textModule" style="line-height: 13px; margin-top: 0;">
-								Meterial Ledger
+									Meterial Ledger
 								</div>
 							</a>
 						</div>

@@ -1,11 +1,11 @@
 <?php
-defined('BASEPATH') or exit('No direct script access allowed');
+defined('BASEPATH') OR exit('No direct script access allowed');
 
 $route['default_controller'] = 'Page';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
-$route['logout'] = 'Login/logout';
+$route['logout'] = 'Login/logout';  
 
 $route['Administrator'] = 'Administrator/Page';
 $route['module/(:any)'] = 'Administrator/Page/module/$1';
@@ -13,14 +13,14 @@ $route['brachAccess/(:any)'] = 'Administrator/Login/brach_access/$1';
 $route['getBrachAccess'] = 'Administrator/Login/branch_access_main_admin';
 
 //product category
-$route['get_categories'] = 'Administrator/Page/getCategories';
-$route['category'] = 'Administrator/Page/add_category';
+$route['get_categories'] = 'Administrator/Page/getCategories'; 
+$route['category'] = 'Administrator/Page/add_category'; 
 $route['insertcategory'] = 'Administrator/Page/insert_category';
 $route['catdelete'] = 'Administrator/page/catdelete';
 
 //material category
-$route['get_material_categories'] = 'Administrator/Page/getMaterialCategories';
-$route['material_category'] = 'Administrator/Page/add_material_category';
+$route['get_material_categories'] = 'Administrator/Page/getMaterialCategories'; 
+$route['material_category'] = 'Administrator/Page/add_material_category'; 
 $route['insert_material_category'] = 'Administrator/Page/insert_material_category';
 $route['material_cat_delete'] = 'Administrator/page/materialCatDelete';
 
@@ -31,33 +31,38 @@ $route['editbrand/(:any)'] = 'Administrator/Page/brandedit/$1';
 $route['updateBrand'] = 'Administrator/Page/Update_brand';
 $route['branddelete'] = 'Administrator/Page/branddelete';
 
+
+
 // Expense Head=============
-$route['ExpenseHead'] = 'Administrator/BillController/Eindex';
-$route['expenseHeadFancyBox'] = 'Administrator/BillController/expenseHeadFancyBox';
-$route['expenseHeadAll'] = 'Administrator/BillController/expenseHeadAll';
-$route['ExpenseHead/store'] = 'Administrator/BillController/Estore';
-$route['ExpenseHead/edit/(:any)'] = 'Administrator/BillController/Eedit/$1';
+$route['ExpenseHead'] 				= 'Administrator/BillController/Eindex';
+$route['expenseHeadFancyBox'] 				= 'Administrator/BillController/expenseHeadFancyBox';
+$route['expenseHeadAll'] 				= 'Administrator/BillController/expenseHeadAll';
+$route['ExpenseHead/store'] 		= 'Administrator/BillController/Estore';
+$route['ExpenseHead/edit/(:any)'] 	= 'Administrator/BillController/Eedit/$1';
 $route['ExpenseHead/update/(:any)'] = 'Administrator/BillController/Eupdate/$1';
 $route['ExpenseHead/delete/(:any)'] = 'Administrator/BillController/Edelete/$1';
 
+
 // Bill=============
-$route['BillEntry'] = 'Administrator/BillController/index';
-$route['BillEntry/store'] = 'Administrator/BillController/store';
+$route['BillEntry'] 			= 'Administrator/BillController/index';
+$route['BillEntry/store'] 		= 'Administrator/BillController/store';
 $route['BillEntry/edit/(:any)'] = 'Administrator/BillController/edit/$1';
 $route['BillEntry/update/(:any)'] = 'Administrator/BillController/update/$1';
 $route['BillEntry/delete/(:any)'] = 'Administrator/BillController/delete/$1';
-$route['BillEntry/search'] = 'Administrator/BillController/search';
+$route['BillEntry/search'] 		= 'Administrator/BillController/search';
+
 
 // Assets Info===========
-$route['AssetsEntry'] = 'Administrator/Assets';
-$route['insertassets'] = 'Administrator/Assets/insert_Assets';
-$route['assetsEdit/(:any)'] = 'Administrator/Assets/Assets_edit/$1';
-$route['assetsUpdate/(:any)'] = 'Administrator/Assets/Update_Assets/$1';
-$route['assetsDelete/(:any)'] = 'Administrator/Assets/Assets_delete/$1';
-$route['get_assets_cost'] = 'Administrator/Assets/getAssetsCost';
-$route['assets_report'] = 'Administrator/Assets/assetsReport';
-$route['get_group_assets'] = 'Administrator/Assets/getGroupAssets';
-$route['get_assets_report'] = 'Administrator/Assets/getAssetsReport';
+$route['AssetsEntry'] 				= 'Administrator/Assets';
+$route['insertassets'] 				= 'Administrator/Assets/insert_Assets';
+$route['assetsEdit/(:any)'] 		= 'Administrator/Assets/Assets_edit/$1';
+$route['assetsUpdate/(:any)'] 		= 'Administrator/Assets/Update_Assets/$1';
+$route['assetsDelete/(:any)'] 		= 'Administrator/Assets/Assets_delete/$1';
+$route['get_assets_cost'] 			= 'Administrator/Assets/getAssetsCost';
+$route['assets_report']				= 'Administrator/Assets/assetsReport';
+$route['get_group_assets']			= 'Administrator/Assets/getGroupAssets';
+$route['get_assets_report']			= 'Administrator/Assets/getAssetsReport';
+
 
 $route['unit'] = 'Administrator/Page/unit';
 $route['insertunit'] = 'Administrator/Page/insert_unit';
@@ -94,20 +99,21 @@ $route['searchStock'] = 'Administrator/Products/search_stock';
 $route['currentStockPrint'] = 'Administrator/Reports/current_stock';
 $route['stockAvailable'] = 'Administrator/Products/stockAvailable';
 $route['stockAvailablePrint'] = 'Administrator/Reports/stockAvailable';
-$route['productName'] = 'Administrator/Products/product_name';
-$route['get_products'] = 'Administrator/Products/getProducts';
-$route['get_product_stock'] = 'Administrator/Products/getProductStock';
-$route['get_current_stock'] = 'Administrator/Products/getCurrentStock';
-$route['get_total_stock'] = 'Administrator/Products/getTotalStock';
-$route['get_transfer_stock'] = 'Administrator/Products/getTransferStock';
-$route['product_ledger'] = 'Administrator/Products/productLedger';
-$route['get_product_ledger'] = 'Administrator/Products/getProductLedger';
-$route['reorder_list'] = 'Administrator/Reports/reOrderList';
+$route['productName']	=	'Administrator/Products/product_name';
+$route['get_products']	=	'Administrator/Products/getProducts';
+$route['get_product_stock']	=	'Administrator/Products/getProductStock';
+$route['get_current_stock']	=	'Administrator/Products/getCurrentStock';
+$route['get_total_stock']	=	'Administrator/Products/getTotalStock';
+$route['product_ledger']	=	'Administrator/Products/productLedger';
+$route['get_product_ledger']	=	'Administrator/Products/getProductLedger';
+$route['reorder_list']	=	'Administrator/Reports/reOrderList';
 
 $route['totalStock'] = 'Administrator/Products/total_stock';
 $route['totalStockPrint'] = 'Administrator/Reports/total_stock';
 
+
 $route['GenerateBarcode/(:any)'] = 'BarcodeController/barcode_create/$1';
+
 
 $route['supplier'] = 'Administrator/Supplier';
 $route['add_supplier'] = 'Administrator/Supplier/addSupplier';
@@ -132,6 +138,7 @@ $route['delete_customer_payment'] = 'Administrator/Customer/deleteCustomerPaymen
 
 $route['customerPaymentPage'] = 'Administrator/Customer/customerPaymentPage';
 $route['customer_payment_history'] = 'Administrator/Customer/customerPaymentHistory';
+
 
 $route['get_purchases'] = 'Administrator/Purchase/getPurchases';
 $route['get_purchasedetails'] = 'Administrator/Purchase/getPurchaseDetails';
@@ -203,38 +210,19 @@ $route['get_damages'] = 'Administrator/Purchase/getDamages';
 $route['damageList'] = 'Administrator/Purchase/damage_product_list';
 $route['SelectDamageProduct'] = 'Administrator/Purchase/damage_select_product';
 
-
 //Material Purchase
-$route['material_challan']                = 'Administrator/Purchase/materialChallan';
-$route['material_challan/(:any)']         = 'Administrator/Purchase/materialChallan/$1';
-$route['add_material_challan']            = 'Administrator/Purchase/addMaterialChallan';
-$route['update_material_challan']         = 'Administrator/Purchase/updateMaterialChallan';
-$route['get_material_challan']            = 'Administrator/Purchase/getMaterialChallan';
-$route['get_material_challan_details']    = 'Administrator/Purchase/getMaterialChallanDetails';
-$route['material_challan_record']         = 'Administrator/Purchase/materialChallanRecord';
-$route['delete_material_challan']         = 'Administrator/Purchase/deleteMaterialChallan';
-$route['material_challan_invoice/(:any)'] = 'Administrator/Purchase/materialChallanInvoice/$1';
-
-$route['material_receive']                  = 'Administrator/Purchase/materialReceive';
-$route['receive_material_challan']          = 'Administrator/Purchase/receiveMaterialChallan';
-$route['material_purchase_record']         = 'Administrator/Purchase/MaterialPurchaseRecord';
-$route['get_material_purchase']            = 'Administrator/Purchase/getMaterialPurchase';
-$route['get_material_purchase_details']    = 'Administrator/Purchase/getMaterialPurchaseDetails';
+$route['material_purchase'] = 'Administrator/Purchase/materialPurchase';
+$route['material_purchase/(:any)'] = 'Administrator/Purchase/materialPurchase/$1';
+$route['add_material_purchase'] = 'Administrator/Purchase/addMaterialPurchase';
+$route['update_material_purchase'] = 'Administrator/Purchase/updateMaterialPurchase';
+$route['delete_material_purchase'] = 'Administrator/Purchase/deleteMaterialPurchase';
+$route['material_purchase_record'] = 'Administrator/Purchase/MaterialPurchaseRecord';
+$route['get_material_purchase'] = 'Administrator/Purchase/getMaterialPurchase';
+$route['get_material_purchase_details'] = 'Administrator/Purchase/getMaterialPurchaseDetails';
 $route['material_purchase_invoice/(:any)'] = 'Administrator/Purchase/materialPurchaseInvoice/$1';
-// $route['material_purchase/(:any)']         = 'Administrator/Purchase/materialPurchase/$1';
-// $route['add_material_purchase']            = 'Administrator/Purchase/addMaterialPurchase';
-$route['delete_material_purchase']         = 'Administrator/Purchase/deleteMaterialPurchase';
 
-$route['material_net_weight']               = 'Administrator/Purchase/materialNetWeight';
-$route['save_material_purchase_net_weight'] = 'Administrator/Purchase/saveMaterialPurchaseNetWeight';
-$route['get_material_net_weight']           = 'Administrator/Purchase/getMaterialNetWeight';
-$route['material_net_weight_record']        = 'Administrator/Purchase/materialNetWeightRecord';
-$route['delete_net_weight']                 = 'Administrator/Purchase/deleteNetWeight';
-$route['material_net_weight_invoice/(:any)'] = 'Administrator/Purchase/materialNetWeightInvoice/$1';
-$route['get_material_net_weight_details']    = 'Administrator/Purchase/getMaterialNetWeightDetails';
-// $route['material_purchase'] = 'Administrator/Purchase/materialPurchase';
+//
 
-// Product Sales
 $route['sales/(:any)'] = 'Administrator/Sales/index/$1';
 $route['sales/(:any)/(:any)'] = 'Administrator/Sales/salesEdit/$1/$2';
 $route['salesinvoice'] = 'Administrator/Sales/sales_invoice';
@@ -253,7 +241,7 @@ $route['salesOrderUpdate'] = 'Administrator/Sales/sales_order_update';
 $route['productDelete'] = 'Administrator/Sales/product_delete';
 $route['productSalesSearch'] = 'Administrator/Sales/product_sales_search';
 $route['salesInvoiceSearch'] = 'Administrator/Sales/sales_invoice_search';
-$route['searchSalesRecord'] = 'Administrator/Sales/search_sales_record';
+$route['searchSalesRecord'] = 'Administrator/Sales/search_sales_record'; 
 $route['customerName'] = 'Administrator/Sales/select_customerName';
 $route['InvCustomerName'] = 'Administrator/Sales/select_InvCustomerName';
 $route['add_sales'] = 'Administrator/Sales/addSales';
@@ -274,7 +262,7 @@ $route['check_sale_return/(:any)'] = 'Administrator/Sales/checkSaleReturn/$1';
 
 $route['sale_invoice_print/(:any)'] = 'Administrator/Sales/saleInvoicePrint/$1';
 $route['craditlimit'] = 'Administrator/Sales/craditlimit/';
-$route['salesrecord'] = 'Administrator/Sales/sales_record';
+$route['salesrecord'] = 'Administrator/Sales/sales_record';   
 $route['search_sales_record'] = 'Administrator/Reports/search_sales_record';
 $route['search_invoice_sales_record'] = 'Administrator/Reports/search_invoice_sales_record';
 $route['sales_record_print/(:any)'] = 'Administrator/Reports/sales_record_print/$1';
@@ -290,32 +278,21 @@ $route['invoiceProductList'] = 'Administrator/Sales/invoice_product_list_search'
 $route['invoiceProductPrint'] = 'Administrator/Reports/branchwise_invoice_product_list';
 $route['chalan/(:any)'] = 'Administrator/Sales/chalan/$1';
 
-// Order Module
-$route['order'] = 'Administrator/Order/index';
-$route['order/(:num)'] = 'Administrator/Order/index/$1';
-$route['add_orders'] = 'Administrator/Order/addOrders';
-$route['order-invoice/(:num)'] = 'Administrator/Order/orderInvoice/$1';
-$route['get_orders'] = 'Administrator/Order/getOrders';
-$route['orders'] = 'Administrator/Order/ordersRecord';
-$route['get_orders_record'] = 'Administrator/Order/getOrdersRecord';
-$route['get_orderdetails'] = 'Administrator/Order/getOrderDetails';
-$route['update_orders'] = 'Administrator/Order/updateOrders';
-$route['delete_orders'] = 'Administrator/Order/deleteOrders';
 
-$route['order-to-sale/(:num)'] = 'Administrator/Order/orderToSale/$1';
 
 //Quotation================
-$route['quotation'] = 'Administrator/Quotation';
-$route['quotation/(:any)'] = 'Administrator/Quotation/editQuotation/$1';
-$route['add_quotation'] = 'Administrator/Quotation/addQuotation';
-$route['update_quotation'] = 'Administrator/Quotation/updateQuotation';
-$route['delete_quotation'] = 'Administrator/Quotation/deleteQuotation';
-$route['quotation_record'] = 'Administrator/Quotation/quotationRecord';
-$route['get_quotations'] = 'Administrator/Quotation/getQuotations';
-$route['quotationReport'] = 'Administrator/Quotation/quotation_report';
-$route['quotation_invoice/(:any)'] = 'Administrator/Quotation/quotationInvoice/$1';
-$route['quotation_invoice_report'] = 'Administrator/Quotation/quotationInvoiceReport';
-$route['DeleteQuotationInvoice'] = 'Administrator/Quotation/delete_quotation_invoice';
+$route['quotation'] 		= 'Administrator/Quotation';
+$route['quotation/(:any)'] 		= 'Administrator/Quotation/editQuotation/$1';
+$route['add_quotation']  = 'Administrator/Quotation/addQuotation';
+$route['update_quotation']  = 'Administrator/Quotation/updateQuotation';
+$route['delete_quotation']  = 'Administrator/Quotation/deleteQuotation';
+$route['quotation_record']  = 'Administrator/Quotation/quotationRecord';
+$route['get_quotations']  = 'Administrator/Quotation/getQuotations';
+$route['quotationReport']   = 'Administrator/Quotation/quotation_report';
+$route['quotation_invoice/(:any)']   = 'Administrator/Quotation/quotationInvoice/$1';
+$route['quotation_invoice_report']= 'Administrator/Quotation/quotationInvoiceReport';
+$route['DeleteQuotationInvoice']= 'Administrator/Quotation/delete_quotation_invoice';
+
 
 $route['salesReturn'] = 'Administrator/Sales/salesreturn';
 $route['salesReturn/(:any)'] = 'Administrator/Sales/salesReturnEdit/$1';
@@ -329,8 +306,8 @@ $route['profitLoss'] = 'Administrator/Sales/profitLoss';
 $route['profitLossSearch'] = 'Administrator/Sales/profitLossSearch';
 $route['get_profit_loss'] = 'Administrator/Sales/getProfitLoss';
 $route['profitLossPrint'] = 'Administrator/Reports/profitLossPrint';
-
-$route['customerDue'] = 'Administrator/Customer/customer_due';
+ 
+$route['customerDue'] = 'Administrator/Customer/customer_due'; 
 $route['searchCustomerDue'] = 'Administrator/Customer/search_customer_due';
 $route['cusDuePrint/(:any)'] = 'Administrator/Reports/cusDuePrint/$1';
 $route['searchCustomerPayments'] = 'Administrator/Customer/search_customer_payments';
@@ -389,14 +366,14 @@ $route['employeeActive'] = 'Administrator/Employee/active';
 // $route['get_payable_salary'] = 'Administrator/Employee/getPayableSalary';
 
 //salary Payment
-$route['salary_payment'] = 'Administrator/Employee/employeePayment';
-$route['check_payment_month'] = 'Administrator/Employee/checkPaymentMonth';
-$route['get_payments'] = 'Administrator/Employee/getPayments';
-$route['get_salary_details'] = 'Administrator/Employee/getSalaryDetails';
-$route['add_salary_payment'] = 'Administrator/Employee/saveSalaryPayment';
-$route['update_salary_payment'] = 'Administrator/Employee/updateSalaryPayment';
-$route['salary_payment_report'] = 'Administrator/Employee/employeePaymentReport';
-$route['delete_payment'] = 'Administrator/Employee/deletePayment';
+$route['salary_payment']                = 'Administrator/Employee/employeePayment';
+$route['check_payment_month']           = 'Administrator/Employee/checkPaymentMonth';
+$route['get_payments']                  = 'Administrator/Employee/getPayments';
+$route['get_salary_details']            = 'Administrator/Employee/getSalaryDetails';
+$route['add_salary_payment']            = 'Administrator/Employee/saveSalaryPayment';
+$route['update_salary_payment']         = 'Administrator/Employee/updateSalaryPayment';
+$route['salary_payment_report']         = 'Administrator/Employee/employeePaymentReport';
+$route['delete_payment']                = 'Administrator/Employee/deletePayment';
 
 $route['designation'] = 'Administrator/Employee/designation/';
 $route['insertDesignation'] = 'Administrator/Employee/insert_designation';
@@ -429,14 +406,6 @@ $route['update_cash_transaction'] = 'Administrator/Account/updateCashTransaction
 $route['delete_cash_transaction'] = 'Administrator/Account/deleteCashTransaction';
 $route['transactionEdit'] = 'Administrator/Account/cash_transaction_edit';
 $route['viewTransaction/(:any)'] = 'Administrator/Account/viewTransaction/$1';
-$route['cashtransactionreport/(:any)'] = 'Administrator/Account/cashTransactionReport/$1';
-
-$route['adminTransaction'] = 'Administrator/Account/admin_transaction';
-$route['get_admin_transaction_code'] = 'Administrator/Account/getAdminTransactionCode';
-$route['add_admin_transaction'] = 'Administrator/Account/addAdminTransaction';
-$route['update_admin_transaction'] = 'Administrator/Account/updateAdminTransaction';
-$route['delete_admin_transaction'] = 'Administrator/Account/deleteAdminTransaction';
-$route['get_admin_transactions'] = 'Administrator/Account/getAdminTransactions';
 
 $route['account'] = 'Administrator/Account';
 $route['add_account'] = 'Administrator/Account/addAccount';
@@ -445,8 +414,8 @@ $route['update_account'] = 'Administrator/Account/updateAccount';
 $route['delete_account'] = 'Administrator/Account/deleteAccount';
 $route['get_accounts'] = 'Administrator/Account/getAccounts';
 $route['get_cash_and_bank_balance'] = 'Administrator/Account/getCashAndBankBalance';
-
-$route['TransactionReport'] = 'Administrator/Account/all_transaction_report';
+ 
+$route['TransactionReport'] = 'Administrator/Account/all_transaction_report'; 
 $route['TransactionReportSearch'] = 'Administrator/Account/transaction_report_search';
 $route['transactionReportPrint'] = 'Administrator/Reports/transaction_report_print';
 $route['bank_transaction_report'] = 'Administrator/Account/bankTransactionReprot';
@@ -481,9 +450,11 @@ $route['get_balance_sheet'] = 'Administrator/Reports/getBalanceSheet';
 $route['balanceSheetList'] = 'Administrator/Reports/balanceSheetList';
 $route['balanceSheetListPrint'] = 'Administrator/Reports/balanceSheetListPrint';
 
+
 $route['price_list'] = 'Administrator/Reports/price_list';
 $route['price_list_report'] = 'Administrator/Reports/price_list_report';
 $route['price_listprint'] = 'Administrator/Reports/price_list_print';
+
 
 $route['bank'] = 'Administrator/Account/add_bank';
 $route['insertBank'] = 'Administrator/Account/insert_Bank';
@@ -491,19 +462,19 @@ $route['bankEdit/(:any)'] = 'Administrator/Account/Bankedit/$1';
 $route['updateBank'] = 'Administrator/Account/Update_Bank';
 $route['bankDelete'] = 'Administrator/Account/Bankdelete';
 
-$route['check/pending/list'] = 'Administrator/Check/check_pendaing_date_list';
-$route['check/reminder/list'] = 'Administrator/Check/check_reminder_date_list';
-$route['check/dis/list'] = 'Administrator/Check/check_dishonor_date_list';
-$route['check/paid/list'] = 'Administrator/Check/check_paid_date_list';
-$route['check/list'] = 'Administrator/Check/check_list';
-$route['check/paid/submit/(:any)'] = 'Administrator/Check/check_paid_submission/$1';
-$route['check/dishonor/submit/(:any)'] = 'Administrator/Check/check_dishonor_submission/$1';
-$route['check/entry'] = 'Administrator/Check/check_entry_page';
-$route['check/store'] = 'Administrator/Check/check_date_store';
-$route['check/view/(:any)'] = 'Administrator/Check/check_view_page/$1';
-$route['check/edit/(:any)'] = 'Administrator/Check/check_edit_page/$1';
-$route['check/update/(:any)'] = 'Administrator/Check/check_update_info/$1';
-$route['check/delete/(:any)'] = 'Administrator/Check/check_delete_info/$1';
+$route['check/pending/list'] 	=	'Administrator/Check/check_pendaing_date_list';
+$route['check/reminder/list'] 	=	'Administrator/Check/check_reminder_date_list';
+$route['check/dis/list'] 	=	'Administrator/Check/check_dishonor_date_list';
+$route['check/paid/list'] 	=	'Administrator/Check/check_paid_date_list';
+$route['check/list'] 		=	'Administrator/Check/check_list';
+$route['check/paid/submit/(:any)'] 	=	'Administrator/Check/check_paid_submission/$1';
+$route['check/dishonor/submit/(:any)'] 	=	'Administrator/Check/check_dishonor_submission/$1';
+$route['check/entry'] 			=	'Administrator/Check/check_entry_page';
+$route['check/store'] 			=	'Administrator/Check/check_date_store';
+$route['check/view/(:any)'] 	=	'Administrator/Check/check_view_page/$1';
+$route['check/edit/(:any)'] 	=	'Administrator/Check/check_edit_page/$1';
+$route['check/update/(:any)'] 	=	'Administrator/Check/check_update_info/$1';
+$route['check/delete/(:any)'] 	=	'Administrator/Check/check_delete_info/$1';
 
 $route['BalanceSheetReportBranch/(:any)'] = 'Administrator/Reports/balance_sheet_report_branch_wise/$1';
 
@@ -515,7 +486,7 @@ $route['date_to_date_top_paid_cus'] = 'BusinessMonitor/date_to_date_top_paid_cus
 
 $route['userName'] = 'Administrator/User_management/all_user_name';
 
-// Product Transfer
+// Transfer
 $route['product_transfer'] = 'Administrator/Transfer/productTransfer';
 $route['product_transfer/(:any)'] = 'Administrator/Transfer/transferEdit/$1';
 $route['add_product_transfer'] = 'Administrator/Transfer/addProductTransfer';
@@ -526,36 +497,7 @@ $route['get_transfers'] = 'Administrator/Transfer/getTransfers';
 $route['get_transfer_details'] = 'Administrator/Transfer/getTransferDetails';
 $route['received_list'] = 'Administrator/Transfer/receivedList';
 $route['get_receives'] = 'Administrator/Transfer/getReceives';
-$route['approve_product'] = 'Administrator/Transfer/approveProduct';
 $route['transfer_invoice/(:any)'] = 'Administrator/Transfer/transferInvoice/$1';
-
-// Cash Transfer
-$route['cash_transfer'] = 'Administrator/Transfer/cashTransfer';
-$route['cash_transfer/(:any)'] = 'Administrator/Transfer/cashtransferEdit/$1';
-$route['add_cash_transfer'] = 'Administrator/Transfer/addCashTransfer';
-$route['update_cash_transfer'] = 'Administrator/Transfer/updateCashTransfer';
-$route['cash_transfer_list'] = 'Administrator/Transfer/cashtransferList';
-$route['delete_cash_transfer'] = 'Administrator/Transfer/deleteCashTransfer';
-$route['get_cashtransfers'] = 'Administrator/Transfer/getCashTransfers';
-$route['cash_received_list'] = 'Administrator/Transfer/cashreceivedList';
-$route['get_cashreceives'] = 'Administrator/Transfer/getCashReceives';
-$route['approve_cash'] = 'Administrator/Transfer/approveCash';
-$route['get_incoming_cash'] = 'Administrator/Transfer/getIncomingCash';
-$route['get_outgoing_cash'] = 'Administrator/Transfer/getOutgoingCash';
-
-// Material Transfer
-$route['material_transfer'] = 'Administrator/Transfer/materialTransfer';
-$route['material_transfer/(:any)'] = 'Administrator/Transfer/materialTransferEdit/$1';
-$route['add_material_transfer'] = 'Administrator/Transfer/addMaterialTransfer';
-$route['update_material_transfer'] = 'Administrator/Transfer/updateMaterialTransfer';
-$route['delete_material_transfer'] = 'Administrator/Transfer/deleteMaterialTransfer';
-$route['material_transfer_list'] = 'Administrator/Transfer/materialTransferList';
-$route['get_material_transfers'] = 'Administrator/Transfer/getMaterialTransfers';
-$route['get_material_transfer_details'] = 'Administrator/Transfer/getMaterialTransferDetails';
-$route['material_received_list'] = 'Administrator/Transfer/materialReceivedList';
-$route['get_material_receives'] = 'Administrator/Transfer/getMaterialReceives';
-$route['approve_material'] = 'Administrator/Transfer/approveMaterial';
-$route['material_transfer_invoice/(:any)'] = 'Administrator/Transfer/materialTransferInvoice/$1';
 
 // Banks
 $route['bank_accounts'] = 'Administrator/Account/bankAccounts';
@@ -567,7 +509,6 @@ $route['change_account_status'] = 'Administrator/Account/changeAccountStatus';
 // Bank Transactions
 $route['bank_transactions'] = 'Administrator/Account/bankTransactions';
 $route['add_bank_transaction'] = 'Administrator/Account/addBankTransaction';
-$route['approve_btransaction'] = 'Administrator/Account/ApproveBTransaction';
 $route['update_bank_transaction'] = 'Administrator/Account/updateBankTransaction';
 $route['get_bank_transactions'] = 'Administrator/Account/getBankTransactions';
 $route['get_all_bank_transactions'] = 'Administrator/Account/getAllBankTransactions';
@@ -604,8 +545,9 @@ $route['update_material_damage'] = 'Administrator/Material/updateMaterialDamage'
 $route['delete_material_damage'] = 'Administrator/Material/deleteMaterialDamage';
 $route['get_material_damage'] = 'Administrator/Material/getMaterialDamage';
 
-$route['material_ledger'] = 'Administrator/Material/materialLedger';
-$route['get_material_ledger'] = 'Administrator/Material/getMaterialLedger';
+$route['material_ledger']	    =	'Administrator/Material/materialLedger';
+$route['get_material_ledger']	=	'Administrator/Material/getMaterialLedger';
+
 
 //production
 $route['production'] = 'Administrator/Production';
@@ -643,12 +585,14 @@ $route['loan_transaction_report'] = 'Administrator/Account/loanTransactionReprot
 $route['get_all_loan_transactions'] = 'Administrator/Account/getAllLoanTransactions';
 $route['loan_ledger'] = 'Administrator/Account/loanLedger';
 
+
 //loan account
 $route['loan_accounts'] = 'Administrator/Account/loanAccounts';
 $route['add_loan_account'] = 'Administrator/Account/addLoanAccount';
 $route['update_loan_account'] = 'Administrator/Account/updateLoanAccount';
 $route['get_loan_accounts'] = 'Administrator/Account/getLoanAccounts';
 $route['change_loan_account_status'] = 'Administrator/Account/changeLoanAccountStatus';
+
 
 //investment
 $route['investment_transactions'] = 'Administrator/Account/investmentTransactions';
@@ -662,16 +606,13 @@ $route['investment_transaction_report'] = 'Administrator/Account/investmentTrans
 $route['get_all_investment_transactions'] = 'Administrator/Account/getAllInvestmentTransactions';
 $route['investment_ledger'] = 'Administrator/Account/investmentLedger';
 
+
 //investment account
 $route['investment_account'] = 'Administrator/Account/investmentAccount';
 $route['add_investment_account'] = 'Administrator/Account/addInvestmentAccount';
 $route['update_investment_account'] = 'Administrator/Account/updateInvestmentAccount';
 $route['delete_investment_account'] = 'Administrator/Account/deleteInvestmentAccount';
 $route['get_investment_accounts'] = 'Administrator/Account/getInvestmentAccounts';
-
-// Invoice wise supplier due
-$route['get_purchase_invoice'] = 'Administrator/Purchase/GetPurchaseInvoices';
-$route['get_purchase_invoice_due'] = 'Administrator/Purchase/getInvoiceDue';
 
 //mother api content
 $route['get_mother_api_content'] = 'Administrator/Page/getMotherApiContent';

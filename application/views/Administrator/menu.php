@@ -822,44 +822,15 @@ if ($module == 'dashboard' or $module == '') {
 			</li>
 		<?php endif; ?>
 
-		<!-- <?php if (array_search("material_purchase", $access) > -1  || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
-			<li class="" >
+		<?php if (array_search("material_purchase", $access) > -1  || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
+			<li class="">
 				<a href="<?php echo base_url(); ?>material_purchase">
 					<i class="menu-icon fa fa-cart-plus"></i>
-					<span class="menu-text"> Meterial Purchase  </span>
-				</a>
-				<b class="arrow"></b>
-			</li>
-		<?php endif; ?> -->
-
-		<?php if (array_search("material_challan", $access) > -1  || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
-			<li class="">
-				<a href="<?php echo base_url(); ?>material_challan">
-					<i class="menu-icon fa fa-cart-plus"></i>
-					<span class="menu-text"> Meterial Challan </span>
+					<span class="menu-text"> Meterial Purchase </span>
 				</a>
 				<b class="arrow"></b>
 			</li>
 		<?php endif; ?>
-		<?php if (array_search("material_receive", $access) > -1  || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
-			<li class="">
-				<a href="<?php echo base_url(); ?>material_receive">
-					<i class="menu-icon fa fa-stack-overflow"></i>
-					<span class="menu-text"> Meterial Receive </span>
-				</a>
-				<b class="arrow"></b>
-			</li>
-		<?php endif; ?>
-		<?php if (array_search("material_net_weight", $access) > -1  || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
-			<li class="">
-				<a href="<?php echo base_url(); ?>material_net_weight">
-					<i class="menu-icon fa fa-balance-scale"></i>
-					<span class="menu-text"> Meterial Net Weight </span>
-				</a>
-				<b class="arrow"></b>
-			</li>
-		<?php endif; ?>
-
 		<?php if (array_search("material_category", $access) > -1  || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
 			<li class="">
 				<a href="<?php echo base_url(); ?>material_category">
@@ -920,31 +891,11 @@ if ($module == 'dashboard' or $module == '') {
 						</li>
 					<?php endif; ?>
 
-					<?php if (array_search("material_challan_record", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
-						<li class="">
-							<a href="<?php echo base_url(); ?>material_challan_record">
-								<i class="menu-icon fa fa-caret-right"></i>
-								Challan Record
-							</a>
-							<b class="arrow"></b>
-						</li>
-					<?php endif; ?>
-
 					<?php if (array_search("material_purchase_record", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
 						<li class="">
 							<a href="<?php echo base_url(); ?>material_purchase_record">
 								<i class="menu-icon fa fa-caret-right"></i>
-								Received Record
-							</a>
-							<b class="arrow"></b>
-						</li>
-					<?php endif; ?>
-
-					<?php if (array_search("material_net_weight_record", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
-						<li class="">
-							<a href="<?php echo base_url(); ?>material_net_weight_record">
-								<i class="menu-icon fa fa-caret-right"></i>
-								Net Weight Record
+								Purchase Record
 							</a>
 							<b class="arrow"></b>
 						</li>

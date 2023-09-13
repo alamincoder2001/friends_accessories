@@ -3,44 +3,37 @@
         margin-right: 15px;
     }
 
-    .v-select {
-        margin-top: -2.5px;
+    .v-select{
+		margin-top:-2.5px;
         float: right;
         min-width: 180px;
         margin-left: 5px;
-    }
-
-    .v-select .dropdown-toggle {
-        padding: 0px;
+	}
+	.v-select .dropdown-toggle{
+		padding: 0px;
         height: 30px;
         border-radius: 0;
-    }
-
-    .v-select input[type=search],
-    .v-select input[type=search]:focus {
-        margin: 0px;
-    }
-
-    .v-select .vs__selected-options {
-        overflow: hidden;
-        flex-wrap: nowrap;
-    }
-
-    .v-select .selected-tag {
-        margin: 2px 0px;
-        white-space: nowrap;
-        position: absolute;
-        left: 0px;
-    }
-
-    .v-select .vs__actions {
-        margin-top: -5px;
-    }
-
-    .v-select .dropdown-menu {
-        width: auto;
-        overflow-y: auto;
-    }
+	}
+	.v-select input[type=search], .v-select input[type=search]:focus{
+		margin: 0px;
+	}
+	.v-select .vs__selected-options{
+		overflow: hidden;
+		flex-wrap:nowrap;
+	}
+	.v-select .selected-tag{
+		margin: 2px 0px;
+		white-space: nowrap;
+		position:absolute;
+		left: 0px;
+	}
+	.v-select .vs__actions{
+		margin-top:-5px;
+	}
+	.v-select .dropdown-menu{
+		width: auto;
+		overflow-y:auto;
+	}
 
     input[type="date"] {
         border-radius: 0 !important;
@@ -57,21 +50,14 @@
                     <select class="form-conrol" v-model="searchType" @change="onChangeSearchType">
                         <option value="all">All</option>
                         <option value="bySupplier">By Supplier</option>
-                        <!-- <option value="byCategory">By Category</option>
+                        <option value="byCategory">By Category</option>
                         <option value="byMaterial">By Material</option>
-                        <option value="byMRR">By MRR</option> -->
                     </select>
                 </div>
-                <div class="form-group" v-if="searchType == 'byMRR'" style="display:none;" v-bind:style="{display: searchType == 'byMRR' ? '' : 'none'}">
-                    <label>MRR No.</label><br>
-                    <v-select label="MRR_No" v-bind:options="mrrs" v-model="selectedMRR" placeholder="Select MRR"></v-select>
-                </div>
-
                 <div class="form-group" v-if="searchType == 'bySupplier'" style="display:none;" v-bind:style="{display: searchType == 'bySupplier' ? '' : 'none'}">
                     <label>Supplier</label><br>
                     <v-select label="display_name" v-bind:options="suppliers" v-model="selectedSupplier" placeholder="Select Supplier"></v-select>
                 </div>
-
                 <div class="form-group" v-if="searchType == 'byCategory'" style="display:none;" v-bind:style="{display: searchType == 'byCategory' ? '' : 'none'}">
                     <label>Category</label><br>
                     <v-select label="ProductCategory_Name" v-bind:options="categories" v-model="selectedCategory" placeholder="Select Category"></v-select>
@@ -98,15 +84,14 @@
 
     <div class="row" style="padding: 15px;display:none;" v-bind:style="{display: purchases.length > 0 ? '' : 'none'}">
         <div class="col-sm-12" style="margin-bottom: 10px;">
-            <a href="" @click.prevent="print"><i class="fa fa-print"></i> Print</a>
-        </div>
+			<a href="" @click.prevent="print"><i class="fa fa-print"></i> Print</a>
+		</div>
         <div class="col-sm-12">
             <div class="table-responsive" id="reportContent">
-                <table class="table table-bordered" v-if="searchType == 'all' || searchType == 'bySupplier' || searchType == 'byMRR'" v-bind:style="{ display: searchType == 'all' || searchType == 'bySupplier'|| searchType == 'byMRR' ? '' : 'none' }">
+                <table class="table table-bordered" v-if="searchType == 'all' || searchType == 'bySupplier'" v-bind:style="{ display: searchType == 'all' || searchType == 'bySupplier' ? '' : 'none' }">
                     <thead>
                         <tr>
                             <th>Invoice No.</th>
-                            <th>MRR No.</th>
                             <th>Date</th>
                             <th>Supplier Id</th>
                             <th>Supplier Name</th>
@@ -123,10 +108,9 @@
                     <tbody>
                         <tr v-for="purchase in purchases">
                             <td>{{ purchase.invoice_no }}</td>
-                            <td>{{ purchase.MRR_No }}</td>
                             <td>{{ purchase.purchase_date }}</td>
-                            <td>{{ purchase.Supplier_Code }}</td>
-                            <td>{{ purchase.Supplier_Name }}</td>
+                            <td>{{ purchase.supplier_code }}</td>
+                            <td>{{ purchase.supplier_name }}</td>
                             <td>{{ purchase.sub_total }}</td>
                             <td>{{ purchase.vat }}</td>
                             <td>{{ purchase.discount }}</td>
@@ -135,23 +119,18 @@
                             <td>{{ purchase.due }}</td>
                             <td>{{ purchase.note }}</td>
                             <td>
-                                <?php if ($this->session->userdata('accountType') != 'u') { ?>
-                                    <a href="" v-bind:href="`material_purchase_invoice/${purchase.purchase_id}`" target="_blank"><i class="fa fa-file-text fa-2x"></i></a>
-                                    <!-- <a href="" v-on:click.prevent="editReceived(purchase.purchase_id)"><i class="fa fa-pencil-square fa-2x"></i></a> -->
-                                    <a href="" v-on:click.prevent="deleteReceived(purchase.purchase_id, purchase.invoice_no)"><i class="fa fa-trash fa-2x"></i></a>
-                                <?php } ?>
+                                <?php if($this->session->userdata('accountType') != 'u'){?>
+                                <a href="" v-bind:href="`material_purchase_invoice/${purchase.purchase_id}`" target="_blank"><i class="fa fa-file-text fa-2x"></i></a>
+                                <a href="" v-bind:href="`material_purchase/${purchase.purchase_id}`"><i class="fa fa-pencil-square fa-2x"></i></a>
+                                <a href="" v-on:click.prevent="deletePurchase(purchase.purchase_id, purchase.invoice_no)"><i class="fa fa-trash fa-2x"></i></a>
+                                <?php }?>
                             </td>
                         </tr>
-                        <tr style="font-weight: 600;">
-                            <td colspan="5">Total</td>
-                            <td>{{ purchases.reduce((p, c) => { return +p + +c.sub_total }, 0) }}</td>
-                            <td>{{ purchases.reduce((p, c) => { return +p + +c.vat }, 0) }}</td>
-                            <td>{{ purchases.reduce((p, c) => { return +p + +c.discount }, 0) }}</td>
-                            <td>{{ purchases.reduce((p, c) => { return +p + +c.total }, 0) }}</td>
-                            <td>{{ purchases.reduce((p, c) => { return +p + +c.paid }, 0) }}</td>
-                            <td>{{ purchases.reduce((p, c) => { return +p + +c.due }, 0) }}</td>
-                            <!-- <td>{{ totalPaid }}</td>
-                            <td>{{ totalDue }}</td> -->
+                        <tr>
+                            <td colspan="7"></td>
+                            <td>{{ totalPurchase }}</td>
+                            <td>{{ totalPaid }}</td>
+                            <td>{{ totalDue }}</td>
                             <td></td>
                             <td></td>
                         </tr>
@@ -162,7 +141,6 @@
                     <thead>
                         <tr>
                             <th>Invoice No.</th>
-                            <th>MRR No.</th>
                             <th>Date</th>
                             <th>Supplier Id</th>
                             <th>Supplier Name</th>
@@ -176,7 +154,6 @@
                     <tbody>
                         <tr v-for="purchase in purchases">
                             <td>{{ purchase.invoice_no }}</td>
-                            <td>{{ purchase.MRR_No }}</td>
                             <td>{{ purchase.purchase_date }}</td>
                             <td>{{ purchase.supplier_code }}</td>
                             <td>{{ purchase.supplier_name }}</td>
@@ -196,11 +173,11 @@
         </div>
     </div>
 </div>
-<script src="<?php echo base_url(); ?>assets/js/vue/vue.min.js"></script>
-<script src="<?php echo base_url(); ?>assets/js/vue/axios.min.js"></script>
-<script src="<?php echo base_url(); ?>assets/js/vue/vuejs-datatable.js"></script>
-<script src="<?php echo base_url(); ?>assets/js/vue/vue-select.min.js"></script>
-<script src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
+<script src="<?php echo base_url();?>assets/js/vue/vue.min.js"></script>
+<script src="<?php echo base_url();?>assets/js/vue/axios.min.js"></script>
+<script src="<?php echo base_url();?>assets/js/vue/vuejs-datatable.js"></script>
+<script src="<?php echo base_url();?>assets/js/vue/vue-select.min.js"></script>
+<script src="<?php echo base_url();?>assets/js/moment.min.js"></script>
 
 <script>
     Vue.component('v-select', VueSelect.VueSelect);
@@ -214,8 +191,6 @@
                 selectedMaterial: null,
                 categories: [],
                 selectedCategory: null,
-                mrrs: [],
-                selectedMRR: null,
                 dateFrom: moment().format('YYYY-MM-DD'),
                 dateTo: moment().format('YYYY-MM-DD'),
                 purchases: [],
@@ -240,12 +215,6 @@
                     this.materials = res.data;
                 })
             },
-            getMRR() {
-                axios.get('get_material_purchase')
-                    .then(res => {
-                        this.mrrs = res.data.filter(m => m.MRR_No != null)
-                    })
-            },
             getCategories() {
                 axios.get('/get_categories').then(res => {
                     this.categories = res.data;
@@ -254,53 +223,46 @@
             onChangeSearchType() {
                 this.purchases = [];
 
-                if (this.searchType == 'bySupplier') {
+                if(this.searchType == 'bySupplier') {
                     this.getSuppliers();
                 }
-                if (this.searchType == 'byCategory') {
+                if(this.searchType == 'byCategory') {
                     this.getCategories();
                 }
-                if (this.searchType == 'byMaterial') {
+                if(this.searchType == 'byMaterial') {
                     this.getMaterials();
-                }
-                if (this.searchType == 'byMRR') {
-                    this.getMRR();
                 }
             },
             getResult() {
-                if (this.searchType != 'bySupplier') {
+                if(this.searchType != 'bySupplier') {
                     this.selectedSupplier = null;
                 }
-                if (this.searchType != 'byCategory') {
+                if(this.searchType != 'byCategory') {
                     this.selectedCategory = null;
                 }
-                if (this.searchType != 'byMaterial') {
+                if(this.searchType != 'byMaterial') {
                     this.selectedMaterial = null;
                 }
-                if (this.searchType != 'byMRR') {
-                    this.selectedMRR = null;
-                }
 
-                if (this.searchType == 'all' || this.searchType == 'bySupplier' || this.searchType == 'byMRR') {
+                if(this.searchType == 'all' || this.searchType == 'bySupplier') {
                     this.getPurchase();
-                } else if (this.searchType == 'byCategory' || this.searchType == 'byMaterial') {
+                } else if(this.searchType == 'byCategory' || this.searchType == 'byMaterial') {
                     this.getPurchaseDetails();
                 }
             },
-            getPurchase() {
+            getPurchase(){
                 let supplier_id = null;
-                if (this.selectedSupplier != null && this.searchType == 'bySupplier') {
+                if(this.selectedSupplier != null && this.searchType == 'bySupplier'){
                     supplier_id = this.selectedSupplier.Supplier_SlNo;
                 }
                 let options = {
                     supplier_id: supplier_id,
-                    mrsNo: this.selectedMRR != null ? this.selectedMRR.MRR_No : null,
                     dateFrom: this.dateFrom,
                     dateTo: this.dateTo
                 }
                 axios.post('get_material_purchase', options)
-                    .then(res => {
-                        this.purchases = res.data;
+                    .then(res=>{
+                        this.purchases = res.data.purchases;
                         this.totalPurchase = res.data.totalPurchase;
                         this.totalPaid = res.data.totalPaid;
                         this.totalDue = res.data.totalDue;
@@ -311,10 +273,10 @@
                     dateFrom: this.dateFrom,
                     dateTo: this.dateTo
                 }
-                if (this.selectedCategory != null && this.searchType == 'byCategory') {
+                if(this.selectedCategory != null && this.searchType == 'byCategory') {
                     options.categoryId = this.selectedCategory.ProductCategory_SlNo;
                 }
-                if (this.selectedMaterial != null && this.searchType == 'byMaterial') {
+                if(this.selectedMaterial != null && this.searchType == 'byMaterial') {
                     options.materialId = this.selectedMaterial.material_id;
                 }
 
@@ -323,29 +285,9 @@
                         this.purchases = res.data;
                     })
             },
-            // editReceived(purchase_id, invoice_no) {
-            //     let conf = confirm('Are you sure to edit ?');
-            //     if (conf == false) {
-            //         return;
-            //     }
-            //     let options = {
-            //         purchase_id,
-            //         invoice_no
-            //     }
-            //     axios.post('/get_material_net_weight', options)
-            //         .then(res => {
-            //             if (res.data.length == 0) {
-            //                 window.location.href = "//" + purchase_id
-
-            //             } else {
-            //                 alert("edit not possible. Net Weight found")
-            //                 return;
-            //             }
-            //         })
-            // },
-            deleteReceived(purchase_id, invoice_no) {
+            deletePurchase(purchase_id, invoice_no){
                 let conf = confirm('Are you sure?');
-                if (conf == false) {
+                if(conf == false){
                     return;
                 }
                 let options = {
@@ -353,21 +295,21 @@
                     invoice_no
                 }
                 axios.post('/delete_material_purchase', options)
-                    .then(res => {
+                    .then(res=>{
                         let r = res.data;
                         alert(r.message);
-                        if (r.success) {
+                        if(r.success){
                             this.getPurchase();
                         }
                     })
             },
-            async print() {
-                let dateText = '';
-                if (this.dateFrom != '' && this.dateTo != '') {
-                    dateText = `Statement from <strong>${this.dateFrom}</strong> to <strong>${this.dateTo}</strong>`;
-                }
+            async print(){
+				let dateText = '';
+				if(this.dateFrom != '' && this.dateTo != ''){
+					dateText = `Statement from <strong>${this.dateFrom}</strong> to <strong>${this.dateTo}</strong>`;
+				}
 
-                let reportContent = `
+				let reportContent = `
 					<div class="container">
 						<div class="row">
 							<div class="col-xs-12 text-center">
@@ -389,34 +331,33 @@
 					</div>
 				`;
 
-                var reportWindow = window.open('', 'PRINT', `height=${screen.height}, width=${screen.width}`);
-                reportWindow.document.write(`
-					<?php $this->load->view('Administrator/reports/reportHeader.php'); ?>
+				var reportWindow = window.open('', 'PRINT', `height=${screen.height}, width=${screen.width}`);
+				reportWindow.document.write(`
+					<?php $this->load->view('Administrator/reports/reportHeader.php');?>
 				`);
 
-                reportWindow.document.head.innerHTML += `
+				reportWindow.document.head.innerHTML += `
 					<style>
 						.container{
 							width: 100%;
 						}
 					</style>
 				`;
-                reportWindow.document.body.innerHTML += reportContent;
+				reportWindow.document.body.innerHTML += reportContent;
 
-                if (this.searchType == 'all' || this.searchType == 'bySupplier') {
-                    let rows = reportWindow.document.querySelectorAll('.table tr');
-                    rows.forEach(row => {
-                        row.lastChild.remove();
-                    })
-                }
+				if(this.searchType == 'all' || this.searchType == 'bySupplier'){
+					let rows = reportWindow.document.querySelectorAll('.table tr');
+					rows.forEach(row => {
+						row.lastChild.remove();
+					})
+				}
 
 
-                reportWindow.focus();
-                await new Promise(resolve => setTimeout(resolve, 1000));
-                reportWindow.print();
-                await new Promise(resolve => setTimeout(resolve, 1000));
-                reportWindow.close();
-            }
+				reportWindow.focus();
+				await new Promise(resolve => setTimeout(resolve, 1000));
+				reportWindow.print();
+				reportWindow.close();
+			}
         }
     })
 </script>
