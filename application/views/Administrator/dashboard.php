@@ -1639,6 +1639,51 @@ if ($module == 'dashboard' or $module == '') { ?>
 					<h3> Production Module </h3>
 				</div>
 
+				<?php if (array_search("material_requisition", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
+					<div class="col-md-2">
+						<div class="col-md-12 section20">
+							<a href="<?php echo base_url(); ?>material_requisition">
+								<div class="logo">
+									<i class="menu-icon fa fa-registered"></i>
+								</div>
+								<div class="textModule" style="line-height: 13px; margin-top: 0;">
+									Meterial Requisition
+								</div>
+							</a>
+						</div>
+					</div>
+				<?php endif; ?>
+
+				<?php if (array_search("material_purchase", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
+					<div class="col-md-2">
+						<div class="col-md-12 section20">
+							<a href="<?php echo base_url(); ?>material_purchase">
+								<div class="logo">
+									<i class="menu-icon fa fa-cart-plus"></i>
+								</div>
+								<div class="textModule" style="line-height: 13px; margin-top: 0;">
+									Meterial Purchase
+								</div>
+							</a>
+						</div>
+					</div>
+				<?php endif; ?>
+
+				<?php if (array_search("material_requisition_record", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
+					<div class="col-md-2">
+						<div class="col-md-12 section20">
+							<a href="<?php echo base_url(); ?>material_requisition_record">
+								<div class="logo">
+									<i class="menu-icon fa fa-save"></i>
+								</div>
+								<div class="textModule" style="line-height: 13px; margin-top: 0;">
+									Requisition Record
+								</div>
+							</a>
+						</div>
+					</div>
+				<?php endif; ?>
+
 				<?php if (array_search("recipe_entry", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
 					<div class="col-md-2">
 						<div class="col-md-12 section20">
@@ -1678,51 +1723,6 @@ if ($module == 'dashboard' or $module == '') { ?>
 								</div>
 								<div class="textModule" style="line-height: 13px; margin-top: 0;">
 									Production Record
-								</div>
-							</a>
-						</div>
-					</div>
-				<?php endif; ?>
-
-				<?php if (array_search("material_requisition", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
-					<div class="col-md-2">
-						<div class="col-md-12 section20">
-							<a href="<?php echo base_url(); ?>material_requisition">
-								<div class="logo">
-									<i class="menu-icon fa fa-registered"></i>
-								</div>
-								<div class="textModule" style="line-height: 13px; margin-top: 0;">
-									Meterial Requisition
-								</div>
-							</a>
-						</div>
-					</div>
-				<?php endif; ?>
-
-				<?php if (array_search("material_requisition_record", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
-					<div class="col-md-2">
-						<div class="col-md-12 section20">
-							<a href="<?php echo base_url(); ?>material_requisition_record">
-								<div class="logo">
-									<i class="menu-icon fa fa-save"></i>
-								</div>
-								<div class="textModule" style="line-height: 13px; margin-top: 0;">
-									Requisition Record
-								</div>
-							</a>
-						</div>
-					</div>
-				<?php endif; ?>
-
-				<?php if (array_search("material_purchase", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
-					<div class="col-md-2">
-						<div class="col-md-12 section20">
-							<a href="<?php echo base_url(); ?>material_purchase">
-								<div class="logo">
-									<i class="menu-icon fa fa-cart-plus"></i>
-								</div>
-								<div class="textModule" style="line-height: 13px; margin-top: 0;">
-									Meterial Purchase
 								</div>
 							</a>
 						</div>

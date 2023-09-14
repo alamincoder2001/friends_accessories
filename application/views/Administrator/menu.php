@@ -802,6 +802,26 @@ if ($module == 'dashboard' or $module == '') {
 			</a>
 		</li>
 
+		<?php if (array_search("material_requisition", $access) > -1  || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
+			<li class="">
+				<a href="<?php echo base_url(); ?>material_requisition">
+					<i class="menu-icon fa fa-registered"></i>
+					<span class="menu-text"> Meterial Requisition </span>
+				</a>
+				<b class="arrow"></b>
+			</li>
+		<?php endif; ?>
+
+		<?php if (array_search("material_purchase", $access) > -1  || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
+			<li class="">
+				<a href="<?php echo base_url(); ?>material_purchase">
+					<i class="menu-icon fa fa-cart-plus"></i>
+					<span class="menu-text"> Meterial Purchase </span>
+				</a>
+				<b class="arrow"></b>
+			</li>
+		<?php endif; ?>
+
 		<?php if (array_search("recipe_entry", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
 			<li class="">
 				<a href="<?php echo base_url(); ?>recipe_entry">
@@ -817,25 +837,6 @@ if ($module == 'dashboard' or $module == '') {
 				<a href="<?php echo base_url(); ?>production">
 					<i class="menu-icon fa fa-cog"></i>
 					<span class="menu-text"> Production Entry </span>
-				</a>
-				<b class="arrow"></b>
-			</li>
-		<?php endif; ?>
-
-		<?php if (array_search("material_requisition", $access) > -1  || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
-			<li class="">
-				<a href="<?php echo base_url(); ?>material_requisition">
-					<i class="menu-icon fa fa-registered"></i>
-					<span class="menu-text"> Meterial Requisition </span>
-				</a>
-				<b class="arrow"></b>
-			</li>
-		<?php endif; ?>
-		<?php if (array_search("material_purchase", $access) > -1  || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
-			<li class="">
-				<a href="<?php echo base_url(); ?>material_purchase">
-					<i class="menu-icon fa fa-cart-plus"></i>
-					<span class="menu-text"> Meterial Purchase </span>
 				</a>
 				<b class="arrow"></b>
 			</li>
@@ -909,7 +910,7 @@ if ($module == 'dashboard' or $module == '') {
 							<b class="arrow"></b>
 						</li>
 					<?php endif; ?>
-					
+
 					<?php if (array_search("material_purchase_record", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
 						<li class="">
 							<a href="<?php echo base_url(); ?>material_purchase_record">
