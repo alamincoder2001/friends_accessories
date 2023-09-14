@@ -11,6 +11,10 @@ $db['default'] = array(
 	'username' => 'root',
 	'password' => '',
 	'database' => 'friends_accesories',
+
+	// 'username' => 'dewbxcak_admin3',
+	// 'password' => ')&@)nVVDO$]_',
+	// 'database' => 'dewbxcak_friends-accessories',
 		
 
 	'dbdriver' => 'mysqli',
