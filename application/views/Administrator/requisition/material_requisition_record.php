@@ -160,41 +160,12 @@
             },
             onChangeSearchType() {
                 this.requisitions = [];
-
-                if (this.searchType == 'byEmployee') {
-                    this.getSuppliers();
-                }
-                if (this.searchType == 'byCategory') {
-                    this.getCategories();
-                }
-                if (this.searchType == 'byMaterial') {
-                    this.getMaterials();
-                }
             },
             getResult() {
-                if (this.searchType != 'byEmployee') {
-                    this.selectedSupplier = null;
-                }
-                if (this.searchType != 'byCategory') {
-                    this.selectedCategory = null;
-                }
-                if (this.searchType != 'byMaterial') {
-                    this.selectedMaterial = null;
-                }
-
-                if (this.searchType == 'all' || this.searchType == 'byEmployee') {
-                    this.getPurchase();
-                } else if (this.searchType == 'byCategory' || this.searchType == 'byMaterial') {
-                    this.getPurchaseDetails();
-                }
+                this.getPurchase();
             },
             getPurchase() {
-                let employee_id = null;
-                if (this.selectedEmployee != null && this.searchType == 'byEmployee') {
-                    employee_id = this.selectedEmployee.Employee_SlNo;
-                }
                 let options = {
-                    employee_id: employee_id,
                     dateFrom: this.dateFrom,
                     dateTo: this.dateTo,
                     Status: this.searchType

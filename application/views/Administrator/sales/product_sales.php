@@ -148,13 +148,13 @@
 								<div class="form-group">
 									<label class="col-xs-3 control-label no-padding-right"> Sale Rate </label>
 									<div class="col-xs-9">
-										<input type="number" id="salesRate" placeholder="Rate" step="0.01" class="form-control" v-model="selectedProduct.Product_SellingPrice" v-on:input="productTotal"/>
+										<input type="number" id="salesRate" placeholder="Rate" min="0" step="0.01" class="form-control" v-model="selectedProduct.Product_SellingPrice" v-on:input="productTotal"/>
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="col-xs-3 control-label no-padding-right"> Quantity </label>
 									<div class="col-xs-9">
-										<input type="number" step="0.01" id="quantity" placeholder="Qty" class="form-control" ref="quantity" v-model="selectedProduct.quantity" v-on:input="productTotal" autocomplete="off" required/>
+										<input type="number" min="0" step="0.01" id="quantity" placeholder="Qty" class="form-control" ref="quantity" v-model="selectedProduct.quantity" v-on:input="productTotal" autocomplete="off" required/>
 									</div>
 								</div>
 

@@ -292,8 +292,7 @@
                 }
                 let ind = this.cart.findIndex(m => m.material_id == this.selectedMaterial.material_id);
                 if (ind > -1) {
-                    this.clearMaterial();
-                    return;
+                    this.cart.splice(ind, 1);
                 }
                 this.cart.push(this.selectedMaterial);
                 this.clearMaterial();

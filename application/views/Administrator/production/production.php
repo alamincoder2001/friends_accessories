@@ -453,7 +453,7 @@
                     p.total = parseFloat(newQty) * parseFloat(p.purchase_rate);
                 })
                 this.calculateTotal();
-
+                this.productionInProgress = false;
             },
             setFocus() {
                 if (this.selectedMaterial.material_id == '') {
