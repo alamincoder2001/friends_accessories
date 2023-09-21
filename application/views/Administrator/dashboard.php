@@ -30,6 +30,18 @@ if ($module == 'dashboard' or $module == '') { ?>
 			</div>
 			<div class="col-md-10 col-md-offset-1">
 				<div class="col-md-3 section4">
+					<div class="col-md-12 section122" style="background-color:#c1ff9a;" onmouseover="this.style.background = '#c1ff9a'" onmouseout="this.style.background = '#c1ff9a'">
+						<a href="<?php echo base_url(); ?>module/ProductionModule">
+							<div class="logo">
+								<i class="fa fa-recycle"></i>
+							</div>
+							<div class="textModule">
+								Production Module
+							</div>
+						</a>
+					</div>
+				</div>
+				<div class="col-md-3 section4">
 					<div class="col-md-12 section122" style="background-color:#e1e1ff;" onmouseover="this.style.background = '#d2d2ff'" onmouseout="this.style.background = '#e1e1ff'">
 						<a href="<?php echo base_url(); ?>module/SalesModule">
 							<div class="logo">
@@ -124,7 +136,7 @@ if ($module == 'dashboard' or $module == '') { ?>
 				</div>
 
 
-				<div class="col-md-3 section4">
+				<!-- <div class="col-md-3 section4">
 					<div class="col-md-12 section122" style="background-color:#ffe3d7;" onmouseover="this.style.background = '#ffc0a6'" onmouseout="this.style.background = '#ffe3d7'">
 						<a href="<?php echo base_url(); ?>Login/logout">
 							<div class="logo">
@@ -135,7 +147,7 @@ if ($module == 'dashboard' or $module == '') { ?>
 							</div>
 						</a>
 					</div>
-				</div>
+				</div> -->
 			</div>
 			<!-- PAGE CONTENT ENDS -->
 		</div><!-- /.col -->
