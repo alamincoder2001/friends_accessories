@@ -42,22 +42,6 @@ if ($module == 'dashboard' or $module == '') {
 			<b class="arrow"></b>
 		</li>
 
-		<li class="">
-			<a href="<?php echo base_url(); ?>module/SalesModule">
-				<i class="menu-icon fa fa-usd"></i>
-				<span class="menu-text"> Sales Module </span>
-			</a>
-			<b class="arrow"></b>
-		</li>
-
-		<li class="">
-			<a href="<?php echo base_url(); ?>module/PurchaseModule">
-				<i class="menu-icon fa fa-cart-plus"></i>
-				<span class="menu-text"> Purchase Module </span>
-			</a>
-			<b class="arrow"></b>
-		</li>
-
 		<?php if ($is_production_branch == 'true') { ?>
 			<li class="">
 				<a href="<?php echo base_url(); ?>module/ProductionModule">
@@ -67,6 +51,22 @@ if ($module == 'dashboard' or $module == '') {
 				<b class="arrow"></b>
 			</li>
 		<?php } ?>
+
+		<li class="">
+			<a href="<?php echo base_url(); ?>module/SalesModule">
+				<i class="menu-icon fa fa-usd"></i>
+				<span class="menu-text"> Order Module </span>
+			</a>
+			<b class="arrow"></b>
+		</li>
+
+		<!-- <li class="">
+			<a href="<?php echo base_url(); ?>module/PurchaseModule">
+				<i class="menu-icon fa fa-cart-plus"></i>
+				<span class="menu-text"> Purchase Module </span>
+			</a>
+			<b class="arrow"></b>
+		</li> -->
 
 		<li class="">
 			<!--  -->
@@ -298,11 +298,20 @@ if ($module == 'dashboard' or $module == '') {
 				<b class="arrow"></b>
 
 				<ul class="submenu">
+					<?php if (array_search("company", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
+						<li class="">
+							<a href="<?php echo base_url(); ?>company">
+								<i class="menu-icon fa fa-caret-right"></i>
+								Company Entry
+							</a>
+							<b class="arrow"></b>
+						</li>
+					<?php endif; ?>
 					<?php if (array_search("customer", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
 						<li class="">
 							<a href="<?php echo base_url(); ?>customer">
 								<i class="menu-icon fa fa-caret-right"></i>
-								Customer Entry
+								Buyer Entry
 							</a>
 							<b class="arrow"></b>
 						</li>
@@ -423,7 +432,7 @@ if ($module == 'dashboard' or $module == '') {
 		</li>
 		<li>
 			<a href="<?php echo base_url(); ?>module/SalesModule" class="module_title">
-				<span> Sale Module </span>
+				<span> Order Module </span>
 			</a>
 		</li>
 
@@ -431,7 +440,7 @@ if ($module == 'dashboard' or $module == '') {
 			<li class="">
 				<a href="<?php echo base_url(); ?>sales/product">
 					<i class="menu-icon fa fa-usd"></i>
-					<span class="menu-text"> Sales Entry </span>
+					<span class="menu-text"> Order Entry </span>
 				</a>
 				<b class="arrow"></b>
 			</li>
@@ -452,7 +461,7 @@ if ($module == 'dashboard' or $module == '') {
 			<li class="">
 				<a href="<?php echo base_url(); ?>salesReturn">
 					<i class="menu-icon fa fa-rotate-left"></i>
-					<span class="menu-text"> Sale Return </span>
+					<span class="menu-text"> Order Return </span>
 				</a>
 				<b class="arrow"></b>
 			</li>
@@ -462,7 +471,7 @@ if ($module == 'dashboard' or $module == '') {
 			<li class="">
 				<a href="<?php echo base_url(); ?>salesrecord">
 					<i class="menu-icon fa fa-list"></i>
-					<span class="menu-text"> Sales Record </span>
+					<span class="menu-text"> Order Record </span>
 				</a>
 				<b class="arrow"></b>
 			</li>
@@ -517,7 +526,7 @@ if ($module == 'dashboard' or $module == '') {
 						<li class="">
 							<a href="<?php echo base_url(); ?>salesinvoice">
 								<i class="menu-icon fa fa-caret-right"></i>
-								Sales Invoice
+								Order Invoice
 							</a>
 							<b class="arrow"></b>
 						</li>
@@ -527,7 +536,7 @@ if ($module == 'dashboard' or $module == '') {
 						<li class="">
 							<a href="<?php echo base_url(); ?>returnList">
 								<i class="menu-icon fa fa-caret-right"></i>
-								Sale return list
+								Order return list
 							</a>
 							<b class="arrow"></b>
 						</li>
@@ -537,7 +546,7 @@ if ($module == 'dashboard' or $module == '') {
 						<li class="">
 							<a href="<?php echo base_url(); ?>sale_return_details">
 								<i class="menu-icon fa fa-caret-right"></i>
-								Sale return Details
+								Order return Details
 							</a>
 							<b class="arrow"></b>
 						</li>
@@ -547,7 +556,7 @@ if ($module == 'dashboard' or $module == '') {
 						<li class="">
 							<a href="<?php echo base_url(); ?>customerDue">
 								<i class="menu-icon fa fa-caret-right"></i>
-								Customer Due List
+								Buyer Due List
 							</a>
 							<b class="arrow"></b>
 						</li>
@@ -557,7 +566,7 @@ if ($module == 'dashboard' or $module == '') {
 						<li class="">
 							<a href="<?php echo base_url(); ?>customerPaymentReport">
 								<i class="menu-icon fa fa-caret-right"></i>
-								Customer Payment Report
+								Buyer Payment Report
 							</a>
 							<b class="arrow"></b>
 						</li>
@@ -567,7 +576,7 @@ if ($module == 'dashboard' or $module == '') {
 						<li class="">
 							<a href="<?php echo base_url(); ?>customer_payment_history">
 								<i class="menu-icon fa fa-caret-right"></i>
-								Customer Payment History
+								Buyer Payment History
 							</a>
 							<b class="arrow"></b>
 						</li>
@@ -577,7 +586,7 @@ if ($module == 'dashboard' or $module == '') {
 						<li class="">
 							<a href="<?php echo base_url(); ?>customerlist">
 								<i class="menu-icon fa fa-caret-right"></i>
-								Customer List
+								Buyer List
 							</a>
 							<b class="arrow"></b>
 						</li>
@@ -630,7 +639,7 @@ if ($module == 'dashboard' or $module == '') {
 
 			<b class="arrow"></b>
 		</li>
-		<li>
+		<!-- <li>
 			<a href="<?php echo base_url(); ?>module/PurchaseModule" class="module_title">
 				<span> Purchase Module </span>
 			</a>
@@ -785,7 +794,7 @@ if ($module == 'dashboard' or $module == '') {
 				</ul>
 			</li>
 		<?php endif; ?>
-	</ul><!-- /.nav-list -->
+	</ul> -->
 <?php } elseif ($module == 'ProductionModule') { ?>
 	<ul class="nav nav-list">
 		<li class="active">

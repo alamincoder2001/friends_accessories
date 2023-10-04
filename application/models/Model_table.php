@@ -80,11 +80,23 @@ class Model_Table extends CI_Model{
     }
 
     public function generateCustomerCode(){
-        $customerCode = "C00001";
+        $customerCode = "B00001";
         
         $lastCustomer = $this->db->query("select * from tbl_customer order by Customer_SlNo desc limit 1");
         if($lastCustomer->num_rows() != 0){
             $newCustomerId = $lastCustomer->row()->Customer_SlNo + 1;
+            $zeros = array('0', '00', '000', '0000');
+            $customerCode = 'B' . (strlen($newCustomerId) > count($zeros) ? $newCustomerId : $zeros[count($zeros) - strlen($newCustomerId)] . $newCustomerId);
+        }
+
+        return $customerCode;
+    }
+    public function generateCompanyCode(){
+        $customerCode = "C00001";
+        
+        $lastCustomer = $this->db->query("select * from tbl_companies order by Company_SlNo desc limit 1");
+        if($lastCustomer->num_rows() != 0){
+            $newCustomerId = $lastCustomer->row()->Company_SlNo + 1;
             $zeros = array('0', '00', '000', '0000');
             $customerCode = 'C' . (strlen($newCustomerId) > count($zeros) ? $newCustomerId : $zeros[count($zeros) - strlen($newCustomerId)] . $newCustomerId);
         }

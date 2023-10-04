@@ -122,6 +122,15 @@ $route['update_supplier'] = 'Administrator/Supplier/updateSupplier';
 $route['supplierList'] = 'Administrator/Reports/supplierList';
 $route['delete_supplier'] = 'Administrator/Supplier/deleteSupplier';
 
+//companies route
+$route['company'] = 'Administrator/Customer/Company';
+$route['add_company'] = 'Administrator/Customer/addCompany';
+$route['update_company'] = 'Administrator/Customer/updateCompany';
+$route['delete_company'] = 'Administrator/Customer/deleteCompany';
+$route['get_companies'] = 'Administrator/Customer/getCompanies';
+
+//customer route
+
 $route['customer'] = 'Administrator/Customer';
 $route['add_customer'] = 'Administrator/Customer/addCustomer';
 $route['customeredit/(:any)'] = 'Administrator/Customer/customeredit/$1';

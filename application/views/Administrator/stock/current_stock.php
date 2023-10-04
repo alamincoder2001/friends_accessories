@@ -121,11 +121,11 @@
 							<th>Product Name</th>
 							<th>Category</th>
 							<th>Production Quantity</th>
-							<th>Purchased Quantity</th>
-							<th>Purchase Returned Quantity</th>
+							<!-- <th>Purchased Quantity</th>
+							<th>Purchase Returned Quantity</th> -->
 							<th>Damaged Quantity</th>
-							<th>Sold Quantity</th>
-							<th>Sales Returned Quantity</th>
+							<th>Order Quantity</th>
+							<th>Order Returned Quantity</th>
 							<th>Transferred In Quantity</th>
 							<th>Transferred Out Quantity</th>
 							<th>Current Quantity</th>
@@ -139,8 +139,8 @@
 							<td>{{ product.Product_Name }}</td>
 							<td>{{ product.ProductCategory_Name }}</td>
 							<td>{{ product.production_quantity }}</td>
-							<td>{{ product.purchased_quantity }}</td>
-							<td>{{ product.purchase_returned_quantity }}</td>
+							<!-- <td>{{ product.purchased_quantity }}</td>
+							<td>{{ product.purchase_returned_quantity }}</td> -->
 							<td>{{ product.damaged_quantity }}</td>
 							<td>{{ product.sold_quantity }}</td>
 							<td>{{ product.sales_returned_quantity }}</td>
@@ -153,7 +153,7 @@
 					</tbody>
 					<tfoot>
 						<tr>
-							<th colspan="13" style="text-align:right;">Total Stock Value</th>
+							<th colspan="11" style="text-align:right;">Total Stock Value</th>
 							<th>{{ totalStockValue | decimal }}</th>
 						</tr>
 					</tfoot>

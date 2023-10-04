@@ -85,11 +85,10 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-md-4 control-label">Customer</label>
+							<label class="col-md-4 control-label">Buyer</label>
 							<label class="col-md-1">:</label>
 							<div class="col-md-6">
-								<select class="form-control" v-if="customers.length == 0"></select>
-								<v-select v-bind:options="customers" v-model="selectedCustomer" label="display_name" @input="getCustomerDue" v-if="customers.length > 0"></v-select>
+								<v-select v-bind:options="customers" v-model="selectedCustomer" label="display_name" @input="getCustomerDue"></v-select>
 							</div>
 							<div class="col-md-1" style="padding-left:0;margin-left: -3px;">
 								<a href="/customer" target="_blank" class="add-button"><i class="fa fa-plus"></i></a>
@@ -153,7 +152,6 @@
 							<td>{{ row.CPayment_invoice }}</td>
 							<td>{{ row.CPayment_date }}</td>
 							<td>{{ row.Customer_Name }}</td>
-							<td>{{ row.Customer_Type }}</td>
 							<td>{{ row.transaction_type }}</td>
 							<td>{{ row.payment_by }}</td>
 							<td>{{ row.CPayment_amount }}</td>
@@ -207,7 +205,7 @@
 				payments: [],
 				customers: [],
 				selectedCustomer: {
-					display_name: 'Select Customer',
+					display_name: 'Select Buyer',
 					Customer_Name: ''
 				},
 				accounts: [],
@@ -217,8 +215,7 @@
 				columns: [
                     { label: 'Transaction Id', field: 'CPayment_invoice', align: 'center' },
                     { label: 'Date', field: 'CPayment_date', align: 'center' },
-                    { label: 'Customer Name', field: 'Customer_Name', align: 'center' },
-                    { label: 'Customer Type', field: 'Customer_Type', align: 'center' },
+                    { label: 'Buyer Name', field: 'Customer_Name', align: 'center' },
                     { label: 'Transaction Type', field: 'transaction_type', align: 'center' },
                     { label: 'Payment by', field: 'payment_by', align: 'center' },
                     { label: 'Amount', field: 'CPayment_amount', align: 'center' },

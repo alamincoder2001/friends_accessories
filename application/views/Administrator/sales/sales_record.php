@@ -63,7 +63,7 @@
 					<label>Search Type</label>
 					<select class="form-control" v-model="searchType" @change="onChangeSearchType">
 						<option value="">All</option>
-						<option value="customer">By Customer</option>
+						<option value="customer">By Buyer</option>
 						<option value="employee">By Employee</option>
 						<option value="category">By Category</option>
 						<option value="quantity">By Quantity</option>
@@ -72,7 +72,7 @@
 				</div>
 
 				<div class="form-group" style="display:none;" v-bind:style="{display: searchType == 'customer' && customers.length > 0 ? '' : 'none'}">
-					<label>Customer</label>
+					<label>Buyer</label>
 					<v-select v-bind:options="customers" v-model="selectedCustomer" label="display_name"></v-select>
 				</div>
 
@@ -135,7 +135,7 @@
 						<tr>
 							<th>Invoice No.</th>
 							<th>Date</th>
-							<th>Customer Name</th>
+							<th>Buyer Name</th>
 							<th>Employee Name</th>
 							<th>Saved By</th>
 							<th>Product Name</th>
@@ -198,7 +198,7 @@
 						<tr>
 							<th>Invoice No.</th>
 							<th>Date</th>
-							<th>Customer Name</th>
+							<th>Buyer Name</th>
 							<th>Employee Name</th>
 							<th>Saved By</th>
 							<th>Sub Total</th>
@@ -263,7 +263,7 @@
 							<tr>
 								<th>Invoice No.</th>
 								<th>Date</th>
-								<th>Customer Name</th>
+								<th>Buyer Name</th>
 								<th>Product Name</th>
 								<th>Sales Rate</th>
 								<th>Quantity</th>
@@ -525,7 +525,7 @@
 
 				let customerText = '';
 				if(this.selectedCustomer != null && this.selectedCustomer.Customer_SlNo != '' && this.searchType == 'customer'){
-					customerText = `<strong>Customer: </strong> ${this.selectedCustomer.Customer_Name}<br>`;
+					customerText = `<strong>Buyer: </strong> ${this.selectedCustomer.Customer_Name}<br>`;
 				}
 
 				let employeeText = '';

@@ -48,13 +48,13 @@ if ($module == 'dashboard' or $module == '') { ?>
 								<i class="fa fa-usd"></i>
 							</div>
 							<div class="textModule">
-								Sales Module
+								Purchase Order Module
 							</div>
 						</a>
 					</div>
 				</div>
 
-				<div class="col-md-3 section4">
+				<!-- <div class="col-md-3 section4">
 					<div class="col-md-12 section122" style="background-color:#dcf5ea;" onmouseover="this.style.background = '#bdecd7'" onmouseout="this.style.background = '#dcf5ea'">
 						<a href="<?php echo base_url(); ?>module/PurchaseModule">
 							<div class="logo">
@@ -65,7 +65,7 @@ if ($module == 'dashboard' or $module == '') { ?>
 							</div>
 						</a>
 					</div>
-				</div>
+				</div> -->
 
 				<!-- module/AccountsModule -->
 				<div class="col-md-3 section4">
@@ -136,7 +136,7 @@ if ($module == 'dashboard' or $module == '') { ?>
 				</div>
 
 
-				<!-- <div class="col-md-3 section4">
+				<div class="col-md-3 section4">
 					<div class="col-md-12 section122" style="background-color:#ffe3d7;" onmouseover="this.style.background = '#ffc0a6'" onmouseout="this.style.background = '#ffe3d7'">
 						<a href="<?php echo base_url(); ?>Login/logout">
 							<div class="logo">
@@ -147,7 +147,7 @@ if ($module == 'dashboard' or $module == '') { ?>
 							</div>
 						</a>
 					</div>
-				</div> -->
+				</div>
 			</div>
 			<!-- PAGE CONTENT ENDS -->
 		</div><!-- /.col -->
@@ -276,6 +276,20 @@ if ($module == 'dashboard' or $module == '') { ?>
 						</div>
 					</div>
 				<?php endif; ?>
+				<?php if (array_search("company", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
+					<div class="col-md-2 ">
+						<div class="col-md-12 section20">
+							<a href="<?php echo base_url(); ?>company">
+								<div class="logo">
+									<i class="menu-icon fa fa-user-plus"></i>
+								</div>
+								<div class="textModule">
+									Company Entry
+								</div>
+							</a>
+						</div>
+					</div>
+				<?php endif; ?>
 				<?php if (array_search("customer", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
 					<div class="col-md-2 ">
 						<div class="col-md-12 section20">
@@ -284,7 +298,7 @@ if ($module == 'dashboard' or $module == '') { ?>
 									<i class="menu-icon fa fa-user-plus"></i>
 								</div>
 								<div class="textModule">
-									Customer Entry
+									Buyer Entry
 								</div>
 							</a>
 						</div>
@@ -418,7 +432,7 @@ if ($module == 'dashboard' or $module == '') { ?>
 			<div class="col-md-10">
 				<div class="col-md-12 header">
 
-					<h3>Sales Module </h3>
+					<h3>Purchase Order Module </h3>
 				</div>
 
 				<?php if (array_search("sales/product", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
@@ -429,13 +443,13 @@ if ($module == 'dashboard' or $module == '') { ?>
 									<i class="menu-icon fa fa-usd"></i>
 								</div>
 								<div class="textModule">
-									Sales Entry
+									Purchase Order Entry
 								</div>
 							</a>
 						</div>
 					</div>
 				<?php endif; ?>
-				<?php if (array_search("sales/service", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
+				<!-- <?php if (array_search("sales/service", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
 					<div class="col-md-2 ">
 						<div class="col-md-12 section20">
 							<a href="<?php echo base_url(); ?>sales/service">
@@ -448,7 +462,7 @@ if ($module == 'dashboard' or $module == '') { ?>
 							</a>
 						</div>
 					</div>
-				<?php endif; ?>
+				<?php endif; ?> -->
 				<?php if (array_search("salesReturn", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
 					<div class="col-md-2 ">
 						<div class="col-md-12 section20">
@@ -457,7 +471,7 @@ if ($module == 'dashboard' or $module == '') { ?>
 									<i class="menu-icon fa fa-rotate-left"></i>
 								</div>
 								<div class="textModule">
-									Sale Return
+									Order Return
 								</div>
 							</a>
 						</div>
@@ -471,7 +485,7 @@ if ($module == 'dashboard' or $module == '') { ?>
 									<i class="menu-icon fa fa-file"></i>
 								</div>
 								<div class="textModule">
-									Sales Record
+									Order Record
 								</div>
 							</a>
 						</div>
@@ -513,7 +527,7 @@ if ($module == 'dashboard' or $module == '') { ?>
 									<i class="menu-icon fa fa-file-text-o"></i>
 								</div>
 								<div class="textModule">
-									Sales Invoice
+									Order Invoice
 								</div>
 							</a>
 						</div>
@@ -527,7 +541,7 @@ if ($module == 'dashboard' or $module == '') { ?>
 									<i class="menu-icon fa fa-list-ul"></i>
 								</div>
 								<div class="textModule">
-									Sale return list
+									Order return list
 								</div>
 							</a>
 						</div>
@@ -541,7 +555,7 @@ if ($module == 'dashboard' or $module == '') { ?>
 									<i class="menu-icon fa fa-list-ul"></i>
 								</div>
 								<div class="textModule">
-									Sale return Details
+									Order return Details
 								</div>
 							</a>
 						</div>
@@ -556,7 +570,7 @@ if ($module == 'dashboard' or $module == '') { ?>
 									<i class="menu-icon fa fa-list"></i>
 								</div>
 								<div class="textModule">
-									Customer Due List
+									Buyer Due List
 								</div>
 							</a>
 						</div>
@@ -571,7 +585,7 @@ if ($module == 'dashboard' or $module == '') { ?>
 									<i class="menu-icon fa fa-credit-card-alt"></i>
 								</div>
 								<div class="textModule" style="margin-top: 0; line-height: 14px;">
-									Customer Payment Report
+									Buyer Payment Report
 								</div>
 							</a>
 						</div>
@@ -585,7 +599,7 @@ if ($module == 'dashboard' or $module == '') { ?>
 									<i class="menu-icon fa fa-credit-card-alt"></i>
 								</div>
 								<div class="textModule" style="margin-top: 0; line-height: 14px;">
-									Customer Payment History
+									Buyer Payment History
 								</div>
 							</a>
 						</div>
@@ -599,7 +613,7 @@ if ($module == 'dashboard' or $module == '') { ?>
 									<i class="menu-icon fa fa-th-list"></i>
 								</div>
 								<div class="textModule">
-									Customer List
+									Buyer List
 								</div>
 							</a>
 						</div>
@@ -651,13 +665,11 @@ if ($module == 'dashboard' or $module == '') { ?>
 		</div>
 	</div>
 
-<?php } elseif ($module == 'PurchaseModule') { ?>
+<!-- <?php } elseif ($module == 'PurchaseModule') { ?>
 	<div class="row">
 		<div class="col-md-12 col-xs-12">
-			<!-- PAGE CONTENT BEGINS -->
 			<div class="col-md-1"></div>
 			<div class="col-md-10">
-				<!-- Header Logo -->
 				<div class="col-md-12 header">
 					<h3> Purchase Module </h3>
 				</div>
@@ -816,10 +828,8 @@ if ($module == 'dashboard' or $module == '') { ?>
 					</div>
 				<?php endif; ?>
 			</div>
-
-			<!-- PAGE CONTENT ENDS -->
-		</div><!-- /.col -->
-	</div><!-- /.row -->
+		</div>
+	</div> -->
 
 <?php } elseif ($module == 'AccountsModule') { ?>
 	<div class="row">
@@ -867,7 +877,7 @@ if ($module == 'dashboard' or $module == '') { ?>
 									<i class="menu-icon fa fa-money"></i>
 								</div>
 								<div class="textModule" style="line-height: 13px; margin-top: 0;">
-									Customer Payment
+									Buyer Payment
 								</div>
 							</a>
 						</div>
@@ -1440,7 +1450,7 @@ if ($module == 'dashboard' or $module == '') { ?>
 									<i class="menu-icon fa fa-user-plus"></i>
 								</div>
 								<div class="textModule" style="line-height: 13px; margin-top: 0;">
-									Customer Payment History
+									Buyer Payment History
 								</div>
 							</a>
 						</div>
@@ -1454,7 +1464,7 @@ if ($module == 'dashboard' or $module == '') { ?>
 									<i class="menu-icon fa fa-th-list"></i>
 								</div>
 								<div class="textModule">
-									Customer List
+									Buyer List
 								</div>
 							</a>
 						</div>
