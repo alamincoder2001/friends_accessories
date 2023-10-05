@@ -232,7 +232,7 @@ $route['material_purchase_invoice/(:any)'] = 'Administrator/Purchase/materialPur
 
 //Material Requisition
 $route['material_requisition']                = 'Administrator/Requisition/index';
-$route['material_requisition/(:any)']         = 'Administrator/Requisition/index/$1';
+$route['material_requisition/(:any)/(:any)']         = 'Administrator/Requisition/index/$1/$2';
 $route['add_material_requisition']            = 'Administrator/Requisition/addMaterialRequisition';
 $route['update_material_requisition']         = 'Administrator/Requisition/updateMaterialRequisition';
 $route['delete_material_requisition']         = 'Administrator/Requisition/deleteMaterialRequisition';
@@ -242,6 +242,7 @@ $route['get_material_requisition_details']    = 'Administrator/Requisition/getMa
 $route['material_requisition_invoice/(:any)'] = 'Administrator/Requisition/materialRequisitionInvoice/$1';
 
 //Sales
+$route['sale_status_change'] = 'Administrator/Sales/statusChange';
 $route['sales/(:any)'] = 'Administrator/Sales/index/$1';
 $route['sales/(:any)/(:any)'] = 'Administrator/Sales/salesEdit/$1/$2';
 $route['salesinvoice'] = 'Administrator/Sales/sales_invoice';

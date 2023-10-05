@@ -1871,4 +1871,20 @@ class Sales extends CI_Controller
 
         echo json_encode($res);
     }
+
+    public function statusChange()
+    {
+        try {
+            $data = json_decode($this->input->raw_input_stream);
+
+            $this->db->where('SaleMaster_SlNo', $data->saleId);
+            $this->db->update('tbl_salesmaster', ['Status' => $data->status]);
+
+            $res = ['status' => false, 'message' => 'Status Change Successfully'];
+            echo json_encode($res);
+        } catch (\Throwable $e) {
+            $res = ['status' => false, 'message' => $e->getMessage()];
+            echo json_encode($res);
+        }
+    }
 }

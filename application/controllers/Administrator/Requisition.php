@@ -16,7 +16,7 @@ class Requisition extends CI_Controller
         $this->load->helper('form');
     }
 
-    public function index($requisition_id = 0)
+    public function index($requisition_id = 0, $saleId = 0)
     {
         $access = $this->mt->userAccess();
         if (!$access) {
@@ -24,6 +24,7 @@ class Requisition extends CI_Controller
         }
         $data['title'] = "Requistion Entry";
         $data['requisition_id'] = $requisition_id;
+        $data['saleId'] = $saleId;
         $data['requisitionInvoice'] = $this->mt->generateRequisitionInvoice();
         $data['content'] = $this->load->view('Administrator/requisition/requisition_entry', $data, TRUE);
         $this->load->view('Administrator/index', $data);

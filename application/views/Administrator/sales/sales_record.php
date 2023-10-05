@@ -235,12 +235,13 @@
 							<td style="text-align:left;">{{ sale.SaleMaster_Description }}</td>
 							<td style="text-align:left;" v-html="textStatus(sale.Status)"></td>
 							<td style="text-align:center;">
-								<a href="" title="Sale Invoice" v-bind:href="`/sale_invoice_print/${sale.SaleMaster_SlNo}`" target="_blank"><i class="fa fa-file"></i></a>
-								<a href="" title="Sale Invoice" v-bind:href="`/sale_invoice_print/${sale.SaleMaster_SlNo}`" target="_blank"><i class="fa fa-file"></i></a>
+								<a href="" :title="titleText(sale.Status)" @click.prevent="changeStatus(sale)" v-html="statusBtn(sale.Status)"></a>
+								<a href="" title="Go To Requisition" v-bind:href="`/material_requisition/0/${sale.SaleMaster_SlNo}`" target="_blank"><i class="fa fa-registered" style="background: #727272;padding: 3px 4px;border-radius: 5px;color: white;"></i></a>
+								<a href="" title="Purchase Order Invoice" v-bind:href="`/sale_invoice_print/${sale.SaleMaster_SlNo}`" target="_blank"><i class="fa fa-file"></i></a>
 								<a href="" title="Chalan" v-bind:href="`/chalan/${sale.SaleMaster_SlNo}`" target="_blank"><i class="fa fa-file-o"></i></a>
 								<?php if ($this->session->userdata('accountType') != 'u') { ?>
-									<a href="javascript:" title="Edit Sale" @click="checkReturnAndEdit(sale)"><i class="fa fa-edit"></i></a>
-									<a href="" title="Delete Sale" @click.prevent="deleteSale(sale.SaleMaster_SlNo)"><i class="fa fa-trash"></i></a>
+									<a href="javascript:" title="Edit Purchase Order" @click="checkReturnAndEdit(sale)"><i class="fa fa-edit"></i></a>
+									<a href="" title="Delete Purchase" @click.prevent="deleteSale(sale.SaleMaster_SlNo)"><i class="fa fa-trash"></i></a>
 								<?php } ?>
 							</td>
 						</tr>
@@ -255,6 +256,7 @@
 							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_TotalSaleAmount)}, 0) }}</td>
 							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_PaidAmount)}, 0) }}</td>
 							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_DueAmount)}, 0) }}</td>
+							<td></td>
 							<td></td>
 							<td></td>
 						</tr>
@@ -350,6 +352,26 @@
 			}
 		},
 		methods: {
+			statusBtn(status) {
+				let textHtml;
+				if (status == 'p') {
+					textHtml = "<span class='fa fa-spinner' style='background:orange;padding: 3px 4px;color: white;border-radius: 5px;'></span>";
+				} else if (status == 'pr') {
+					textHtml = "<span class='fa fa-check' style='background:green;padding: 3px 4px;color: white;border-radius: 5px;'></span>";
+				}
+
+				return textHtml;
+			},
+			titleText(status) {
+				let Text;
+				if (status == 'p') {
+					Text = "Click to Process";
+				} else if (status == 'pr') {
+					Text = "Click to Delivery";
+				}
+
+				return Text;
+			},
 			textStatus(status) {
 				let textHtml;
 				if (status == 'p') {
@@ -361,6 +383,30 @@
 				}
 
 				return textHtml;
+			},
+
+			changeStatus(sale){
+				if (confirm('Are you sure!')) {
+					let filter = {
+						saleId: sale.SaleMaster_SlNo,
+						status: '',
+					}
+					if (sale.Status == 'p') {
+						filter.status = 'pr';
+					}else if(sale.Status == 'p'){
+						filter.status = 'a';
+					}
+					axios.post('/sale_status_change', filter)
+						.then(res => {
+							if (res.data.status) {
+								alert(res.data.message);
+								this.getSalesRecord();
+							}else{
+								console.log(res.data.message);
+								this.getSalesRecord();
+							}
+						})
+				}
 			},
 			checkReturnAndEdit(sale) {
 				axios.get('/check_sale_return/' + sale.SaleMaster_InvoiceNo).then(res => {
@@ -459,11 +505,6 @@
 							this.sales = res.data.sales;
 						}
 					})
-					.catch(error => {
-						if (error.response) {
-							alert(`${error.response.status}, ${error.response.statusText}`);
-						}
-					})
 			},
 			getSaleDetails() {
 				let filter = {
@@ -499,11 +540,6 @@
 						}
 						this.sales = sales;
 					})
-					.catch(error => {
-						if (error.response) {
-							alert(`${error.response.status}, ${error.response.statusText}`);
-						}
-					})
 			},
 			deleteSale(saleId) {
 				let deleteConf = confirm('Are you sure?');
@@ -518,11 +554,6 @@
 						alert(r.message);
 						if (r.success) {
 							this.getSalesRecord();
-						}
-					})
-					.catch(error => {
-						if (error.response) {
-							alert(`${error.response.status}, ${error.response.statusText}`);
 						}
 					})
 			},
