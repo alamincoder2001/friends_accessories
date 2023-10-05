@@ -116,7 +116,7 @@ class Sales extends CI_Controller
                 'SaleMaster_DueAmount'           => $data->sales->due,
                 'SaleMaster_Previous_Due'        => $data->sales->previousDue,
                 'SaleMaster_Description'         => $data->sales->note,
-                'Status'                         => 'a',
+                'Status'                         => 'p',
                 'is_service'                     => $data->sales->isService,
                 "AddBy"                          => $this->session->userdata("FullName"),
                 'AddTime'                        => date("Y-m-d H:i:s"),
@@ -136,7 +136,7 @@ class Sales extends CI_Controller
                     'SaleDetails_Rate' => $cartProduct->salesRate,
                     'SaleDetails_Tax' => $cartProduct->vat,
                     'SaleDetails_TotalAmount' => $cartProduct->total,
-                    'Status' => 'a',
+                    'Status' => 'p',
                     'AddBy' => $this->session->userdata("FullName"),
                     'AddTime' => date('Y-m-d H:i:s'),
                     'SaleDetails_BranchId' => $this->session->userdata('BRANCHid')
@@ -266,7 +266,7 @@ class Sales extends CI_Controller
             left join tbl_employee e on e.Employee_SlNo = sm.employee_id
             left join tbl_brunch br on br.brunch_id = sm.SaleMaster_branchid
             where sm.SaleMaster_branchid = '$branchId'
-            and sm.Status = 'a'
+            and sm.Status != 'd'
             $clauses
             order by sm.SaleMaster_SlNo desc
         ")->result();
@@ -348,7 +348,7 @@ class Sales extends CI_Controller
             left join tbl_employee e on e.Employee_SlNo = sm.employee_id
             left join tbl_brunch br on br.brunch_id = sm.SaleMaster_branchid
             where sm.SaleMaster_branchid = '$branchId'
-            and sm.Status = 'a'
+            and sm.Status != 'd'
             $clauses
             order by sm.SaleMaster_SlNo desc
         ")->result();
