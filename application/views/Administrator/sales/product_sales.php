@@ -3,6 +3,12 @@
 		margin-bottom: 5px;
 	}
 
+	#employees.v-select {
+		margin-bottom: 0px !important;
+		background: white;
+		border-radius: 4px;
+	}
+
 	.v-select .dropdown-toggle {
 		padding: 0px;
 	}
@@ -44,26 +50,26 @@
 </style>
 
 <div id="sales" class="row">
-	<div class="col-xs-12 col-md-12 col-lg-12" style="border-bottom:1px #ccc solid;margin-bottom:5px;">
-		<div class="row">
+	<div class="col-xs-12 col-md-12 col-lg-12" style="margin-bottom:3px;">
+		<div class="row" style="border: 1px solid #b5b1b1a8;margin:0;padding:5px 0;background: #b7b7b759;">
 			<div class="form-group">
-				<label class="col-md-1 col-xs-4 control-label no-padding-right"> Invoice no </label>
+				<label class="col-md-1 col-xs-4 control-label no-padding-right"> Invoice no: </label>
 				<div class="col-md-2 col-xs-8">
-					<input type="text" id="invoiceNo" class="form-control" v-model="sales.invoiceNo" readonly />
+					<input type="text" style="margin: 0;" id="invoiceNo" class="form-control" v-model="sales.invoiceNo" readonly />
 				</div>
 			</div>
 
 			<div class="form-group">
-				<label class="col-md-1 col-xs-4 control-label no-padding-right"> Order By </label>
+				<label class="col-md-1 col-xs-4 control-label no-padding-right"> Order By: </label>
 				<div class="col-md-2 col-xs-8">
-					<v-select v-bind:options="employees" v-model="selectedEmployee" label="Employee_Name" placeholder="Select Employee"></v-select>
+					<v-select v-bind:options="employees" id="employees" v-model="selectedEmployee" label="Employee_Name" placeholder="Select Employee"></v-select>
 				</div>
 			</div>
 
 			<div class="form-group">
-				<label class="col-md-1 col-xs-4 control-label no-padding-right">PO No.</label>
+				<label class="col-md-1 col-xs-4 control-label no-padding-right">PO No.:</label>
 				<div class="col-md-2 col-xs-8">
-					<input type="text" class="form-control" v-model="sales.PONo" />
+					<input type="text" style="margin: 0;" class="form-control" v-model="sales.PONo" />
 				</div>
 			</div>
 
@@ -75,8 +81,68 @@
 			</div> -->
 
 			<div class="form-group">
-				<div class="col-md-3 col-xs-12">
-					<input class="form-control" id="salesDate" type="date" v-model="sales.salesDate" v-bind:disabled="userType == 'u' ? true : false" />
+				<label class="col-md-1 col-xs-4 control-label no-padding-right">Date:</label>
+				<div class="col-md-2 col-xs-12">
+					<input class="form-control" style="margin: 0;" id="salesDate" type="date" v-model="sales.salesDate" v-bind:disabled="userType == 'u' ? true : false" />
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-xs-12 col-md-12 col-lg-12">
+		<div class="row" style="border: 1px solid #b5b1b1a8;margin:0;padding:8px 0;background: #f9f9f9;">
+			<div class="form-group">
+				<label class="col-md-2 col-xs-4 control-label no-padding-right">Supp Mat Code:</label>
+				<div class="col-md-2 col-xs-8 no-padding-left">
+					<input type="text" class="form-control" v-model="sales.supp_mat_code" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-md-2 col-xs-4 control-label no-padding-right">Ship Date(ETA):</label>
+				<div class="col-md-2 col-xs-8 no-padding-left">
+					<input type="date" class="form-control" v-model="sales.ship_date" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-md-2 col-xs-4 control-label no-padding-right">Prod/Subprocess:</label>
+				<div class="col-md-2 col-xs-8 no-padding-left">
+					<input type="text" class="form-control" v-model="sales.prod_subprocess" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-md-2 col-xs-4 control-label no-padding-right">Price/Unit:</label>
+				<div class="col-md-2 col-xs-8 no-padding-left">
+					<input type="number" min="0" step="0.01" class="form-control" v-model="sales.unit_price" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-md-2 col-xs-4 control-label no-padding-right">Amount:</label>
+				<div class="col-md-2 col-xs-8 no-padding-left">
+					<input type="number" min="0" step="0.01" class="form-control" v-model="sales.amount" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-md-2 col-xs-4 control-label no-padding-right">Acceptable(%):</label>
+				<div class="col-md-2 col-xs-8 no-padding-left">
+					<input type="text" class="form-control" v-model="sales.acceptable" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-md-2 col-xs-4 control-label no-padding-right">Contract No:</label>
+				<div class="col-md-2 col-xs-8 no-padding-left">
+					<input type="text" class="form-control" v-model="sales.contract_no" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-md-2 col-xs-4 control-label no-padding-right">Description:</label>
+				<div class="col-md-2 col-xs-8 no-padding-left">
+					<input type="text" class="form-control" v-model="sales.description" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-md-2 col-xs-4 control-label no-padding-right" style="font-size: 13px;">Purchase Remark:</label>
+				<div class="col-md-2 col-xs-8 no-padding-left">
+					<input type="text" class="form-control" v-model="sales.remark" />
 				</div>
 			</div>
 		</div>
@@ -436,6 +502,15 @@
 					isService: '<?php echo $isService; ?>',
 					note: '',
 					PONo: '',
+					supp_mat_code: '',
+					ship_date: moment().format('YYYY-MM-DD'),
+					prod_subprocess: '',
+					unit_price: 0,
+					amount: 0,
+					acceptable: '',
+					contract_no: '',
+					description: '',
+					remark: ''
 				},
 				vatPercent: 0,
 				discountPercent: 0,

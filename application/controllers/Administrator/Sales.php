@@ -120,7 +120,16 @@ class Sales extends CI_Controller
                 'is_service'                     => $data->sales->isService,
                 "AddBy"                          => $this->session->userdata("FullName"),
                 'AddTime'                        => date("Y-m-d H:i:s"),
-                'SaleMaster_branchid'            => $this->session->userdata("BRANCHid")
+                'SaleMaster_branchid'            => $this->session->userdata("BRANCHid"),
+                'supp_mat_code'                  => $data->sales->supp_mat_code,
+                'ship_date'                      => $data->sales->ship_date,
+                'prod_subprocess'                => $data->sales->prod_subprocess,
+                'unit_price'                     => $data->sales->unit_price,
+                'amount'                         => $data->sales->amount,
+                'acceptable'                     => $data->sales->acceptable,
+                'contract_no'                    => $data->sales->contract_no,
+                'description'                    => $data->sales->description,
+                'remark'                         => $data->sales->remark
             );
 
             $this->db->insert('tbl_salesmaster', $sales);
@@ -392,7 +401,16 @@ class Sales extends CI_Controller
                 'SaleMaster_Description'         => $data->sales->note,
                 "UpdateBy"                       => $this->session->userdata("FullName"),
                 'UpdateTime'                     => date("Y-m-d H:i:s"),
-                "SaleMaster_branchid"            => $this->session->userdata("BRANCHid")
+                "SaleMaster_branchid"            => $this->session->userdata("BRANCHid"),
+                'supp_mat_code'                  => $data->sales->supp_mat_code,
+                'ship_date'                      => $data->sales->ship_date,
+                'prod_subprocess'                => $data->sales->prod_subprocess,
+                'unit_price'                     => $data->sales->unit_price,
+                'amount'                         => $data->sales->amount,
+                'acceptable'                     => $data->sales->acceptable,
+                'contract_no'                    => $data->sales->contract_no,
+                'description'                    => $data->sales->description,
+                'remark'                         => $data->sales->remark
             );
 
             $this->db->where('SaleMaster_SlNo', $salesId);
