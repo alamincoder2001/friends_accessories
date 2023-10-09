@@ -97,7 +97,7 @@
 					<div class="row">
 						<div class="col-md-5 col-xs-12">
 							<div class="form-group clearfix">
-								<label class="col-xs-4 control-label no-padding-right"> Customer</label>
+								<label class="col-xs-4 control-label no-padding-right"> Buyer </label>
 								<div class="col-xs-8">
 									<input type="text" class="form-control" v-model="quotation.customerName" placeholder="Customer/Company Name">
 								</div>

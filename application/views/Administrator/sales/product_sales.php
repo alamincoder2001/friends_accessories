@@ -149,7 +149,7 @@
 								<div class="form-group">
 									<label class="col-xs-3 control-label no-padding-right"> Product </label>
 									<div class="col-xs-8">
-										<v-select v-bind:options="products" v-model="selectedProduct" label="display_text" v-on:input="productOnChange"></v-select>
+										<v-select id="product" v-bind:options="products" v-model="selectedProduct" label="display_text" v-on:input="productOnChange"></v-select>
 									</div>
 									<div class="col-xs-1" style="padding: 0;">
 										<a href="<?= base_url('product') ?>" class="btn btn-xs btn-danger" style="height: 25px; border: 0; width: 27px; margin-left: -10px;" target="_blank" title="Add New Product"><i class="fa fa-plus" aria-hidden="true" style="margin-top: 5px;"></i></a>
@@ -620,6 +620,10 @@
 				this.$refs.productPurchaseRate.type = this.$refs.productPurchaseRate.type == 'text' ? 'password' : 'text';
 			},
 			addToCart() {
+				if (this.selectedProduct.Product_SlNo == '') {
+					document.querySelector("#product [type='search']").focus();
+					return
+				}
 				let product = {
 					productId: this.selectedProduct.Product_SlNo,
 					productCode: this.selectedProduct.Product_Code,
@@ -632,11 +636,6 @@
 					purchaseRate: this.selectedProduct.Product_Purchase_Rate
 				}
 
-				if (product.productId == '') {
-					alert('Select Product');
-					return;
-				}
-
 				if (product.quantity == 0 || product.quantity == '') {
 					alert('Enter quantity');
 					return;
@@ -647,10 +646,10 @@
 					return;
 				}
 
-				if (product.quantity > this.productStock && this.sales.isService == 'false') {
-					alert('Stock unavailable');
-					return;
-				}
+				// if (product.quantity > this.productStock && this.sales.isService == 'false') {
+				// 	alert('Stock unavailable');
+				// 	return;
+				// }
 
 				let cartInd = this.cart.findIndex(p => p.productId == product.productId);
 				if (cartInd > -1) {
@@ -660,6 +659,7 @@
 				this.cart.unshift(product);
 				this.clearProduct();
 				this.calculateTotal();
+				document.querySelector("form button[type='submit']").focus();
 			},
 			removeFromCart(ind) {
 				this.cart.splice(ind, 1);

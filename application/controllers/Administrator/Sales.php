@@ -145,22 +145,22 @@ class Sales extends CI_Controller
                 $this->db->insert('tbl_saledetails', $saleDetails);
 
                 //update stock
-                $this->db->query("
-                    update tbl_currentinventory 
-                    set sales_quantity = sales_quantity + ? 
-                    where product_id = ?
-                    and branch_id = ?
-                ", [$cartProduct->quantity, $cartProduct->productId, $this->session->userdata('BRANCHid')]);
+                // $this->db->query("
+                //     update tbl_currentinventory 
+                //     set sales_quantity = sales_quantity + ? 
+                //     where product_id = ?
+                //     and branch_id = ?
+                // ", [$cartProduct->quantity, $cartProduct->productId, $this->session->userdata('BRANCHid')]);
             }
-            $currentDue = $data->sales->previousDue + ($data->sales->total - $data->sales->paid);
             //Send sms
-            $customerInfo = $this->db->query("select * from tbl_customer where Customer_SlNo = ?", $customerId)->row();
-            $sendToName = $customerInfo->owner_name != '' ? $customerInfo->owner_name : $customerInfo->Customer_Name;
-            $currency = $this->session->userdata('Currency_Name');
+            // $currentDue = $data->sales->previousDue + ($data->sales->total - $data->sales->paid);
+            // $customerInfo = $this->db->query("select * from tbl_customer where Customer_SlNo = ?", $customerId)->row();
+            // $sendToName = $customerInfo->owner_name != '' ? $customerInfo->owner_name : $customerInfo->Customer_Name;
+            // $currency = $this->session->userdata('Currency_Name');
 
-            $message = "Dear {$sendToName},\nYour bill is {$currency} {$data->sales->total}. Received {$currency} {$data->sales->paid} and current due is {$currency} {$currentDue} for invoice {$invoice}";
-            $recipient = $customerInfo->Customer_Mobile;
-            $this->sms->sendSms($recipient, $message);
+            // $message = "Dear {$sendToName},\nYour bill is {$currency} {$data->sales->total}. Received {$currency} {$data->sales->paid} and current due is {$currency} {$currentDue} for invoice {$invoice}";
+            // $recipient = $customerInfo->Customer_Mobile;
+            // $this->sms->sendSms($recipient, $message);
 
             $res = ['success' => true, 'message' => 'Sales Success', 'salesId' => $salesId];
         } catch (Exception $ex) {
@@ -399,16 +399,16 @@ class Sales extends CI_Controller
             $this->db->update('tbl_salesmaster', $sales);
 
             $currentSaleDetails = $this->db->query("select * from tbl_saledetails where SaleMaster_IDNo = ?", $salesId)->result();
-            $this->db->query("delete from tbl_saledetails where SaleMaster_IDNo = ?", $salesId);
 
             foreach ($currentSaleDetails as $product) {
                 $this->db->query("
-                    update tbl_currentinventory 
-                    set sales_quantity = sales_quantity - ? 
-                    where product_id = ?
-                    and branch_id = ?
+                update tbl_currentinventory 
+                set sales_quantity = sales_quantity - ? 
+                where product_id = ?
+                and branch_id = ?
                 ", [$product->SaleDetails_TotalQuantity, $product->Product_IDNo, $this->session->userdata('BRANCHid')]);
             }
+            $this->db->query("delete from tbl_saledetails where SaleMaster_IDNo = ?", $salesId);
 
             foreach ($data->cart as $cartProduct) {
                 $saleDetails = array(
@@ -1876,11 +1876,32 @@ class Sales extends CI_Controller
     {
         try {
             $data = json_decode($this->input->raw_input_stream);
+            if ($data->status == 'a') {
+                $currentSaleDetails = $this->db->query("select * from tbl_saledetails where SaleMaster_IDNo = ?", $data->saleId)->result();
+
+                foreach ($currentSaleDetails as $product) {
+                    $stock = $this->mt->productStock($product->Product_IDNo);
+                    if ($stock < $product->SaleDetails_TotalQuantity) {
+                        $res = ['status' => true, 'message' => 'Stock Unavailable!'];
+                        echo json_encode($res);
+                        exit;
+                    }
+                }
+                foreach ($currentSaleDetails as $product) {
+                    $this->db->query("
+                        update tbl_currentinventory 
+                        set sales_quantity = sales_quantity + ? 
+                        where product_id = ?
+                        and branch_id = ?
+                        ", [$product->SaleDetails_TotalQuantity, $product->Product_IDNo, $this->session->userdata('BRANCHid')]);
+                }
+            }
 
             $this->db->where('SaleMaster_SlNo', $data->saleId);
             $this->db->update('tbl_salesmaster', ['Status' => $data->status]);
+            $this->db->query("UPDATE tbl_saledetails SET Status = '$data->status' WHERE Status != 'd' AND SaleMaster_IDNo = '$data->saleId'");
 
-            $res = ['status' => false, 'message' => 'Status Change Successfully'];
+            $res = ['status' => true, 'message' => 'Status Change Successfully'];
             echo json_encode($res);
         } catch (\Throwable $e) {
             $res = ['status' => false, 'message' => $e->getMessage()];

@@ -1,17 +1,20 @@
 <?php
-class Production extends CI_Controller{
-    public function __construct() {
+class Production extends CI_Controller
+{
+    public function __construct()
+    {
         parent::__construct();
         $this->sbrunch = $this->session->userdata('BRANCHid');
         $access = $this->session->userdata('userId');
-         if($access == '' ){
+        if ($access == '') {
             redirect("Login");
         }
         $this->load->model('Model_table', "mt", TRUE);
     }
-    public function index(){
+    public function index()
+    {
         $access = $this->mt->userAccess();
-        if(!$access){
+        if (!$access) {
             redirect(base_url());
         }
         $data['title'] = "Production";
@@ -21,7 +24,8 @@ class Production extends CI_Controller{
         $this->load->view('Administrator/index', $data);
     }
 
-    public function edit($production_id = 0){
+    public function edit($production_id = 0)
+    {
         $data['title'] = "Production Edit";
         $data['production_id'] = $production_id;
         $production = $this->db->query("
@@ -33,13 +37,14 @@ class Production extends CI_Controller{
         $this->load->view('Administrator/index', $data);
     }
 
-    public function addProduction(){
-        $res = ['success'=>false, 'message'=>''];
-        try{
+    public function addProduction()
+    {
+        $res = ['success' => false, 'message' => ''];
+        try {
             $data = json_decode($this->input->raw_input_stream);
 
             $countProductionSl = $this->db->query("select * from tbl_productions where production_sl = ?", $data->production->production_sl)->num_rows();
-            if($countProductionSl > 0){
+            if ($countProductionSl > 0) {
                 $data->production->production_sl = $this->mt->generateProductionCode();
             }
             $production = array(
@@ -55,13 +60,13 @@ class Production extends CI_Controller{
                 'status' => 'a',
                 'branch_id' => $this->sbrunch
             );
-    
+
             $this->db->insert('tbl_productions', $production);
             $productionId = $this->db->insert_id();
 
-            
 
-            foreach($data->materials as $material){
+
+            foreach ($data->materials as $material) {
                 $material = array(
                     'production_id' => $productionId,
                     'material_id' => $material->material_id,
@@ -74,7 +79,7 @@ class Production extends CI_Controller{
                 $this->db->insert('tbl_production_details', $material);
             }
 
-            foreach($data->products as $product){
+            foreach ($data->products as $product) {
                 $productionProduct = array(
                     'production_id' => $productionId,
                     'product_id' => $product->product_id,
@@ -89,7 +94,7 @@ class Production extends CI_Controller{
                 $previousStock = $this->mt->productStock($product->product_id);
 
                 $productInventoryCount = $this->db->query("select * from tbl_currentinventory ci where ci.product_id = ? and ci.branch_id = ?", [$product->product_id, $this->session->userdata('BRANCHid')])->num_rows();
-                if($productInventoryCount == 0){
+                if ($productInventoryCount == 0) {
                     $inventory = array(
                         'product_id' => $product->product_id,
                         'production_quantity' => $product->quantity,
@@ -113,17 +118,18 @@ class Production extends CI_Controller{
                 ]);
             }
 
-            $res = ['success'=>true, 'message'=>'Production entry success', 'productionId'=>$productionId];
-        } catch (Exception $ex){
-            $res = ['success'=>false, 'message'=>$ex->getMessage()];
+            $res = ['success' => true, 'message' => 'Production entry success', 'productionId' => $productionId];
+        } catch (Exception $ex) {
+            $res = ['success' => false, 'message' => $ex->getMessage()];
         }
 
         echo json_encode($res);
     }
 
-    public function updateProduction(){
-        $res = ['success'=>false, 'message'=>''];
-        try{
+    public function updateProduction()
+    {
+        $res = ['success' => false, 'message' => ''];
+        try {
             $data = json_decode($this->input->raw_input_stream);
             $productionId = $data->production->production_id;
             $production = array(
@@ -137,11 +143,11 @@ class Production extends CI_Controller{
                 'other_cost' => $data->production->other_cost,
                 'total_cost' => $data->production->total_cost
             );
-    
+
             $this->db->where('production_id', $productionId)->update('tbl_productions', $production);
 
             $this->db->delete('tbl_production_details', array('production_id' => $productionId));
-            foreach($data->materials as $material){
+            foreach ($data->materials as $material) {
                 $material = array(
                     'production_id' => $productionId,
                     'material_id' => $material->material_id,
@@ -156,7 +162,7 @@ class Production extends CI_Controller{
 
             $oldProducts = $this->db->query("select * from tbl_production_products where production_id = ?", $productionId)->result();
             $this->db->delete('tbl_production_products', array('production_id' => $productionId));
-            foreach($oldProducts as $oldProduct){
+            foreach ($oldProducts as $oldProduct) {
                 $previousStock = $this->mt->productStock($oldProduct->product_id);
 
                 $this->db->query("update tbl_currentinventory set production_quantity = production_quantity - ? where product_id = ? and branch_id = ?", [$oldProduct->quantity, $oldProduct->product_id, $this->session->userdata('BRANCHid')]);
@@ -171,9 +177,8 @@ class Production extends CI_Controller{
                     ($previousStock - $oldProduct->quantity),
                     $oldProduct->product_id
                 ]);
-
             }
-            foreach($data->products as $product){
+            foreach ($data->products as $product) {
                 $productionProduct = array(
                     'production_id' => $productionId,
                     'product_id' => $product->product_id,
@@ -188,7 +193,7 @@ class Production extends CI_Controller{
                 $previousStock = $this->mt->productStock($product->product_id);
 
                 $productInventoryCount = $this->db->query("select * from tbl_currentinventory ci where ci.product_id = ? and ci.branch_id = ?", [$product->product_id, $this->session->userdata('BRANCHid')])->num_rows();
-                if($productInventoryCount == 0){
+                if ($productInventoryCount == 0) {
                     $inventory = array(
                         'product_id' => $product->product_id,
                         'production_quantity' => $product->quantity,
@@ -212,17 +217,18 @@ class Production extends CI_Controller{
                 ]);
             }
 
-            $res = ['success'=>true, 'message'=>'Production update success', 'productionId'=>$productionId];
-        } catch (Exception $ex){
-            $res = ['success'=>false, 'message'=>$ex->getMessage()];
+            $res = ['success' => true, 'message' => 'Production update success', 'productionId' => $productionId];
+        } catch (Exception $ex) {
+            $res = ['success' => false, 'message' => $ex->getMessage()];
         }
 
         echo json_encode($res);
     }
 
-    public function productions(){
+    public function productions()
+    {
         $access = $this->mt->userAccess();
-        if(!$access){
+        if (!$access) {
             redirect(base_url());
         }
         $data['title'] = "Production Record";
@@ -230,18 +236,19 @@ class Production extends CI_Controller{
         $this->load->view('Administrator/index', $data);
     }
 
-    public function getProductions(){
+    public function getProductions()
+    {
         $options = json_decode($this->input->raw_input_stream);
 
         $idClause = '';
         $dateClause = '';
 
 
-        if(isset($options->production_id) && $options->production_id != 0){
+        if (isset($options->production_id) && $options->production_id != 0) {
             $idClause = " and pr.production_id = '$options->production_id'";
         }
 
-        if(isset($options->dateFrom) && isset($options->dateTo) && $options->dateFrom != null && $options->dateTo != null){
+        if (isset($options->dateFrom) && isset($options->dateTo) && $options->dateFrom != null && $options->dateTo != null) {
             $dateClause = " and pr.date between '$options->dateFrom' and '$options->dateTo'";
         }
         $productions = $this->db->query("
@@ -257,12 +264,13 @@ class Production extends CI_Controller{
         echo json_encode($productions);
     }
 
-    public function getProductionRecord(){
+    public function getProductionRecord()
+    {
         $options = json_decode($this->input->raw_input_stream);
 
         $dateClause = '';
 
-        if(isset($options->dateFrom) && isset($options->dateTo) && $options->dateFrom != null && $options->dateTo != null){
+        if (isset($options->dateFrom) && isset($options->dateTo) && $options->dateFrom != null && $options->dateTo != null) {
             $dateClause = " and pr.date between '$options->dateFrom' and '$options->dateTo'";
         }
         $productions = $this->db->query("
@@ -276,7 +284,7 @@ class Production extends CI_Controller{
             $dateClause
         ")->result();
 
-        foreach($productions as $production){
+        foreach ($productions as $production) {
             $production->products = $this->db->query("
                 select
                     pp.*,
@@ -296,7 +304,8 @@ class Production extends CI_Controller{
         echo json_encode($productions);
     }
 
-    public function getProductionDetails(){
+    public function getProductionDetails()
+    {
         $options = json_decode($this->input->raw_input_stream);
         $productionDetails = $this->db->query("
             select
@@ -317,7 +326,8 @@ class Production extends CI_Controller{
         echo json_encode($productionDetails);
     }
 
-    public function getProductionProducts(){
+    public function getProductionProducts()
+    {
         $options = json_decode($this->input->raw_input_stream);
         $productionProducts = $this->db->query("
             select
@@ -338,23 +348,24 @@ class Production extends CI_Controller{
         echo json_encode($productionProducts);
     }
 
-    public function deleteProduction(){
-        $res = ['success'=>false, 'message'=>''];
-        try{
+    public function deleteProduction()
+    {
+        $res = ['success' => false, 'message' => ''];
+        try {
             $data = json_decode($this->input->raw_input_stream);
 
             $oldProducts = $this->db->query("select * from tbl_production_products where production_id = ?", $data->productionId)->result();
 
-            foreach($oldProducts as $detail) {
+            foreach ($oldProducts as $detail) {
                 $stock = $this->mt->productStock($detail->product_id);
-                if($detail->quantity > $stock) {
-                    $res = ['success'=>false, 'message'=>'Product out of stock, Production can not be deleted','stock' => $stock];   
+                if ($detail->quantity > $stock) {
+                    $res = ['success' => false, 'message' => 'Product out of stock, Production can not be deleted', 'stock' => $stock];
                     echo json_encode($res);
                     exit;
                 }
             }
-            
-            foreach($oldProducts as $oldProduct){
+
+            foreach ($oldProducts as $oldProduct) {
                 $previousStock = $this->mt->productStock($oldProduct->product_id);
 
                 $this->db->query("update tbl_currentinventory set production_quantity = production_quantity - ? where product_id = ? and branch_id = ?", [$oldProduct->quantity, $oldProduct->product_id, $this->session->userdata('BRANCHid')]);
@@ -369,22 +380,22 @@ class Production extends CI_Controller{
                     ($previousStock - $oldProduct->quantity),
                     $oldProduct->product_id
                 ]);
-
             }
 
 
             $this->db->query("update tbl_productions set status = 'd' where production_id = ?", $data->productionId);
             $this->db->query("update tbl_production_details set status = 'd' where production_id = ?", $data->productionId);
             $this->db->query("update tbl_production_products set status = 'd' where production_id = ?", $data->productionId);
-            $res = ['success'=>true, 'message'=>'Production deleted successfully'];
-        } catch (Exception $ex){
-            $res = ['success'=>false, 'message'=>$ex->getMessage()];
+            $res = ['success' => true, 'message' => 'Production deleted successfully'];
+        } catch (Exception $ex) {
+            $res = ['success' => false, 'message' => $ex->getMessage()];
         }
 
         echo json_encode($res);
     }
 
-    public function productionInvoice($productionId){
+    public function productionInvoice($productionId)
+    {
         $data['title'] = "Production Invoice";
         $data['productionId'] = $productionId;
         $data['content'] = $this->load->view("Administrator/production/production_invoice", $data, true);
@@ -576,5 +587,4 @@ class Production extends CI_Controller{
 
         echo json_encode($res);
     }
-
 }

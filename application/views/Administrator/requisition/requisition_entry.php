@@ -94,6 +94,12 @@
                                 </div>
                             </div>
                             <div class="form-group row">
+                                <label class="col-xs-4 col-md-4 control-label no-padding-right"> Work Order </label>
+                                <div class="col-xs-8 col-md-8">
+                                    <input type="text" id="work_order" name="work_order" class="form-control" v-model="requisition.work_order" readonly />
+                                </div>
+                            </div>
+                            <div class="form-group row">
                                 <label class="col-xs-4 col-md-4 control-label no-padding-right"> Requisition For </label>
                                 <div class="col-xs-8 col-md-8">
                                     <v-select id="branchDropdown" v-bind:options="branches" v-model="selectedBranch" label="Brunch_name" disabled></v-select>
@@ -131,7 +137,7 @@
                             <div class="col-xs-12 col-md-2 no-padding paddingMobile">
                                 <div class="form-group">
                                     <label for="">Category</label>
-                                    <input type="text" readonly v-model="selectedMaterial.category_name" class="form-control" style="border-radius:0 !important;height:27px;">
+                                    <input type="text" disabled v-model="selectedMaterial.category_name" class="form-control" style="border-radius:0 !important;height:27px;">
                                 </div>
                             </div>
                             <div class="col-xs-12 col-md-1 no-padding paddingMobile">
@@ -223,6 +229,7 @@
                 requisition: {
                     requisition_id: parseInt("<?php echo $requisition_id; ?>"),
                     employee_id: '',
+                    work_order: "<?php echo $work_order; ?>",
                     requisition_invoice: '<?php echo $requisitionInvoice; ?>',
                     requisition_date: moment().format("YYYY-MM-DD"),
                     requisition_for: parseInt("<?php echo $this->session->userdata('BRANCHid'); ?>"),
@@ -320,6 +327,10 @@
                     return;
                 }
 
+                if (this.requisition.work_order == 0) {
+                    alert('Work worder is empty');
+                    return;
+                }
                 if (this.cart.length == 0) {
                     alert('Cart is empty');
                     return;
@@ -375,11 +386,11 @@
             }
         },
         mounted() {
-			window.addEventListener('keydown', (e) => {
-				if (e.key == 'Insert') {
-					this.saveRequisition();
-				}
-			});
-		},
+            window.addEventListener('keydown', (e) => {
+                if (e.key == 'Insert') {
+                    this.saveRequisition();
+                }
+            });
+        },
     })
 </script>

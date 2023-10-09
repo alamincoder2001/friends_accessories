@@ -48,6 +48,11 @@
                                     <td>{{ requisition.requisition_invoice }}</td>
                                 </tr>
                                 <tr>
+                                    <td>Work Order</td>
+                                    <td>&nbsp;:&nbsp;</td>
+                                    <td>{{ requisition.work_order }}</td>
+                                </tr>
+                                <tr>
                                     <td>Date</td>
                                     <td>&nbsp;:&nbsp;</td>
                                     <td>{{ requisition.requisition_date }}</td>

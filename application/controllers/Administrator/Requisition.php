@@ -22,9 +22,11 @@ class Requisition extends CI_Controller
         if (!$access) {
             redirect(base_url());
         }
+        $saleInv = $this->db->query("SELECT * FROM tbl_salesmaster sm WHERE sm.SaleMaster_SlNo = '$saleId'")->row();
+
         $data['title'] = "Requistion Entry";
         $data['requisition_id'] = $requisition_id;
-        $data['saleId'] = $saleId;
+        $data['work_order'] = empty($saleInv) ? 0 : $saleInv->SaleMaster_InvoiceNo;
         $data['requisitionInvoice'] = $this->mt->generateRequisitionInvoice();
         $data['content'] = $this->load->view('Administrator/requisition/requisition_entry', $data, TRUE);
         $this->load->view('Administrator/index', $data);
@@ -123,6 +125,8 @@ class Requisition extends CI_Controller
         try {
             $data = json_decode($this->input->raw_input_stream);
 
+            $saleInv = $data->requisition->work_order;
+
             $countRequisitionCode = $this->db->query("select * from tbl_material_requisition where requisition_invoice = ?", $data->requisition->requisition_invoice)->num_rows();
             if ($countRequisitionCode > 0) {
                 $data->requisition->requisition_invoice = $this->mt->generateRequisitionInvoice();
@@ -131,6 +135,7 @@ class Requisition extends CI_Controller
             $requisition = array(
                 "employee_id"         => $data->requisition->employee_id,
                 "requisition_invoice" => $data->requisition->requisition_invoice,
+                "work_order"          => $data->requisition->work_order,
                 "requisition_date"    => $data->requisition->requisition_date,
                 "requisition_for"     => $data->requisition->requisition_for,
                 "note"                => $data->requisition->note,
@@ -153,6 +158,10 @@ class Requisition extends CI_Controller
                 $this->db->insert('tbl_material_requisition_details', $pm);
             }
 
+            $sale = $this->db->query("SELECT * FROM tbl_salesmaster sm WHERE sm.SaleMaster_InvoiceNo = ?", $saleInv)->row();
+            $this->db->query("UPDATE tbl_salesmaster SET Status = 'pr' WHERE SaleMaster_SlNo = '$sale->SaleMaster_SlNo'");
+            $this->db->query("UPDATE tbl_saledetails SET Status = 'pr' WHERE Status != 'd' AND SaleMaster_IDNo = '$sale->SaleMaster_SlNo'");
+            
             $res = ['success' => true, 'message' => 'Material Requisition Success', 'requisition_id' => $lastId];
         } catch (Exception $ex) {
             $res = ['success' => false, 'message' => $ex->getMessage()];
@@ -170,6 +179,7 @@ class Requisition extends CI_Controller
             $requisition = array(
                 "employee_id"         => $data->requisition->employee_id,
                 "requisition_invoice" => $data->requisition->requisition_invoice,
+                "work_order"          => $data->requisition->work_order,
                 "requisition_date"    => $data->requisition->requisition_date,
                 "requisition_for"     => $data->requisition->requisition_for,
                 "note"                => $data->requisition->note

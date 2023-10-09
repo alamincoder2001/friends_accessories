@@ -152,7 +152,7 @@
 							<th>Price</th>
 							<th>Quantity</th>
 							<th>Total</th>
-							<th>Action</th>
+							<th style="width: 12%;">Action</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -168,11 +168,15 @@
 								<td style="text-align:center;">{{ sale.saleDetails[0].SaleDetails_TotalQuantity }}</td>
 								<td style="text-align:right;">{{ sale.saleDetails[0].SaleDetails_TotalAmount }}</td>
 								<td style="text-align:center;">
-									<a href="" title="Sale Invoice" v-bind:href="`/sale_invoice_print/${sale.SaleMaster_SlNo}`" target="_blank"><i class="fa fa-file"></i></a>
+									<?php if ($this->session->userdata('accountType') != 'u') { ?>
+										<a href="" :title="titleText(sale.Status)" @click.prevent="changeStatus(sale)" v-html="statusBtn(sale.Status)"></a>
+										<a href="" v-if="sale.Status != 'a'" title="Go To Requisition" v-bind:href="`/material_requisition/0/${sale.SaleMaster_SlNo}`" target="_blank"><i class="fa fa-registered" style="background: #727272;padding: 3px 4px;border-radius: 5px;color: white;"></i></a>
+									<?php } ?>
+									<a href="" title="Purchase Order Invoice" v-bind:href="`/sale_invoice_print/${sale.SaleMaster_SlNo}`" target="_blank"><i class="fa fa-file"></i></a>
 									<a href="" title="Chalan" v-bind:href="`/chalan/${sale.SaleMaster_SlNo}`" target="_blank"><i class="fa fa-file-o"></i></a>
 									<?php if ($this->session->userdata('accountType') != 'u') { ?>
-										<a href="javascript:" title="Edit Sale" @click="checkReturnAndEdit(sale)"><i class="fa fa-edit"></i></a>
-										<a href="" title="Delete Sale" @click.prevent="deleteSale(sale.SaleMaster_SlNo)"><i class="fa fa-trash"></i></a>
+										<a href="javascript:" title="Edit Purchase Order" @click="checkReturnAndEdit(sale)"><i class="fa fa-edit"></i></a>
+										<a href="" title="Delete Purchase" @click.prevent="deleteSale(sale.SaleMaster_SlNo)"><i class="fa fa-trash"></i></a>
 									<?php } ?>
 								</td>
 							</tr>
@@ -215,7 +219,7 @@
 							<th>Due</th>
 							<th>Note</th>
 							<th>Status</th>
-							<th>Action</th>
+							<th style="width: 12%;">Action</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -235,8 +239,10 @@
 							<td style="text-align:left;">{{ sale.SaleMaster_Description }}</td>
 							<td style="text-align:left;" v-html="textStatus(sale.Status)"></td>
 							<td style="text-align:center;">
-								<a href="" :title="titleText(sale.Status)" @click.prevent="changeStatus(sale)" v-html="statusBtn(sale.Status)"></a>
-								<a href="" title="Go To Requisition" v-bind:href="`/material_requisition/0/${sale.SaleMaster_SlNo}`" target="_blank"><i class="fa fa-registered" style="background: #727272;padding: 3px 4px;border-radius: 5px;color: white;"></i></a>
+								<?php if ($this->session->userdata('accountType') != 'u') { ?>
+									<a href="" :title="titleText(sale.Status)" @click.prevent="changeStatus(sale)" v-html="statusBtn(sale.Status)"></a>
+									<a href="" v-if="sale.Status != 'a'" title="Go To Requisition" v-bind:href="`/material_requisition/0/${sale.SaleMaster_SlNo}`" target="_blank"><i class="fa fa-registered" style="background: #727272;padding: 3px 4px;border-radius: 5px;color: white;"></i></a>
+								<?php } ?>
 								<a href="" title="Purchase Order Invoice" v-bind:href="`/sale_invoice_print/${sale.SaleMaster_SlNo}`" target="_blank"><i class="fa fa-file"></i></a>
 								<a href="" title="Chalan" v-bind:href="`/chalan/${sale.SaleMaster_SlNo}`" target="_blank"><i class="fa fa-file-o"></i></a>
 								<?php if ($this->session->userdata('accountType') != 'u') { ?>
@@ -249,13 +255,13 @@
 					<tfoot>
 						<tr style="font-weight:bold;">
 							<td colspan="5" style="text-align:right;">Total</td>
-							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_SubTotalAmount)}, 0) }}</td>
-							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_TaxAmount)}, 0) }}</td>
-							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_TotalDiscountAmount)}, 0) }}</td>
-							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_Freight)}, 0) }}</td>
-							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_TotalSaleAmount)}, 0) }}</td>
-							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_PaidAmount)}, 0) }}</td>
-							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_DueAmount)}, 0) }}</td>
+							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_SubTotalAmount)}, 0).toFixed(2) }}</td>
+							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_TaxAmount)}, 0).toFixed(2) }}</td>
+							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_TotalDiscountAmount)}, 0).toFixed(2) }}</td>
+							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_Freight)}, 0).toFixed(2) }}</td>
+							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_TotalSaleAmount)}, 0).toFixed(2) }}</td>
+							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_PaidAmount)}, 0).toFixed(2) }}</td>
+							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_DueAmount)}, 0).toFixed(2) }}</td>
 							<td></td>
 							<td></td>
 							<td></td>
@@ -385,7 +391,7 @@
 				return textHtml;
 			},
 
-			changeStatus(sale){
+			changeStatus(sale) {
 				if (confirm('Are you sure!')) {
 					let filter = {
 						saleId: sale.SaleMaster_SlNo,
@@ -393,7 +399,7 @@
 					}
 					if (sale.Status == 'p') {
 						filter.status = 'pr';
-					}else if(sale.Status == 'p'){
+					} else if (sale.Status == 'pr') {
 						filter.status = 'a';
 					}
 					axios.post('/sale_status_change', filter)
@@ -401,7 +407,7 @@
 							if (res.data.status) {
 								alert(res.data.message);
 								this.getSalesRecord();
-							}else{
+							} else {
 								console.log(res.data.message);
 								this.getSalesRecord();
 							}
