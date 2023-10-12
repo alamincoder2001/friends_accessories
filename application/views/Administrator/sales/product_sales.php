@@ -118,7 +118,7 @@
 			</div>
 
 			<div class="form-group">
-				<!-- <label class="col-md-1 col-xs-4 control-label no-padding-right"> Address </label> -->
+				<label class="col-md-1 col-xs-4 control-label no-padding-right"> Address </label>
 				<div class="col-md-2 col-xs-8 no-padding-left">
 					<input type="text" id="address" placeholder="Address" class="form-control" v-model="selectedCustomer.Customer_Address" v-bind:disabled="selectedCustomer.Customer_Type == 'G' ? false : true"/>
 				</div>
