@@ -99,14 +99,8 @@
 			</div>
 			<div class="form-group">
 				<label class="col-md-1 col-xs-4 control-label no-padding-right"> Buyer </label>
-				<div class="col-md-3 col-xs-8 no-padding-left">
-					<v-select v-bind:options="customers" label="display_name" v-model="selectedCustomer" v-on:input="customerOnChange"></v-select>
-				</div>
-			</div>
-			<div class="form-group" style="display:none;" v-bind:style="{display: selectedCustomer.Customer_Type == 'G' ? '' : 'none'}">
-				<label class="col-md-1 col-xs-4 control-label no-padding-right"> Name </label>
 				<div class="col-md-2 col-xs-8 no-padding-left">
-					<input type="text" id="customerName" placeholder="Customer Name" class="form-control" v-model="selectedCustomer.Customer_Name" v-bind:disabled="selectedCustomer.Customer_Type == 'G' ? false : true" />
+					<v-select v-bind:options="customers" label="display_name" v-model="selectedCustomer" v-on:input="customerOnChange"></v-select>
 				</div>
 			</div>
 
