@@ -92,7 +92,40 @@
 	<div class="col-xs-12 col-md-12 col-lg-12">
 		<div class="row" style="border: 1px solid #b5b1b1a8;margin:0;padding:8px 0;background: #f9f9f9;">
 			<div class="form-group">
-				<label class="col-md-2 col-xs-4 control-label no-padding-right">Supp Mat Code:</label>
+				<label class="col-md-1 col-xs-4 control-label no-padding-right"> Company </label>
+				<div class="col-md-2 col-xs-8 no-padding-left">
+					<v-select :options="companies" label="display_name" v-model="selectedCompany" @input="companyOnChange" placeholder="Select Company"></v-select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-md-1 col-xs-4 control-label no-padding-right"> Buyer </label>
+				<div class="col-md-3 col-xs-8 no-padding-left">
+					<v-select v-bind:options="customers" label="display_name" v-model="selectedCustomer" v-on:input="customerOnChange"></v-select>
+				</div>
+			</div>
+			<div class="form-group" style="display:none;" v-bind:style="{display: selectedCustomer.Customer_Type == 'G' ? '' : 'none'}">
+				<label class="col-md-1 col-xs-4 control-label no-padding-right"> Name </label>
+				<div class="col-md-2 col-xs-8 no-padding-left">
+					<input type="text" id="customerName" placeholder="Customer Name" class="form-control" v-model="selectedCustomer.Customer_Name" v-bind:disabled="selectedCustomer.Customer_Type == 'G' ? false : true" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-md-1 col-xs-4 control-label no-padding-right"> Mobile No </label>
+				<div class="col-md-2 col-xs-8 no-padding-left">
+					<input type="text" id="mobileNo" placeholder="Mobile No" class="form-control" v-model="selectedCustomer.Customer_Mobile" v-bind:disabled="selectedCustomer.Customer_Type == 'G' ? false : true" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<!-- <label class="col-md-1 col-xs-4 control-label no-padding-right"> Address </label> -->
+				<div class="col-md-2 col-xs-8 no-padding-left">
+					<input type="text" id="address" placeholder="Address" class="form-control" v-model="selectedCustomer.Customer_Address" v-bind:disabled="selectedCustomer.Customer_Type == 'G' ? false : true"/>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="col-md-2 col-xs-4 control-label no-padding-right">Supp Mat Code: </label>
 				<div class="col-md-2 col-xs-8 no-padding-left">
 					<input type="text" class="form-control" v-model="sales.supp_mat_code" />
 				</div>
