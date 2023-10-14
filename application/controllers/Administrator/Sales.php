@@ -121,15 +121,6 @@ class Sales extends CI_Controller
                 "AddBy"                          => $this->session->userdata("FullName"),
                 'AddTime'                        => date("Y-m-d H:i:s"),
                 'SaleMaster_branchid'            => $this->session->userdata("BRANCHid"),
-                'supp_mat_code'                  => $data->sales->supp_mat_code,
-                'ship_date'                      => $data->sales->ship_date,
-                'prod_subprocess'                => $data->sales->prod_subprocess,
-                'unit_price'                     => $data->sales->unit_price,
-                'amount'                         => $data->sales->amount,
-                'acceptable'                     => $data->sales->acceptable,
-                'contract_no'                    => $data->sales->contract_no,
-                'description'                    => $data->sales->description,
-                'remark'                         => $data->sales->remark
             );
 
             $this->db->insert('tbl_salesmaster', $sales);
@@ -138,17 +129,21 @@ class Sales extends CI_Controller
 
             foreach ($data->cart as $cartProduct) {
                 $saleDetails = array(
-                    'SaleMaster_IDNo' => $salesId,
-                    'Product_IDNo' => $cartProduct->productId,
+                    'SaleMaster_IDNo'           => $salesId,
+                    'Product_IDNo'              => $cartProduct->productId,
+                    'Item_Code'                 => $cartProduct->Item_Code,
+                    'contract_no'               => $cartProduct->contract_no,
+                    'ship_date'                 => $cartProduct->ship_date,
                     'SaleDetails_TotalQuantity' => $cartProduct->quantity,
-                    'Purchase_Rate' => $cartProduct->purchaseRate,
-                    'SaleDetails_Rate' => $cartProduct->salesRate,
-                    'SaleDetails_Tax' => $cartProduct->vat,
-                    'SaleDetails_TotalAmount' => $cartProduct->total,
-                    'Status' => 'p',
-                    'AddBy' => $this->session->userdata("FullName"),
-                    'AddTime' => date('Y-m-d H:i:s'),
-                    'SaleDetails_BranchId' => $this->session->userdata('BRANCHid')
+                    'Purchase_Rate'             => $cartProduct->purchaseRate,
+                    'SaleDetails_Rate'          => $cartProduct->salesRate,
+                    'SaleDetails_Tax'           => $cartProduct->vat,
+                    'SaleDetails_TotalAmount'   => $cartProduct->total,
+                    'Status'                    => 'p',
+                    'remark'                    => $cartProduct->remark,
+                    'AddBy'                     => $this->session->userdata("FullName"),
+                    'AddTime'                   => date('Y-m-d H:i:s'),
+                    'SaleDetails_BranchId'      => $this->session->userdata('BRANCHid')
                 );
 
                 $this->db->insert('tbl_saledetails', $saleDetails);
@@ -402,15 +397,6 @@ class Sales extends CI_Controller
                 "UpdateBy"                       => $this->session->userdata("FullName"),
                 'UpdateTime'                     => date("Y-m-d H:i:s"),
                 "SaleMaster_branchid"            => $this->session->userdata("BRANCHid"),
-                'supp_mat_code'                  => $data->sales->supp_mat_code,
-                'ship_date'                      => $data->sales->ship_date,
-                'prod_subprocess'                => $data->sales->prod_subprocess,
-                'unit_price'                     => $data->sales->unit_price,
-                'amount'                         => $data->sales->amount,
-                'acceptable'                     => $data->sales->acceptable,
-                'contract_no'                    => $data->sales->contract_no,
-                'description'                    => $data->sales->description,
-                'remark'                         => $data->sales->remark
             );
 
             $this->db->where('SaleMaster_SlNo', $salesId);
@@ -430,17 +416,21 @@ class Sales extends CI_Controller
 
             foreach ($data->cart as $cartProduct) {
                 $saleDetails = array(
-                    'SaleMaster_IDNo' => $salesId,
-                    'Product_IDNo' => $cartProduct->productId,
+                    'SaleMaster_IDNo'           => $salesId,
+                    'Product_IDNo'              => $cartProduct->productId,
+                    'Item_Code'                 => $cartProduct->Item_Code,
+                    'contract_no'               => $cartProduct->contract_no,
+                    'ship_date'                 => $cartProduct->ship_date,
                     'SaleDetails_TotalQuantity' => $cartProduct->quantity,
-                    'Purchase_Rate' => $cartProduct->purchaseRate,
-                    'SaleDetails_Rate' => $cartProduct->salesRate,
-                    'SaleDetails_Tax' => $cartProduct->vat,
-                    'SaleDetails_TotalAmount' => $cartProduct->total,
-                    'Status' => 'a',
-                    'AddBy' => $this->session->userdata("FullName"),
-                    'AddTime' => date('Y-m-d H:i:s'),
-                    'SaleDetails_BranchId' => $this->session->userdata("BRANCHid")
+                    'Purchase_Rate'             => $cartProduct->purchaseRate,
+                    'SaleDetails_Rate'          => $cartProduct->salesRate,
+                    'SaleDetails_Tax'           => $cartProduct->vat,
+                    'SaleDetails_TotalAmount'   => $cartProduct->total,
+                    'Status'                    => 'a',
+                    'remark'                    => $cartProduct->remark,
+                    'AddBy'                     => $this->session->userdata("FullName"),
+                    'AddTime'                   => date('Y-m-d H:i:s'),
+                    'SaleDetails_BranchId'      => $this->session->userdata("BRANCHid")
                 );
 
                 $this->db->insert('tbl_saledetails', $saleDetails);

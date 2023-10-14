@@ -89,91 +89,74 @@
 		</div>
 	</div>
 
-	<div class="col-xs-12 col-md-12 col-lg-12">
-		<div class="row" style="border: 1px solid #b5b1b1a8;margin:0;padding:8px 0;background: #f9f9f9;">
-			<div class="form-group">
-				<label class="col-md-1 col-xs-4 control-label no-padding-right"> Company </label>
-				<div class="col-md-2 col-xs-8 no-padding-left">
-					<v-select :options="companies" label="display_name" v-model="selectedCompany" @input="companyOnChange" placeholder="Select Company"></v-select>
+	<!-- <div class="col-xs-12 col-md-12 col-lg-12">
+		<div style="border: 1px solid #b5b1b1a8;margin:0;padding:8px 0;background: #f9f9f9;">
+			<div class="row" style="margin: 0;">
+				<div class="form-group">
+					<label class="col-md-1 col-xs-4 control-label no-padding-right"> Product </label>
+					<div class="col-md-3 col-xs-8 no-padding-left">
+						<v-select id="product" v-bind:options="products" v-model="selectedProduct" label="display_text" v-on:input="productOnChange"></v-select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-2 col-xs-4 control-label no-padding-right">Supp Mat Code: </label>
+					<div class="col-md-2 col-xs-8 no-padding-left">
+						<input type="text" class="form-control" v-model="selectedProduct.supp_mat_code" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-2 col-xs-4 control-label no-padding-right">Ship Date(ETA):</label>
+					<div class="col-md-2 col-xs-8 no-padding-left">
+						<input type="date" class="form-control" v-model="selectedProduct.ship_date" />
+					</div>
 				</div>
 			</div>
-			<div class="form-group">
-				<label class="col-md-1 col-xs-4 control-label no-padding-right"> Buyer </label>
-				<div class="col-md-2 col-xs-8 no-padding-left">
-					<v-select v-bind:options="customers" label="display_name" v-model="selectedCustomer" v-on:input="customerOnChange"></v-select>
+			<div class="row" style="margin: 0;">
+				<div class="form-group">
+					<label class="col-md-2 col-xs-4 control-label no-padding-right">Prod/Subprocess:</label>
+					<div class="col-md-2 col-xs-8 no-padding-left">
+						<input type="text" class="form-control" v-model="selectedProduct.prod_subprocess" />
+					</div>
 				</div>
-			</div>
-
-			<div class="form-group">
-				<label class="col-md-1 col-xs-4 control-label no-padding-right"> Mobile No </label>
-				<div class="col-md-2 col-xs-8 no-padding-left">
-					<input type="text" id="mobileNo" placeholder="Mobile No" class="form-control" v-model="selectedCustomer.Customer_Mobile" v-bind:disabled="selectedCustomer.Customer_Type == 'G' ? false : true" />
+				<div class="form-group">
+					<label class="col-md-2 col-xs-4 control-label no-padding-right">Price/Unit:</label>
+					<div class="col-md-2 col-xs-8 no-padding-left">
+						<input type="number" min="0" step="0.01" class="form-control" v-model="selectedProduct.quantity" />
+					</div>
 				</div>
-			</div>
-
-			<div class="form-group">
-				<label class="col-md-1 col-xs-4 control-label no-padding-right"> Address </label>
-				<div class="col-md-2 col-xs-8 no-padding-left">
-					<input type="text" id="address" placeholder="Address" class="form-control" v-model="selectedCustomer.Customer_Address" v-bind:disabled="selectedCustomer.Customer_Type == 'G' ? false : true"/>
+				<div class="form-group">
+					<label class="col-md-2 col-xs-4 control-label no-padding-right">Amount:</label>
+					<div class="col-md-2 col-xs-8 no-padding-left">
+						<input type="number" min="0" step="0.01" class="form-control" v-model="selectedProduct.Product_SellingPrice" />
+					</div>
 				</div>
-			</div>
-			
-			<div class="form-group">
-				<label class="col-md-2 col-xs-4 control-label no-padding-right">Supp Mat Code: </label>
-				<div class="col-md-2 col-xs-8 no-padding-left">
-					<input type="text" class="form-control" v-model="sales.supp_mat_code" />
+				<div class="form-group">
+					<label class="col-md-2 col-xs-4 control-label no-padding-right">Acceptable(%):</label>
+					<div class="col-md-2 col-xs-8 no-padding-left">
+						<input type="text" class="form-control" v-model="selectedProduct.acceptable" />
+					</div>
 				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-md-2 col-xs-4 control-label no-padding-right">Ship Date(ETA):</label>
-				<div class="col-md-2 col-xs-8 no-padding-left">
-					<input type="date" class="form-control" v-model="sales.ship_date" />
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-md-2 col-xs-4 control-label no-padding-right">Prod/Subprocess:</label>
-				<div class="col-md-2 col-xs-8 no-padding-left">
-					<input type="text" class="form-control" v-model="sales.prod_subprocess" />
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-md-2 col-xs-4 control-label no-padding-right">Price/Unit:</label>
-				<div class="col-md-2 col-xs-8 no-padding-left">
-					<input type="number" min="0" step="0.01" class="form-control" v-model="sales.unit_price" />
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-md-2 col-xs-4 control-label no-padding-right">Amount:</label>
-				<div class="col-md-2 col-xs-8 no-padding-left">
-					<input type="number" min="0" step="0.01" class="form-control" v-model="sales.amount" />
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-md-2 col-xs-4 control-label no-padding-right">Acceptable(%):</label>
-				<div class="col-md-2 col-xs-8 no-padding-left">
-					<input type="text" class="form-control" v-model="sales.acceptable" />
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-md-2 col-xs-4 control-label no-padding-right">Contract No:</label>
-				<div class="col-md-2 col-xs-8 no-padding-left">
-					<input type="text" class="form-control" v-model="sales.contract_no" />
+				<div class="form-group">
+					<label class="col-md-2 col-xs-4 control-label no-padding-right">Contract No:</label>
+					<div class="col-md-2 col-xs-8 no-padding-left">
+						<input type="text" class="form-control" v-model="selectedProduct.contract_no" />
+					</div>
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="col-md-2 col-xs-4 control-label no-padding-right">Description:</label>
 				<div class="col-md-2 col-xs-8 no-padding-left">
-					<input type="text" class="form-control" v-model="sales.description" />
+					<input type="text" class="form-control" v-model="selectedProduct.description" />
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="col-md-2 col-xs-4 control-label no-padding-right" style="font-size: 13px;">Purchase Remark:</label>
 				<div class="col-md-2 col-xs-8 no-padding-left">
-					<input type="text" class="form-control" v-model="sales.remark" />
+					<input type="text" class="form-control" v-model="selectedProduct.remark" />
 				</div>
 			</div>
 		</div>
-	</div>
+	</div> -->
 
 
 	<div class="col-xs-12 col-md-9 col-lg-9">
@@ -240,7 +223,7 @@
 						<div class="col-md-5 col-xs-12">
 							<form v-on:submit.prevent="addToCart">
 								<div class="form-group">
-									<label class="col-xs-3 control-label no-padding-right"> Product </label>
+									<label class="col-xs-3 control-label no-padding"> Product </label>
 									<div class="col-xs-8">
 										<v-select id="product" v-bind:options="products" v-model="selectedProduct" label="display_text" v-on:input="productOnChange"></v-select>
 									</div>
@@ -250,41 +233,70 @@
 								</div>
 
 								<div class="form-group" style="display: none;">
-									<label class="col-xs-3 control-label no-padding-right"> Brand </label>
+									<label class="col-xs-3 control-label no-padding"> Brand </label>
 									<div class="col-xs-9">
 										<input type="text" id="brand" placeholder="Group" class="form-control" />
 									</div>
 								</div>
 
 								<div class="form-group">
-									<label class="col-xs-3 control-label no-padding-right"> Rate </label>
+									<label class="col-xs-3 control-label no-padding"> Item Code. </label>
+									<div class="col-xs-9">
+										<input type="text" id="Item_Code" placeholder="Item Code" class="form-control" v-model="selectedProduct.Item_Code" required autocomplete="off"/>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="col-xs-3 control-label no-padding"> ContractNo. </label>
+									<div class="col-xs-9">
+										<input type="text" id="contract_no" placeholder="Contract No" class="form-control" v-model="selectedProduct.contract_no" required autocomplete="off"/>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="col-xs-3 control-label no-padding"> Ship Date. </label>
+									<div class="col-xs-9">
+										<input type="date" id="ship_date" class="form-control" v-model="ship_date" />
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="col-xs-3 control-label no-padding"> Rate </label>
 									<div class="col-xs-9">
 										<input type="number" id="salesRate" placeholder="Rate" min="0" step="0.01" class="form-control" v-model="selectedProduct.Product_SellingPrice" v-on:input="productTotal" />
 									</div>
 								</div>
+
 								<div class="form-group">
-									<label class="col-xs-3 control-label no-padding-right"> Quantity </label>
+									<label class="col-xs-3 control-label no-padding"> Quantity </label>
 									<div class="col-xs-9">
 										<input type="number" min="0" step="0.01" id="quantity" placeholder="Qty" class="form-control" ref="quantity" v-model="selectedProduct.quantity" v-on:input="productTotal" autocomplete="off" required />
 									</div>
 								</div>
 
 								<div class="form-group" style="display:none;">
-									<label class="col-xs-3 control-label no-padding-right"> Discount</label>
+									<label class="col-xs-3 control-label no-padding"> Discount</label>
 									<div class="col-xs-9">
 										<span>(%)</span>
 										<input type="text" id="productDiscount" placeholder="Discount" class="form-control" style="display: inline-block; width: 90%" />
 									</div>
 								</div>
+
 								<div class="form-group">
-									<label class="col-xs-3 control-label no-padding-right"> Amount </label>
+									<label class="col-xs-3 control-label no-padding"> Remark </label>
+									<div class="col-xs-9">
+										<input type="text" placeholder="Remark" class="form-control" v-model="selectedProduct.remark" />
+									</div>
+								</div>
+								<!-- <div class="form-group">
+									<label class="col-xs-3 control-label no-padding"> Amount </label>
 									<div class="col-xs-9">
 										<input type="text" id="productTotal" placeholder="Amount" class="form-control" v-model="selectedProduct.total" readonly />
 									</div>
-								</div>
+								</div> -->
 
 								<div class="form-group">
-									<label class="col-xs-3 control-label no-padding-right"> </label>
+									<label class="col-xs-3 control-label no-padding"> </label>
 									<div class="col-xs-9">
 										<button type="submit" class="btn btn-default pull-right">Add to Cart</button>
 									</div>
@@ -314,21 +326,23 @@
 					<thead>
 						<tr class="">
 							<th style="width:10%;color:#000;">Sl</th>
-							<th style="width:15%;color:#000;">Product Code</th>
+							<th style="width:15%;color:#000;">Item Code</th>
 							<th style="width:20%;color:#000;">Product Name</th>
 							<th style="width:15%;color:#000;">Category</th>
+							<th style="width:15%;color:#000;">ContractNo</th>
 							<th style="width:7%;color:#000;">Qty</th>
 							<th style="width:8%;color:#000;">Rate</th>
-							<th style="width:15%;color:#000;">Total Amount</th>
+							<th style="width:15%;color:#000;">Total</th>
 							<th style="width:10%;color:#000;">Action</th>
 						</tr>
 					</thead>
 					<tbody style="display:none;" v-bind:style="{display: cart.length > 0 ? '' : 'none'}">
 						<tr v-for="(product, sl) in cart">
 							<td>{{ sl + 1 }}</td>
-							<td>{{ product.productCode }}</td>
+							<td>{{ product.Item_Code }}</td>
 							<td>{{ product.name }}</td>
 							<td>{{ product.categoryName }}</td>
+							<td>{{ product.contract_no }}</td>
 							<td>{{ product.quantity }}</td>
 							<td>{{ product.salesRate }}</td>
 							<td>{{ product.total }}</td>
@@ -336,16 +350,16 @@
 						</tr>
 
 						<tr>
-							<td colspan="8"></td>
+							<td colspan="9"></td>
 						</tr>
 
 						<tr style="font-weight: bold;">
-							<td colspan="5">Note</td>
+							<td colspan="6">Note</td>
 							<td colspan="3">Total</td>
 						</tr>
 
 						<tr>
-							<td colspan="5"><textarea style="width: 100%;font-size:13px;" placeholder="Note" v-model="sales.note"></textarea></td>
+							<td colspan="6"><textarea style="width: 100%;font-size:13px;" placeholder="Note" v-model="sales.note"></textarea></td>
 							<td colspan="3" style="padding-top: 15px;font-size:18px;">{{ sales.total }}</td>
 						</tr>
 					</tbody>
@@ -529,15 +543,6 @@
 					isService: '<?php echo $isService; ?>',
 					note: '',
 					PONo: '',
-					supp_mat_code: '',
-					ship_date: moment().format('YYYY-MM-DD'),
-					prod_subprocess: '',
-					unit_price: 0,
-					amount: 0,
-					acceptable: '',
-					contract_no: '',
-					description: '',
-					remark: ''
 				},
 				vatPercent: 0,
 				discountPercent: 0,
@@ -567,14 +572,17 @@
 				selectedProduct: {
 					Product_SlNo: '',
 					display_text: 'Select Product',
+					Item_Code: '',
 					Product_Name: '',
 					Unit_Name: '',
 					quantity: 0,
 					Product_Purchase_Rate: '',
 					Product_SellingPrice: 0.00,
 					vat: 0.00,
-					total: 0.00
+					total: 0.00,
+					contract_no: '',
 				},
+				ship_date: moment().format('YYYY-MM-DD'),
 				productPurchaseRate: '',
 				productStockText: '',
 				productStock: '',
@@ -714,8 +722,8 @@
 
 					this.productStockText = this.productStock > 0 ? "Available Stock" : "Stock Unavailable";
 				}
-
-				this.$refs.quantity.focus();
+				// this.$refs.quantity.focus();
+				document.querySelector('#Item_Code').focus();
 			},
 			toggleProductPurchaseRate() {
 				//this.productPurchaseRate = this.productPurchaseRate == '' ? this.selectedProduct.Product_Purchase_Rate : '';
@@ -729,12 +737,16 @@
 				let product = {
 					productId: this.selectedProduct.Product_SlNo,
 					productCode: this.selectedProduct.Product_Code,
+					Item_Code: this.selectedProduct.Item_Code,
 					categoryName: this.selectedProduct.ProductCategory_Name,
 					name: this.selectedProduct.Product_Name,
 					salesRate: this.selectedProduct.Product_SellingPrice,
 					vat: this.selectedProduct.vat,
 					quantity: this.selectedProduct.quantity,
 					total: this.selectedProduct.total,
+					contract_no: this.selectedProduct.contract_no,
+					ship_date: this.ship_date,
+					remark: this.selectedProduct.remark,
 					purchaseRate: this.selectedProduct.Product_Purchase_Rate
 				}
 
@@ -777,7 +789,8 @@
 					Product_Purchase_Rate: '',
 					Product_SellingPrice: 0.00,
 					vat: 0.00,
-					total: 0.00
+					total: 0.00,
+					contract_no: '',
 				}
 				this.productStock = '';
 				this.productStockText = '';

@@ -11,131 +11,110 @@ const salesInvoice = Vue.component('sales-invoice', {
                 <div class="row">
                     <div class="col-xs-12 text-center">
                         <div _h098asdh>
-                            Purchase Order Invoice
+                            Sales Invoice
                         </div>
                     </div>
                 </div>
-                <div class="row companyDetail">
-                    <div class="col-xs-2">
-                        <strong>Supplier:</strong> Friends Accessories
+                <div class="row">
+                    <div class="col-xs-7">
+                        <strong>Customer Id:</strong> {{ sales.Customer_Code }}<br>
+                        <strong>Customer Name:</strong> {{ sales.Customer_Name }}<br>
+                        <strong>Customer Address:</strong> {{ sales.Customer_Address }}<br>
+                        <strong>Customer Mobile:</strong> {{ sales.Customer_Mobile }}
                     </div>
-                    <div class="col-xs-3">
-                        <strong>Delivery:</strong> Company Name
-                    </div>
-                    <div class="col-xs-3">
-                        <strong>Bill:</strong> Buyer Name
-                    </div>
-                    <div class="col-xs-2" style="padding-right:0;">
-                        <strong>Contract No:</strong> 604-PP-028
-                    </div>
-                    <div class="col-xs-2">
-                        <strong>PO No:</strong> LY-0084/0823
+                    <div class="col-xs-5 text-right">
+                        <strong>Sales by:</strong> {{ sales.AddBy }}<br>
+                        <strong>Invoice No.:</strong> {{ sales.SaleMaster_InvoiceNo }}<br>
+                        <strong>Sales Date:</strong> {{ sales.SaleMaster_SaleDate | formatDateTime('DD-MM-YYYY') }} {{ sales.AddTime | formatDateTime('h:mm a') }}
                     </div>
                 </div>
-                <div v-for="(item, index) in cart" v-if="cart.length > 0">
-                    <div class="row" style="margin-top:10px;">
-                        <div class="col-xs-3">
-                            <div class="row">
-                                <div class="col-xs-6" style="padding-right:0;">
-                                    <strong>Supp Mat Code:</strong>
-                                </div>
-                                <div class="col-xs-6" :style="{borderBottom: item.Item_Code ? '1px solid gray': ''}">
-                                    <span>{{item.Item_Code}}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xs-3">
-                            <div class="row">
-                                <div class="col-xs-5" style="padding-right:0;">
-                                    <strong>Ship Date:</strong>
-                                </div>
-                                <div class="col-xs-7" :style="{borderBottom: item.ship_date ? '1px solid gray': ''}">
-                                    <span>{{item.ship_date}}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xs-4">
-                            <div class="row">
-                                <div class="col-xs-5" style="padding-right:0;">
-                                    <strong>Prod/Subprocess:</strong>
-                                </div>
-                                <div class="col-xs-7" :style="{borderBottom: item.ProductCategory_Name ? '1px solid gray': ''}">
-                                    <span>{{item.ProductCategory_Name}}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xs-2">
-                            <div class="row">
-                                <div class="col-xs-6" style="padding-right:0;">
-                                    <strong>Unit/Price:</strong>
-                                </div>
-                                <div class="col-xs-6" :style="{borderBottom: item.SaleDetails_Rate ? '1px solid gray': ''}">
-                                    <span>{{item.SaleDetails_Rate}}</span>
-                                </div>
-                            </div>
-                        </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div _d9283dsc></div>
                     </div>
-                    <div class="row" style="margin-top:10px;">
-                        <div class="col-xs-2">
-                            <div class="row">
-                                <div class="col-xs-6" style="padding-right:0;">
-                                    <strong>Amount:</strong>
-                                </div>
-                                <div class="col-xs-6" :style="{borderBottom: item.SaleDetails_TotalAmount ? '1px solid gray': ''}">
-                                    <span>{{item.SaleDetails_TotalAmount}}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xs-3">
-                            <div class="row">
-                                <div class="col-xs-5" style="padding-right:0;">
-                                    <strong>Contract No:</strong>
-                                </div>
-                                <div class="col-xs-7" :style="{borderBottom: item.contract_no ? '1px solid gray': ''}">
-                                    <span>{{item.contract_no}}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xs-4">
-                            <div class="row">
-                                <div class="col-xs-4" style="padding-right:0;">
-                                    <strong>Description:</strong>
-                                </div>
-                                <div class="col-xs-8" :style="{borderBottom: item.Product_Name ? '1px solid gray': ''}">
-                                    <span>{{item.Product_Name}}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xs-2">
-                            <div class="row">
-                                <div class="col-xs-6" style="padding-right:0;">
-                                    <strong>Remark:</strong>
-                                </div>
-                                <div class="col-xs-6"  :style="{borderBottom: item.remark ? '1px solid gray': ''}">
-                                    <span>{{item.remark}}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row" style="margin-top:10px;">
-                        <div class="col-xs-6">
-                            <table style="width:100%;" border="1" cellspacing="0" cellspadding="0">
-                                <tr style="text-align:center;">
-                                    <td>Colour/Size</td>
-                                    <td>L</td>
-                                    <td>M</td>
-                                    <td>S</td>
-                                    <td>XL</td>
-                                </tr>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <table _a584de>
+                            <thead>
                                 <tr>
-                                    <td>NIl</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td>Sl.</td>
+                                    <td>Description</td>
+                                    <td>Qnty</td>
+                                    <td>Unit</td>
+                                    <td>Unit Price</td>
+                                    <td>Total</td>
                                 </tr>
-                            </table>
-                        </div>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(product, sl) in cart">
+                                    <td>{{ sl + 1 }}</td>
+                                    <td>{{ product.Product_Name }}</td>
+                                    <td>{{ product.SaleDetails_TotalQuantity }}</td>
+                                    <td>{{ product.Unit_Name }}</td>
+                                    <td>{{ product.SaleDetails_Rate }}</td>
+                                    <td align="right">{{ product.SaleDetails_TotalAmount }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <br>
+                        <table class="pull-left">
+                            <tr>
+                                <td><strong>Previous Due:</strong></td>
+                                
+                                <td style="text-align:right">{{ sales.SaleMaster_Previous_Due == null ? '0.00' : sales.SaleMaster_Previous_Due  }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Current Due:</strong></td>
+                                
+                                <td style="text-align:right">{{ sales.SaleMaster_DueAmount == null ? '0.00' : sales.SaleMaster_DueAmount  }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="border-bottom: 1px solid black;"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Total Due:</strong></td>
+                                
+                                <td style="text-align:right">{{ (parseFloat(sales.SaleMaster_Previous_Due) + parseFloat(sales.SaleMaster_DueAmount == null ? 0.00 : sales.SaleMaster_DueAmount)).toFixed(2) }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-xs-6">
+                        <table _t92sadbc2>
+                            <tr>
+                                <td><strong>Sub Total:</strong></td>
+                                <td style="text-align:right">{{ sales.SaleMaster_SubTotalAmount }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Discount:</strong></td>
+                                <td style="text-align:right">{{ sales.SaleMaster_TotalDiscountAmount }}</td>
+                            </tr>
+                            <tr><td colspan="2" style="border-bottom: 1px solid black"></td></tr>
+                            <tr>
+                                <td><strong>Total:</strong></td>
+                                <td style="text-align:right">{{ sales.SaleMaster_TotalSaleAmount }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Paid:</strong></td>
+                                <td style="text-align:right">{{ sales.SaleMaster_PaidAmount }}</td>
+                            </tr>
+                            <tr><td colspan="2" style="border-bottom: 1px solid black"></td></tr>
+                            <tr>
+                                <td><strong>Due:</strong></td>
+                                <td style="text-align:right">{{ sales.SaleMaster_DueAmount }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <strong>In Word: </strong> {{ convertNumberToWords(sales.SaleMaster_TotalSaleAmount) }}<br><br>
+                        <strong>Note: </strong>
+                        <p style="white-space: pre-line">{{ sales.SaleMaster_Description }}</p>
                     </div>
                 </div>
             </div>
@@ -193,9 +172,6 @@ const salesInvoice = Vue.component('sales-invoice', {
         setStyle(){
             this.style = document.createElement('style');
             this.style.innerHTML = `
-                #invoiceContent{
-                    font-size:12px;
-                }
                 div[_h098asdh]{
                     /*background-color:#e0e0e0;*/
                     font-weight: bold;
@@ -390,12 +366,10 @@ const salesInvoice = Vue.component('sales-invoice', {
                             body, table{
                                 font-size: 13px;
                             }
-                            @page {
-                                size: A4 landscape;
-                            }
                         </style>
                     </head>
                     <body>
+                        <div class="container">
                             <table style="width:100%;">
                                 <thead>
                                     <tr>
@@ -434,7 +408,7 @@ const salesInvoice = Vue.component('sales-invoice', {
                                     </tr>
                                 </tfoot>
                             </table>
-                            <!--<div class="row" style="border-bottom:1px solid #ccc;margin-bottom:5px;padding-bottom:6px;">
+                            <div class="row" style="border-bottom:1px solid #ccc;margin-bottom:5px;padding-bottom:6px;">
                                 <div class="col-xs-6">
                                     <span style="text-decoration:overline;">Received by</span><br><br>
                                     ** THANK YOU FOR YOUR BUSINESS **
@@ -452,7 +426,8 @@ const salesInvoice = Vue.component('sales-invoice', {
                                         
                                     </div>
                                 </div>
-                            </div>-->
+                            </div>
+                        </div>
                         
                     </body>
                     </html>
