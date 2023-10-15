@@ -142,8 +142,14 @@
                             </div>
                             <div class="col-xs-12 col-md-1 no-padding paddingMobile">
                                 <div class="form-group">
+                                    <label for="">Stock</label>
+                                    <input type="number" disabled id="stock_quantity" ref="stock_quantity" v-model="stock_quantity" class="form-control" style="border-radius:0 !important;height:27px;">
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-1 no-padding paddingMobile">
+                                <div class="form-group">
                                     <label for="">Quantity</label>
-                                    <input type="text" id="quantity" ref="quantity" v-model="selectedMaterial.quantity" class="form-control" style="border-radius:0 !important;height:27px;">
+                                    <input type="number" id="quantity" ref="quantity" v-model="selectedMaterial.quantity" class="form-control" style="border-radius:0 !important;height:27px;">
                                 </div>
                             </div>
                             <div class="col-xs-12 col-md-1" style="margin-top: 25px;">
@@ -235,6 +241,7 @@
                     requisition_for: parseInt("<?php echo $this->session->userdata('BRANCHid'); ?>"),
                     note: ''
                 },
+                stock_quantity: 0,
                 cart: [],
                 employees: [],
                 selectedEmployee: null,
@@ -285,6 +292,12 @@
                     document.querySelector("#code").focus();
                     return
                 }
+                axios.post('/get_material_stock', {
+                        material_id: this.selectedMaterial.material_id
+                    })
+                    .then(res => {
+                        this.stock_quantity = res.data[0].stock_quantity;
+                    })
                 this.$refs.quantity.focus();
             },
 
@@ -318,6 +331,7 @@
                     purchase_rate: 0,
                     display_text: 'Select Material'
                 }
+                this.stock_quantity = 0;
             },
 
             saveRequisition() {
@@ -327,10 +341,10 @@
                     return;
                 }
 
-                if (this.requisition.work_order == 0) {
-                    alert('Work worder is empty');
-                    return;
-                }
+                // if (this.requisition.work_order == 0) {
+                //     alert('Work worder is empty');
+                //     return;
+                // }
                 if (this.cart.length == 0) {
                     alert('Cart is empty');
                     return;

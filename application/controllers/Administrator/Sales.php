@@ -105,6 +105,7 @@ class Sales extends CI_Controller
                 'SalseCustomer_IDNo'             => $customerId,
                 'employee_id'                    => $data->sales->employeeId,
                 'PONo'                           => $data->sales->PONo,
+                'contract_no'                    => $data->sales->contract_no,
                 'SaleMaster_SaleDate'            => $data->sales->salesDate,
                 'SaleMaster_SaleType'            => $data->sales->salesType,
                 'SaleMaster_TotalSaleAmount'     => $data->sales->total,
@@ -346,9 +347,14 @@ class Sales extends CI_Controller
             c.Customer_Address,
             c.Customer_Type,
             e.Employee_Name,
-            br.Brunch_name
+            br.Brunch_name,
+            cm.Company_Code,
+            cm.Company_Name,
+            cm.Company_Mobile,
+            cm.Company_Address
             from tbl_salesmaster sm
             left join tbl_customer c on c.Customer_SlNo = sm.SalseCustomer_IDNo
+            left join tbl_companies cm on cm.Company_SlNo = c.Company_Id
             left join tbl_employee e on e.Employee_SlNo = sm.employee_id
             left join tbl_brunch br on br.brunch_id = sm.SaleMaster_branchid
             where sm.SaleMaster_branchid = '$branchId'
@@ -383,6 +389,7 @@ class Sales extends CI_Controller
                 'SalseCustomer_IDNo'             => $data->sales->customerId,
                 'employee_id'                    => $data->sales->employeeId,
                 'PONo'                           => $data->sales->PONo,
+                'contract_no'                    => $data->sales->contract_no,
                 'SaleMaster_SaleDate'            => $data->sales->salesDate,
                 'SaleMaster_SaleType'            => $data->sales->salesType,
                 'SaleMaster_TotalSaleAmount'     => $data->sales->total,
@@ -1885,12 +1892,12 @@ class Sales extends CI_Controller
         try {
             $data = json_decode($this->input->raw_input_stream);
             if ($data->status == 'a') {
-                $currentSaleDetails = $this->db->query("select * from tbl_saledetails where SaleMaster_IDNo = ?", $data->saleId)->result();
+                $currentSaleDetails = $this->db->query("select *, p.Product_Name from tbl_saledetails left join tbl_product p on p.Product_SlNo = Product_IDNo where SaleMaster_IDNo = ?", $data->saleId)->result();
 
                 foreach ($currentSaleDetails as $product) {
                     $stock = $this->mt->productStock($product->Product_IDNo);
                     if ($stock < $product->SaleDetails_TotalQuantity) {
-                        $res = ['status' => true, 'message' => 'Stock Unavailable!'];
+                        $res = ['status' => true, 'message' => 'Stock Unavailable!', 'product' => $product];
                         echo json_encode($res);
                         exit;
                     }

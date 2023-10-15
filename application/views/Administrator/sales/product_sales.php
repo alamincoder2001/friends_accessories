@@ -246,12 +246,12 @@
 									</div>
 								</div>
 
-								<div class="form-group">
+								<!-- <div class="form-group">
 									<label class="col-xs-3 control-label no-padding"> ContractNo. </label>
 									<div class="col-xs-9">
 										<input type="text" id="contract_no" placeholder="Contract No" class="form-control" v-model="selectedProduct.contract_no" required autocomplete="off"/>
 									</div>
-								</div>
+								</div> -->
 
 								<div class="form-group">
 									<label class="col-xs-3 control-label no-padding"> Ship Date. </label>
@@ -390,6 +390,16 @@
 						<div class="col-xs-12">
 							<div class="table-responsive">
 								<table style="color:#000;margin-bottom: 0px;border-collapse: collapse;">
+									<tr>
+										<td>
+											<div class="form-group">
+												<label class="col-xs-12 control-label no-padding-right">Contract No</label>
+												<div class="col-xs-12">
+												<input type="text" id="contract_no" placeholder="Contract No" class="form-control" v-model="sales.contract_no" required autocomplete="off"/>
+												</div>
+											</div>
+										</td>
+									</tr>
 									<tr>
 										<td>
 											<div class="form-group">
@@ -543,6 +553,7 @@
 					isService: '<?php echo $isService; ?>',
 					note: '',
 					PONo: '',
+					contract_no: '',
 				},
 				vatPercent: 0,
 				discountPercent: 0,
@@ -730,6 +741,10 @@
 				this.$refs.productPurchaseRate.type = this.$refs.productPurchaseRate.type == 'text' ? 'password' : 'text';
 			},
 			addToCart() {
+				if (this.sales.contract_no == '') {
+					alert("Contract no empty");
+					return
+				}
 				if (this.selectedProduct.Product_SlNo == '') {
 					document.querySelector("#product [type='search']").focus();
 					return
@@ -744,7 +759,7 @@
 					vat: this.selectedProduct.vat,
 					quantity: this.selectedProduct.quantity,
 					total: this.selectedProduct.total,
-					contract_no: this.selectedProduct.contract_no,
+					contract_no: this.sales.contract_no,
 					ship_date: this.ship_date,
 					remark: this.selectedProduct.remark,
 					purchaseRate: this.selectedProduct.Product_Purchase_Rate
@@ -819,6 +834,10 @@
 				}
 			},
 			async saveSales() {
+				if (this.sales.PONo == '') {
+					alert('PO No empty');
+					return;
+				}
 				if (this.selectedCustomer.Customer_SlNo == '') {
 					alert('Select Buyer');
 					return;
