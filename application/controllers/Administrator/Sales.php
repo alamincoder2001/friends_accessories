@@ -1376,7 +1376,7 @@ class Sales extends CI_Controller
     }
     public function saleInvoicePrint($saleId)
     {
-        $data['title'] = "Sales Invoice";
+        $data['title'] = "Purchase Order Invoice";
         $data['salesId'] = $saleId;
         $data['content'] = $this->load->view('Administrator/sales/sellAndreport', $data, TRUE);
         $this->load->view('Administrator/index', $data);
