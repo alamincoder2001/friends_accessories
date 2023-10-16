@@ -39,6 +39,20 @@ class Model_Table extends CI_Model{
 		
 		return $invoice;
     }
+    public function generateJobCardInvoice(){
+        $branchId = $this->session->userdata('BRANCHid');
+        $branchNo = strlen($branchId) < 10 ? '0' . $branchId : $branchId;
+        $invoice = date('y') . $branchNo . "00001";
+        $year = date('y');
+        $sales = $this->db->query("select * from tbl_jobcardmaster sm where sm.id like '$year%' and Job_branchId = ?", $branchId);
+        if($sales->num_rows() != 0){
+            $newSalesId = $sales->num_rows() + 1;
+            $zeros = array('0', '00', '000', '0000');
+            $invoice = date('y') . $branchNo . (strlen($newSalesId) > count($zeros) ? $newSalesId : $zeros[count($zeros) - strlen($newSalesId)] . $newSalesId);
+		}
+		
+		return $invoice;
+    }
 
 
     public function generateQuotationInvoice(){

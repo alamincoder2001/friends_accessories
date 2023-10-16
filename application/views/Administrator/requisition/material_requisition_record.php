@@ -102,7 +102,7 @@
                             <td>
                                 <?php if ($this->session->userdata('accountType') != 'u') { ?>
                                     <a href="" v-if="requisition.status == 'p'" v-bind:href="`material_purchase/0/${requisition.requisition_id}`" target="_blank"><i class="fa fa-shopping-cart" style="font-size: 16px;"></i></a>
-                                    <a href="" v-if="requisition.status == 'p'" v-bind:href="`material_requisition/${requisition.requisition_id}`"><i class="fa fa-pencil-square" style="font-size: 16px;"></i></a>
+                                    <a href="" v-if="requisition.status == 'p'" v-bind:href="`material_requisition/${requisition.requisition_id}/0`"><i class="fa fa-pencil-square" style="font-size: 16px;"></i></a>
                                     <a href="" v-bind:href="`material_requisition_invoice/${requisition.requisition_id}`" target="_blank"><i class="fa fa-file-text" style="font-size: 16px;"></i></a>
                                     <a href="" v-if="requisition.status == 'p'" v-on:click.prevent="deleteRequisition(requisition.requisition_id, requisition.invoice_no)"><i class="fa fa-trash" style="font-size: 16px;"></i></a>
                                 <?php } ?>

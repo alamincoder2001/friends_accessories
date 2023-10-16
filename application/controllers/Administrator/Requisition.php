@@ -22,8 +22,8 @@ class Requisition extends CI_Controller
         if (!$access) {
             redirect(base_url());
         }
-        $saleInv = $this->db->query("SELECT * FROM tbl_salesmaster sm WHERE sm.SaleMaster_SlNo = '$saleId'")->row();
 
+        $saleInv = $this->db->query("SELECT * FROM tbl_salesmaster sm WHERE sm.SaleMaster_SlNo = '$saleId'")->row();
         $data['title'] = "Requistion Entry";
         $data['requisition_id'] = $requisition_id;
         $data['work_order'] = empty($saleInv) ? 0 : $saleInv->SaleMaster_InvoiceNo;
