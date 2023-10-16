@@ -242,7 +242,7 @@
 								<div class="form-group">
 									<label class="col-xs-3 control-label no-padding"> Item Code. </label>
 									<div class="col-xs-9">
-										<input type="text" id="Item_Code" placeholder="Item Code" class="form-control" v-model="selectedProduct.Item_Code" required autocomplete="off"/>
+										<input type="text" id="Item_Code" placeholder="Item Code" class="form-control" v-model="selectedProduct.Item_Code" required autocomplete="off" />
 									</div>
 								</div>
 
@@ -395,7 +395,7 @@
 											<div class="form-group">
 												<label class="col-xs-12 control-label no-padding-right">Contract No</label>
 												<div class="col-xs-12">
-												<input type="text" id="contract_no" placeholder="Contract No" class="form-control" v-model="sales.contract_no" required autocomplete="off"/>
+													<input type="text" id="contract_no" placeholder="Contract No" class="form-control" v-model="sales.contract_no" required autocomplete="off" />
 												</div>
 											</div>
 										</td>
@@ -918,6 +918,8 @@
 					this.sales.previousDue = sales.SaleMaster_Previous_Due;
 					this.sales.due = sales.SaleMaster_DueAmount;
 					this.sales.note = sales.SaleMaster_Description;
+					this.sales.PONo = sales.PONo;
+					this.sales.contract_no = sales.contract_no;
 
 					this.oldCustomerId = sales.SalseCustomer_IDNo;
 					this.oldPreviousDue = sales.SaleMaster_Previous_Due;
@@ -945,6 +947,9 @@
 						let cartProduct = {
 							productCode: product.Product_Code,
 							productId: product.Product_IDNo,
+							Item_Code: product.Item_Code,
+							contract_no: product.contract_no,
+							ship_date: product.ship_date,
 							categoryName: product.ProductCategory_Name,
 							name: product.Product_Name,
 							salesRate: product.SaleDetails_Rate,
@@ -952,6 +957,7 @@
 							quantity: product.SaleDetails_TotalQuantity,
 							total: product.SaleDetails_TotalAmount,
 							purchaseRate: product.Purchase_Rate,
+							remark: product.remark,
 						}
 
 						this.cart.push(cartProduct);
