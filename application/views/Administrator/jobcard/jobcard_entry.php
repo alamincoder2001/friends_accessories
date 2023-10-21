@@ -257,6 +257,16 @@
                                     <tr>
                                         <td>
                                             <div class="form-group">
+                                                <label class="col-xs-12 control-label no-padding-right">Work Order</label>
+                                                <div class="col-xs-12">
+                                                    <input type="number" id="work_order" class="form-control" v-model="sales.work_order" readonly />
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="form-group">
                                                 <label class="col-xs-12 control-label no-padding-right">Sub Total</label>
                                                 <div class="col-xs-12">
                                                     <input type="number" id="subTotal" class="form-control" v-model="sales.subTotal" readonly />
@@ -317,7 +327,7 @@
                                         </td>
                                     </tr>
 
-                                    <tr>
+                                    <tr style="display: none;">
                                         <td>
                                             <div class="form-group">
                                                 <label class="col-xs-12 control-label no-padding-right">Paid</label>
@@ -328,7 +338,7 @@
                                         </td>
                                     </tr>
 
-                                    <tr>
+                                    <tr style="display: none;">
                                         <td>
                                             <div class="form-group">
                                                 <label class="col-xs-12 control-label">Due</label>
@@ -377,6 +387,7 @@
         data() {
             return {
                 sales: {
+                    work_order: '<?php echo $salesId; ?>',
                     salesId: parseInt('<?php echo $jobcardId; ?>'),
                     invoiceNo: '<?php echo $invoice; ?>',
                     salesBy: '<?php echo $this->session->userdata("FullName"); ?>',
@@ -704,6 +715,7 @@
                     let r = res.data;
                     let sales = r.jobcard[0];
                     this.sales.salesBy = sales.AddBy;
+                    this.sales.WorkOrderId = sales.WorkOrderId;
                     this.sales.salesFrom = sales.Job_branchId;
                     this.sales.salesDate = sales.JobDate;
                     this.sales.customerId = sales.Customer_Id;

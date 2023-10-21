@@ -110,7 +110,7 @@ const jobcardInvoice = Vue.component('jobcard-invoice', {
                 </div>
                 <div class="row">
                     <div class="col-xs-12">
-                        <strong>In Word: </strong> {{ convertNumberToWords(sales.totalAmount) }}<br><br>
+                        <!--<strong>In Word: </strong> {{ convertNumberToWords(sales.totalAmount) }}<br><br>-->
                         <strong>Note: </strong>
                         <p style="white-space: pre-line">{{ sales.note }}</p>
                     </div>

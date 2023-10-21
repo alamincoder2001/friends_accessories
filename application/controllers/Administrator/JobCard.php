@@ -17,7 +17,7 @@ class JobCard extends CI_Controller
         $this->load->model('SMS_model', 'sms', true);
     }
 
-    public function index()
+    public function index($salesId = 0)
     {
         $access = $this->mt->userAccess();
         if (!$access) {
@@ -28,6 +28,7 @@ class JobCard extends CI_Controller
         $invoice = $this->mt->generateJobCardInvoice();
 
         $data['jobcardId'] = 0;
+        $data['salesId'] = $salesId;
         $data['invoice'] = $invoice;
         $data['content'] = $this->load->view('Administrator/jobcard/jobcard_entry', $data, TRUE);
         $this->load->view('Administrator/index', $data);
@@ -50,7 +51,7 @@ class JobCard extends CI_Controller
             $sales = array(
                 'JobcardNo'          => $invoice,
                 'Customer_Id'        => $customerId,
-                'WorkOrderId'        => $customerId,
+                'WorkOrderId'        => $data->sales->work_order,
                 'employeeId'         => $data->sales->employeeId,
                 'JobDate'            => $data->sales->salesDate,
                 'totalAmount'        => $data->sales->total,
@@ -114,11 +115,12 @@ class JobCard extends CI_Controller
         echo json_encode($res);
     }
 
-    public function jobcardEdit($jobcardId)
+    public function jobcardEdit($salesId = 0, $jobcardId = 0)
     {
         $data['title'] = "Jobcard update";
         $sales = $this->db->query("select * from tbl_jobcardmaster where id = ?", $jobcardId)->row();
         $data['jobcardId'] = $jobcardId;
+        $data['salesId'] = $salesId;
         $data['invoice'] = $sales->JobcardNo;
         $data['content'] = $this->load->view('Administrator/jobcard/jobcard_entry', $data, TRUE);
         $this->load->view('Administrator/index', $data);

@@ -299,14 +299,14 @@ $route['invoiceProductPrint'] = 'Administrator/Reports/branchwise_invoice_produc
 $route['chalan/(:any)'] = 'Administrator/Sales/chalan/$1';
 
 //Jobcard==================
-$route['jobcard']        = 'Administrator/JobCard/index';
-$route['jobcard/(:any)'] = 'Administrator/JobCard/jobcardEdit/$1';
-$route['add_jobcard']    = 'Administrator/JobCard/addJobCard';
-$route['get_jobcard']    = 'Administrator/JobCard/getJobCard';
-$route['update_jobcard'] = 'Administrator/JobCard/updateJobCard';
-$route['delete_jobcard'] = 'Administrator/JobCard/deleteJobCard';
-$route['jobcard_record'] = 'Administrator/JobCard/jobcard_record';
-$route['get_jobcard_record'] = 'Administrator/JobCard/getJobCardRecord';
+$route['jobcard/(:any)']               = 'Administrator/JobCard/index/$1/$2';
+$route['jobcard/(:any)/(:any)']        = 'Administrator/JobCard/jobcardEdit/$1';
+$route['add_jobcard']                  = 'Administrator/JobCard/addJobCard';
+$route['get_jobcard']                  = 'Administrator/JobCard/getJobCard';
+$route['update_jobcard']               = 'Administrator/JobCard/updateJobCard';
+$route['delete_jobcard']               = 'Administrator/JobCard/deleteJobCard';
+$route['jobcard_record']               = 'Administrator/JobCard/jobcard_record';
+$route['get_jobcard_record']           = 'Administrator/JobCard/getJobCardRecord';
 $route['jobcard_invoice_print/(:any)'] = 'Administrator/JobCard/JobcardInvoicePrint/$1';
 
 
