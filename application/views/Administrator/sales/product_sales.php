@@ -858,7 +858,7 @@
 				}
 
 				if (parseFloat(this.selectedCustomer.Customer_Credit_Limit) < (parseFloat(this.sales.due) + parseFloat(this.sales.previousDue))) {
-					alert(`Customer credit limit (${this.selectedCustomer.Customer_Credit_Limit}) exceeded`);
+					alert(`Buyer credit limit (${this.selectedCustomer.Customer_Credit_Limit}) exceeded`);
 					this.saleOnProgress = false;
 					return;
 				}

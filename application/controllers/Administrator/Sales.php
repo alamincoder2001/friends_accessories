@@ -1241,6 +1241,8 @@ class Sales extends CI_Controller
 
         $this->load->view('Administrator/sales/sales_invoice_search', $datas);
     }
+
+
     function sales_record()
     {
         $access = $this->mt->userAccess();

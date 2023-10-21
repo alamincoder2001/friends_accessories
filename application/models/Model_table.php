@@ -44,7 +44,7 @@ class Model_Table extends CI_Model{
         $branchNo = strlen($branchId) < 10 ? '0' . $branchId : $branchId;
         $invoice = date('y') . $branchNo . "00001";
         $year = date('y');
-        $sales = $this->db->query("select * from tbl_jobcardmaster sm where sm.id like '$year%' and Job_branchId = ?", $branchId);
+        $sales = $this->db->query("select * from tbl_jobcardmaster sm where sm.JobcardNo like '$year%' and sm.Job_branchId = ?", $branchId);
         if($sales->num_rows() != 0){
             $newSalesId = $sales->num_rows() + 1;
             $zeros = array('0', '00', '000', '0000');

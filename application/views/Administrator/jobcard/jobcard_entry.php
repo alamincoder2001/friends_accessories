@@ -68,7 +68,7 @@
 
             <div class="form-group">
                 <label class="col-md-1 col-xs-4 control-label no-padding-right">Date:</label>
-                <div class="col-md-3 col-xs-12">
+                <div class="col-md-3 col-xs-8">
                     <input class="form-control" style="margin: 0;" id="salesDate" type="date" v-model="sales.salesDate" v-bind:disabled="userType == 'u' ? true : false" />
                 </div>
             </div>
@@ -377,7 +377,7 @@
         data() {
             return {
                 sales: {
-                    salesId: parseInt('<?php echo $salesId; ?>'),
+                    salesId: parseInt('<?php echo $jobcardId; ?>'),
                     invoiceNo: '<?php echo $invoice; ?>',
                     salesBy: '<?php echo $this->session->userdata("FullName"); ?>',
                     salesType: 'retail',
@@ -465,15 +465,6 @@
             },
             companyOnChange() {
                 this.getCustomers();
-                this.selectedCustomer = {
-                    Customer_SlNo: '',
-                    Customer_Code: '',
-                    Customer_Name: '',
-                    display_name: 'Select Buyer',
-                    Customer_Mobile: '',
-                    Customer_Address: '',
-                    Customer_Type: ''
-                };
             },
             async getCustomers() {
                 await axios.post('/get_customers', {
@@ -664,14 +655,14 @@
 
                 await this.getCustomerDue();
 
-                let url = "/add_sales";
+                let url = "/add_jobcard";
                 if (this.sales.salesId != 0) {
-                    url = "/update_sales";
+                    url = "/update_jobcard";
                     this.sales.previousDue = parseFloat((this.sales.previousDue - this.sales_due_on_update)).toFixed(2);
                 }
 
                 if (parseFloat(this.selectedCustomer.Customer_Credit_Limit) < (parseFloat(this.sales.due) + parseFloat(this.sales.previousDue))) {
-                    alert(`Customer credit limit (${this.selectedCustomer.Customer_Credit_Limit}) exceeded`);
+                    alert(`Buyer credit limit (${this.selectedCustomer.Customer_Credit_Limit}) exceeded`);
                     this.saleOnProgress = false;
                     return;
                 }
@@ -704,32 +695,28 @@
                 })
             },
             async getSales() {
-                await axios.post('/get_sales', {
+                await axios.post('/get_jobcard', {
                     salesId: this.sales.salesId
                 }).then(res => {
                     let r = res.data;
-                    let sales = r.sales[0];
+                    let sales = r.jobcard[0];
                     this.sales.salesBy = sales.AddBy;
-                    this.sales.salesFrom = sales.SaleMaster_branchid;
-                    this.sales.salesDate = sales.SaleMaster_SaleDate;
-                    this.sales.salesType = sales.SaleMaster_SaleType;
-                    this.sales.customerId = sales.SalseCustomer_IDNo;
+                    this.sales.salesFrom = sales.Job_branchId;
+                    this.sales.salesDate = sales.JobDate;
+                    this.sales.customerId = sales.Customer_Id;
                     this.sales.employeeId = sales.Employee_SlNo;
-                    this.sales.subTotal = sales.SaleMaster_SubTotalAmount;
-                    this.sales.discount = sales.SaleMaster_TotalDiscountAmount;
-                    this.sales.vat = sales.SaleMaster_TaxAmount;
-                    this.sales.transportCost = sales.SaleMaster_Freight;
-                    this.sales.total = sales.SaleMaster_TotalSaleAmount;
-                    this.sales.paid = sales.SaleMaster_PaidAmount;
-                    this.sales.previousDue = sales.SaleMaster_Previous_Due;
-                    this.sales.due = sales.SaleMaster_DueAmount;
-                    this.sales.note = sales.SaleMaster_Description;
-                    this.sales.PONo = sales.PONo;
-                    this.sales.contract_no = sales.contract_no;
+                    this.sales.subTotal = sales.subTotal;
+                    this.sales.discount = sales.discount;
+                    this.sales.transportCost = sales.Job_Freight;
+                    this.sales.total = sales.totalAmount;
+                    this.sales.paid = sales.JobCard_PaidAmount;
+                    this.sales.previousDue = sales.Previous_Due;
+                    this.sales.due = sales.due;
+                    this.sales.note = sales.note;
 
-                    this.oldCustomerId = sales.SalseCustomer_IDNo;
-                    this.oldPreviousDue = sales.SaleMaster_Previous_Due;
-                    this.sales_due_on_update = sales.SaleMaster_DueAmount;
+                    this.oldCustomerId = sales.Customer_Id;
+                    this.oldPreviousDue = sales.Previous_Due;
+                    this.sales_due_on_update = sales.due;
 
                     this.vatPercent = parseFloat(this.sales.vat) * 100 / parseFloat(this.sales.subTotal);
                     this.discountPercent = parseFloat(this.sales.discount) * 100 / parseFloat(this.sales.subTotal);
@@ -739,17 +726,22 @@
                         Employee_Name: sales.Employee_Name
                     }
 
+                    this.selectedCompany = {
+                        Company_SlNo: sales.Company_SlNo,
+                        display_name: `${sales.Company_Code} - ${sales.Company_Name} - ${sales.Company_Mobile}`,
+                    }
+
                     this.selectedCustomer = {
-                        Customer_SlNo: sales.SalseCustomer_IDNo,
+                        Customer_SlNo: sales.Customer_Id,
                         Customer_Code: sales.Customer_Code,
                         Customer_Name: sales.Customer_Name,
-                        display_name: sales.Customer_Type == 'G' ? 'General Customer' : `${sales.Customer_Code} - ${sales.Customer_Name}`,
+                        display_name: `${sales.Customer_Code} - ${sales.Customer_Name}`,
                         Customer_Mobile: sales.Customer_Mobile,
                         Customer_Address: sales.Customer_Address,
                         Customer_Type: sales.Customer_Type
                     }
 
-                    r.saleDetails.forEach(product => {
+                    r.jobDetails.forEach(product => {
                         let cartProduct = {
                             productCode: product.Product_Code,
                             productId: product.Product_IDNo,
