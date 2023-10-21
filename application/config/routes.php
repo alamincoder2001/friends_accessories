@@ -307,6 +307,7 @@ $route['update_jobcard'] = 'Administrator/JobCard/updateJobCard';
 $route['delete_jobcard'] = 'Administrator/JobCard/deleteJobCard';
 $route['jobcard_record'] = 'Administrator/JobCard/jobcard_record';
 $route['get_jobcard_record'] = 'Administrator/JobCard/getJobCardRecord';
+$route['jobcard_invoice_print/(:any)'] = 'Administrator/JobCard/JobcardInvoicePrint/$1';
 
 
 //Quotation================

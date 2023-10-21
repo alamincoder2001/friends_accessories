@@ -204,7 +204,7 @@ class JobCard extends CI_Controller
         }
 
         if (isset($data->salesId) && $data->salesId != 0 && $data->salesId != '') {
-            $clauses .= " and id = '$data->salesId'";
+            $clauses .= " and sm.id = '$data->salesId'";
             $jobDetails = $this->db->query("
                 select 
                     sd.*,
