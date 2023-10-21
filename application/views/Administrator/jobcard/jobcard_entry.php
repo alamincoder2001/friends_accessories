@@ -259,7 +259,7 @@
                                             <div class="form-group">
                                                 <label class="col-xs-12 control-label no-padding-right">Work Order</label>
                                                 <div class="col-xs-12">
-                                                    <input type="number" id="work_order" class="form-control" v-model="sales.work_order" readonly />
+                                                    <input type="text" id="work_order" class="form-control" v-model="sales.work_order" readonly />
                                                 </div>
                                             </div>
                                         </td>

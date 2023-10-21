@@ -26,7 +26,6 @@ class JobCard extends CI_Controller
         $data['title'] = "JobCard Entry";
 
         $invoice = $this->mt->generateJobCardInvoice();
-
         $data['jobcardId'] = 0;
         $data['salesId'] = $salesId;
         $data['invoice'] = $invoice;
@@ -264,7 +263,7 @@ class JobCard extends CI_Controller
 
             $sales = array(
                 'Customer_Id'        => $data->sales->customerId,
-                'WorkOrderId'        => $data->sales->salesId,
+                'WorkOrderId'        => $data->sales->work_order,
                 'employeeId'         => $data->sales->employeeId,
                 'JobDate'            => $data->sales->salesDate,
                 'totalAmount'        => $data->sales->total,
@@ -304,7 +303,7 @@ class JobCard extends CI_Controller
                 $this->db->insert('tbl_jobcarddetails', $saleDetails);
             }
 
-            $res = ['success' => true, 'message' => 'Jobcart Updated', 'salesId' => $jobcardId];
+            $res = ['success' => true, 'message' => 'Jobcart Updated', 'jobcardId' => $jobcardId];
         } catch (Exception $ex) {
             $res = ['success' => false, 'message' => $ex->getMessage()];
         }

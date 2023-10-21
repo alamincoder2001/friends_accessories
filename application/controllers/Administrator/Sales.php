@@ -351,12 +351,14 @@ class Sales extends CI_Controller
             cm.Company_Code,
             cm.Company_Name,
             cm.Company_Mobile,
-            cm.Company_Address
+            cm.Company_Address,
+            jm.WorkOrderId
             from tbl_salesmaster sm
             left join tbl_customer c on c.Customer_SlNo = sm.SalseCustomer_IDNo
             left join tbl_companies cm on cm.Company_SlNo = c.Company_Id
             left join tbl_employee e on e.Employee_SlNo = sm.employee_id
             left join tbl_brunch br on br.brunch_id = sm.SaleMaster_branchid
+            left join tbl_jobcardmaster jm on jm.WorkOrderId = sm.SaleMaster_InvoiceNo
             where sm.SaleMaster_branchid = '$branchId'
             and sm.Status != 'd'
             $clauses
