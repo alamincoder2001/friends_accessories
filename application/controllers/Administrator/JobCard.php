@@ -253,89 +253,56 @@ class JobCard extends CI_Controller
         echo json_encode($res);
     }
 
-    public function updateSales()
+    public function updateJobCard()
     {
         $res = ['success' => false, 'message' => ''];
         try {
             $data = json_decode($this->input->raw_input_stream);
-            $salesId = $data->sales->salesId;
-
-            if (isset($data->customer)) {
-                $customer = (array)$data->customer;
-                unset($customer['Customer_SlNo']);
-                unset($customer['display_name']);
-                $customer['UpdateBy'] = $this->session->userdata("FullName");
-                $customer['UpdateTime'] = date("Y-m-d H:i:s");
-
-                $this->db->where('Customer_SlNo', $data->sales->customerId)->update('tbl_customer', $customer);
-            }
+            $jobcardId = $data->sales->salesId;
 
             $sales = array(
-                'SalseCustomer_IDNo'             => $data->sales->customerId,
-                'employee_id'                    => $data->sales->employeeId,
-                'PONo'                           => $data->sales->PONo,
-                'contract_no'                    => $data->sales->contract_no,
-                'SaleMaster_SaleDate'            => $data->sales->salesDate,
-                'SaleMaster_SaleType'            => $data->sales->salesType,
-                'SaleMaster_TotalSaleAmount'     => $data->sales->total,
-                'SaleMaster_TotalDiscountAmount' => $data->sales->discount,
-                'SaleMaster_TaxAmount'           => $data->sales->vat,
-                'SaleMaster_Freight'             => $data->sales->transportCost,
-                'SaleMaster_SubTotalAmount'      => $data->sales->subTotal,
-                'SaleMaster_PaidAmount'          => $data->sales->paid,
-                'SaleMaster_DueAmount'           => $data->sales->due,
-                'SaleMaster_Previous_Due'        => $data->sales->previousDue,
-                'SaleMaster_Description'         => $data->sales->note,
-                "UpdateBy"                       => $this->session->userdata("FullName"),
-                'UpdateTime'                     => date("Y-m-d H:i:s"),
-                "SaleMaster_branchid"            => $this->session->userdata("BRANCHid"),
+                'Customer_Id'        => $data->sales->customerId,
+                'WorkOrderId'        => $data->sales->salesId,
+                'employeeId'         => $data->sales->employeeId,
+                'JobDate'            => $data->sales->salesDate,
+                'totalAmount'        => $data->sales->total,
+                'discount'           => $data->sales->discount,
+                'Job_Freight'        => $data->sales->transportCost,
+                'subTotal'           => $data->sales->subTotal,
+                'JobCard_PaidAmount' => $data->sales->paid,
+                'due'                => $data->sales->due,
+                'Previous_Due'       => $data->sales->previousDue,
+                'note'               => $data->sales->note,
+                'Status'             => 'a',
+                "UpdateBy"           => $this->session->userdata("FullName"),
+                'UpdateTime'         => date("Y-m-d H:i:s"),
+                "Job_branchId"       => $this->session->userdata("BRANCHid"),
             );
 
-            $this->db->where('SaleMaster_SlNo', $salesId);
-            $this->db->update('tbl_salesmaster', $sales);
+            $this->db->where('id', $jobcardId);
+            $this->db->update('tbl_jobcardmaster', $sales);
 
-            $currentSaleDetails = $this->db->query("select * from tbl_saledetails where SaleMaster_IDNo = ?", $salesId)->result();
-
-            foreach ($currentSaleDetails as $product) {
-                $this->db->query("
-                update tbl_currentinventory 
-                set sales_quantity = sales_quantity - ? 
-                where product_id = ?
-                and branch_id = ?
-                ", [$product->SaleDetails_TotalQuantity, $product->Product_IDNo, $this->session->userdata('BRANCHid')]);
-            }
-            $this->db->query("delete from tbl_saledetails where SaleMaster_IDNo = ?", $salesId);
+            $this->db->query("delete from tbl_jobcarddetails where JobCardMaster_IDNo = ?", $jobcardId);
 
             foreach ($data->cart as $cartProduct) {
                 $saleDetails = array(
-                    'SaleMaster_IDNo'           => $salesId,
+                    'JobCardMaster_IDNo'        => $jobcardId,
                     'Product_IDNo'              => $cartProduct->productId,
-                    'Item_Code'                 => $cartProduct->Item_Code,
-                    'contract_no'               => $cartProduct->contract_no,
-                    'ship_date'                 => $cartProduct->ship_date,
                     'SaleDetails_TotalQuantity' => $cartProduct->quantity,
                     'Purchase_Rate'             => $cartProduct->purchaseRate,
                     'SaleDetails_Rate'          => $cartProduct->salesRate,
                     'SaleDetails_Tax'           => $cartProduct->vat,
                     'SaleDetails_TotalAmount'   => $cartProduct->total,
                     'Status'                    => 'a',
-                    'remark'                    => $cartProduct->remark,
                     'AddBy'                     => $this->session->userdata("FullName"),
                     'AddTime'                   => date('Y-m-d H:i:s'),
-                    'SaleDetails_BranchId'      => $this->session->userdata("BRANCHid")
+                    'SaleDetails_BranchId'      => $this->session->userdata('BRANCHid')
                 );
 
-                $this->db->insert('tbl_saledetails', $saleDetails);
-
-                $this->db->query("
-                    update tbl_currentinventory 
-                    set sales_quantity = sales_quantity + ? 
-                    where product_id = ?
-                    and branch_id = ?
-                ", [$cartProduct->quantity, $cartProduct->productId, $this->session->userdata('BRANCHid')]);
+                $this->db->insert('tbl_jobcarddetails', $saleDetails);
             }
 
-            $res = ['success' => true, 'message' => 'Sales Updated', 'salesId' => $salesId];
+            $res = ['success' => true, 'message' => 'Jobcart Updated', 'salesId' => $jobcardId];
         } catch (Exception $ex) {
             $res = ['success' => false, 'message' => $ex->getMessage()];
         }

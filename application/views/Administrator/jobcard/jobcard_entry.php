@@ -102,7 +102,7 @@
                                     <v-select :options="companies" label="display_name" v-model="selectedCompany" @input="companyOnChange" placeholder="Select Company"></v-select>
                                 </div>
                                 <div class="col-xs-1" style="padding: 0;">
-                                    <a href="<?= base_url('customer') ?>" class="btn btn-xs btn-danger" style="height: 25px; border: 0; width: 27px; margin-left: -10px;" target="_blank" title="Add New Customer"><i class="fa fa-plus" aria-hidden="true" style="margin-top: 5px;"></i></a>
+                                    <a href="<?= base_url('company') ?>" class="btn btn-xs btn-danger" style="height: 25px; border: 0; width: 27px; margin-left: -10px;" target="_blank" title="Add New Customer"><i class="fa fa-plus" aria-hidden="true" style="margin-top: 5px;"></i></a>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -460,7 +460,10 @@
             },
             getCompanies() {
                 axios.get('/get_companies').then(res => {
-                    this.companies = res.data;
+                    this.companies = res.data.map(com => {
+                        com.display_name = toCapitalize(com.display_name)
+                        return com;
+                    });
                 })
             },
             companyOnChange() {
@@ -481,7 +484,10 @@
                 axios.post('/get_products', {
                     isService: 'false'
                 }).then(res => {
-                    this.products = res.data;
+                    this.products = res.data.map(pro => {
+                        pro.display_text = toCapitalize(pro.display_text)
+                        return pro;
+                    });
                 })
             },
             productTotal() {
@@ -638,10 +644,6 @@
                 }
             },
             async saveSales() {
-                if (this.sales.PONo == '') {
-                    alert('PO No empty');
-                    return;
-                }
                 if (this.selectedCustomer.Customer_SlNo == '') {
                     alert('Select Buyer');
                     return;
@@ -658,7 +660,7 @@
                 let url = "/add_jobcard";
                 if (this.sales.salesId != 0) {
                     url = "/update_jobcard";
-                    this.sales.previousDue = parseFloat((this.sales.previousDue - this.sales_due_on_update)).toFixed(2);
+                    // this.sales.previousDue = parseFloat((this.sales.previousDue - this.sales_due_on_update)).toFixed(2);
                 }
 
                 if (parseFloat(this.selectedCustomer.Customer_Credit_Limit) < (parseFloat(this.sales.due) + parseFloat(this.sales.previousDue))) {
@@ -688,6 +690,7 @@
                     let r = res.data;
                     if (r.success) {
                         alert(r.message)
+                        location.href = '/jobcard'
                     } else {
                         alert(r.message);
                         this.saleOnProgress = false;
@@ -763,4 +766,9 @@
             }
         }
     })
+
+    var toCapitalize = Array.prototype.toCapitalize = function(d) {
+        // return d.charAt().toLocaleUpperCase() + d.slice(1, d.length);
+        return d.toUpperCase().trim('');
+    }
 </script>

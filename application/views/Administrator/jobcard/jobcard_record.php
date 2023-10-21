@@ -156,10 +156,10 @@
 								<td style="text-align:center;">{{ sale.saleDetails[0].SaleDetails_TotalQuantity }}</td>
 								<td style="text-align:right;">{{ sale.saleDetails[0].SaleDetails_TotalAmount }}</td>
 								<td style="text-align:center;">
-									<a href="" title="Purchase Order Invoice" v-bind:href="`/sale_invoice_print/${sale.SaleMaster_SlNo}`" target="_blank"><i class="fa fa-file"></i></a>
+									<a href="" title="Jobcard Invoice" v-bind:href="`/sale_invoice_print/${sale.SaleMaster_SlNo}`" target="_blank"><i class="fa fa-file"></i></a>
 									<a href="" title="Chalan" v-bind:href="`/chalan/${sale.SaleMaster_SlNo}`" target="_blank"><i class="fa fa-file-o"></i></a>
 									<?php if ($this->session->userdata('accountType') != 'u') { ?>
-										<a href="javascript:" title="Edit Purchase Order" @click="checkReturnAndEdit(sale)"><i class="fa fa-edit"></i></a>
+										<a href="javascript:" title="Edit Jobcard" @click="checkReturnAndEdit(sale)"><i class="fa fa-edit"></i></a>
 										<a href="" title="Delete Purchase" @click.prevent="deleteSale(sale.SaleMaster_SlNo)"><i class="fa fa-trash"></i></a>
 									<?php } ?>
 								</td>
@@ -219,11 +219,10 @@
 							<td style="text-align:right;">{{ sale.due }}</td>
 							<td style="text-align:left;">{{ sale.note }}</td>
 							<td style="text-align:center;">
-								<a href="" title="Purchase Order Invoice" v-bind:href="`/sale_invoice_print/${sale.SaleMaster_SlNo}`" target="_blank"><i class="fa fa-file"></i></a>
-								<a href="" title="Chalan" v-bind:href="`/chalan/${sale.SaleMaster_SlNo}`" target="_blank"><i class="fa fa-file-o"></i></a>
+								<a href="" title="Jobcard Invoice" v-bind:href="`/sale_invoice_print/${sale.id}`" target="_blank"><i class="fa fa-file"></i></a>
 								<?php if ($this->session->userdata('accountType') != 'u') { ?>
-									<a href="javascript:" title="Edit Purchase Order" @click="checkReturnAndEdit(sale)"><i class="fa fa-edit"></i></a>
-									<a href="" title="Delete Purchase" @click.prevent="deleteSale(sale.SaleMaster_SlNo)"><i class="fa fa-trash"></i></a>
+									<a href="javascript:" title="Edit Jobcard" @click="checkReturnAndEdit(sale)"><i class="fa fa-edit"></i></a>
+									<a href="" title="Delete Jobcard" @click.prevent="deleteSale(sale.id)"><i class="fa fa-trash"></i></a>
 								<?php } ?>
 							</td>
 						</tr>
