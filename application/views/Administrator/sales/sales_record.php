@@ -405,7 +405,11 @@
 					axios.post('/sale_status_change', filter)
 						.then(res => {
 							if (res.data.status) {
-								alert(res.data.message+' Product name is: '+res.data.product.Product_Name);
+								if (res.data.product) {
+									alert(res.data.message + ' Product name is: ' + res.data.product.Product_Name);
+								} else {
+									alert(res.data.message);
+								}
 								this.getSalesRecord();
 							} else {
 								console.log(res.data.message);

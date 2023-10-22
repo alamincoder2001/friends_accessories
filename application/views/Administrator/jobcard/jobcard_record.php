@@ -156,10 +156,11 @@
 								<td style="text-align:center;">{{ sale.saleDetails[0].SaleDetails_TotalQuantity }}</td>
 								<td style="text-align:right;">{{ sale.saleDetails[0].SaleDetails_TotalAmount }}</td>
 								<td style="text-align:center;">
+									<a href="" title="Go To Requisition" v-bind:href="`/material_requisition/0/${sale.WorkOrderId}`" target="_blank"><i class="fa fa-registered" style="background: #727272;padding: 3px 4px;border-radius: 5px;color: white;"></i></a>
 									<a href="" title="Jobcard Invoice" v-bind:href="`/jobcard_invoice_print/${sale.id}`" target="_blank"><i class="fa fa-file"></i></a>
 									<?php if ($this->session->userdata('accountType') != 'u') { ?>
 										<a href="javascript:" title="Edit Jobcard" @click="checkReturnAndEdit(sale)"><i class="fa fa-edit"></i></a>
-										<a href="" title="Delete Purchase" @click.prevent="deleteSale(sale.id)"><i class="fa fa-trash"></i></a>
+										<a href="" title="Delete Jobcard" @click.prevent="deleteSale(sale.id)"><i class="fa fa-trash"></i></a>
 									<?php } ?>
 								</td>
 							</tr>
@@ -218,6 +219,7 @@
 							<td style="text-align:right;">{{ sale.due }}</td>
 							<td style="text-align:left;">{{ sale.note }}</td>
 							<td style="text-align:center;">
+								<a href="" title="Go To Requisition" v-bind:href="`/material_requisition/0/${sale.WorkOrderId}`" target="_blank"><i class="fa fa-registered" style="background: #727272;padding: 3px 4px;border-radius: 5px;color: white;"></i></a>
 								<a href="" title="Jobcard Invoice" v-bind:href="`/jobcard_invoice_print/${sale.id}`" target="_blank"><i class="fa fa-file"></i></a>
 								<?php if ($this->session->userdata('accountType') != 'u') { ?>
 									<a href="javascript:" title="Edit Jobcard" @click="checkReturnAndEdit(sale)"><i class="fa fa-edit"></i></a>
@@ -342,7 +344,7 @@
 				if (deleteConf == false) {
 					return;
 				}
-				axios.post('/delete_sales', {
+				axios.post('/delete_jobcard', {
 						saleId: saleId
 					})
 					.then(res => {

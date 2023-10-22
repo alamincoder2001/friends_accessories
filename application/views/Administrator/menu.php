@@ -481,7 +481,7 @@ if ($module == 'dashboard' or $module == '') {
 			<li class="">
 				<a href="<?php echo base_url(); ?>jobcard_record">
 					<i class="menu-icon fa fa-list"></i>
-					<span class="menu-text">Jobcad Record</span>
+					<span class="menu-text">Jobcard Record</span>
 				</a>
 				<b class="arrow"></b>
 			</li>

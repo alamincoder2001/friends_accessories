@@ -18,11 +18,13 @@ const jobcardInvoice = Vue.component('jobcard-invoice', {
                 <div class="row">
                     <div class="col-xs-7">
                         <strong>Company:</strong> {{ sales.Company_Name }}<br />
-                        <strong>Buyer Name:</strong> {{ sales.Customer_Name }}
+                        <strong>Buyer Name:</strong> {{ sales.Customer_Name }}<br />
+                        <strong>PO No:</strong> {{ sales.PONo }}
                     </div>
                     <div class="col-xs-5 text-right">
                         <strong>Jobcard No.:</strong> {{ sales.JobcardNo }}<br>
-                        <strong>Date:</strong> {{ sales.JobDate | formatDateTime('DD-MM-YYYY') }} {{ sales.AddTime | formatDateTime('h:mm a') }}
+                        <strong>Date:</strong> {{ sales.JobDate | formatDateTime('DD-MM-YYYY') }} {{ sales.AddTime | formatDateTime('h:mm a') }} <br />
+                        <strong>Work Order:</strong> {{sales.WorkOrderId}}
                     </div>
                 </div>
                 <div class="row">
@@ -373,8 +375,8 @@ const jobcardInvoice = Vue.component('jobcard-invoice', {
                                     <tr>
                                         <td>
                                             <div class="row">
-                                                <div class="col-xs-5"><img src="/uploads/company_profile_org/${this.currentBranch.Company_Logo_org}" alt="Logo" style="height:80px;width:auto" /></div>
-                                                <div class="col-xs-7" style="padding-top:20px;">
+                                                <div class="col-xs-12" style="padding-top:20px;text-align:center;">
+                                                    <img src="/uploads/company_profile_org/${this.currentBranch.Company_Logo_org}" alt="Logo" style="height:80px;width:auto" /><br />
                                                     <strong style="font-size:18px;">${this.currentBranch.Company_Name}</strong><br>
                                                     <p style="white-space:pre-line;">${this.currentBranch.Repot_Heading}</p>
                                                 </div>

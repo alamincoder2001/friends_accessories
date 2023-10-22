@@ -237,12 +237,14 @@ class JobCard extends CI_Controller
             cm.Company_Code,
             cm.Company_Name,
             cm.Company_Mobile,
-            cm.Company_Address
+            cm.Company_Address,
+            ssm.PONo
             from tbl_jobcardmaster sm
             left join tbl_customer c on c.Customer_SlNo = sm.Customer_Id
             left join tbl_companies cm on cm.Company_SlNo = c.Company_Id
             left join tbl_employee e on e.Employee_SlNo = sm.employeeId
             left join tbl_brunch br on br.brunch_id = sm.Job_branchId
+            left join tbl_salesmaster ssm on ssm.SaleMaster_InvoiceNo = sm.WorkOrderId
             where sm.Job_branchId = '$branchId'
             and sm.Status != 'd'
             $clauses
@@ -328,5 +330,26 @@ class JobCard extends CI_Controller
         $data['jobcardId'] = $jobcardId;
         $data['content'] = $this->load->view('Administrator/jobcard/jobcardAndreport', $data, TRUE);
         $this->load->view('Administrator/index', $data);
+    }
+
+    /*Delete Sales Record*/
+    public function deleteJobCard()
+    {
+        $res = ['success' => false, 'message' => ''];
+        try {
+            $data = json_decode($this->input->raw_input_stream);
+            $saleId = $data->saleId;
+
+            /*Delete Sale Details*/
+            $this->db->set('Status', 'd')->where('JobCardMaster_IDNo', $saleId)->update('tbl_jobcarddetails');
+
+            /*Delete Sale Master Data*/
+            $this->db->set('Status', 'd')->where('id', $saleId)->update('tbl_jobcardmaster');
+            $res = ['success' => true, 'message' => 'Jobcard deleted'];
+        } catch (Exception $ex) {
+            $res = ['success' => false, 'message' => $ex->getMessage()];
+        }
+
+        echo json_encode($res);
     }
 }

@@ -16,17 +16,16 @@ class Requisition extends CI_Controller
         $this->load->helper('form');
     }
 
-    public function index($requisition_id = 0, $saleId = 0)
+    public function index($requisition_id = 0, $salesId = 0)
     {
         $access = $this->mt->userAccess();
         if (!$access) {
             redirect(base_url());
         }
 
-        $saleInv = $this->db->query("SELECT * FROM tbl_salesmaster sm WHERE sm.SaleMaster_SlNo = '$saleId'")->row();
         $data['title'] = "Requistion Entry";
         $data['requisition_id'] = $requisition_id;
-        $data['work_order'] = empty($saleInv) ? 0 : $saleInv->SaleMaster_InvoiceNo;
+        $data['work_order'] = empty($salesId) ? 0 : $salesId;
         $data['requisitionInvoice'] = $this->mt->generateRequisitionInvoice();
         $data['content'] = $this->load->view('Administrator/requisition/requisition_entry', $data, TRUE);
         $this->load->view('Administrator/index', $data);
