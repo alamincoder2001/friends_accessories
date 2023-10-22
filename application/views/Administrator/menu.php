@@ -60,14 +60,6 @@ if ($module == 'dashboard' or $module == '') {
 			<b class="arrow"></b>
 		</li>
 
-		<li class="">
-			<a href="<?php echo base_url(); ?>module/JobcardModule">
-				<i class="menu-icon fa fa-briefcase"></i>
-				<span class="menu-text"> Jobcard Module </span>
-			</a>
-			<b class="arrow"></b>
-		</li>
-
 		<!-- <li class="">
 			<a href="<?php echo base_url(); ?>module/PurchaseModule">
 				<i class="menu-icon fa fa-cart-plus"></i>
@@ -485,6 +477,16 @@ if ($module == 'dashboard' or $module == '') {
 			</li>
 		<?php endif; ?>
 
+		<?php if (array_search("jobcard_record", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
+			<li class="">
+				<a href="<?php echo base_url(); ?>jobcard_record">
+					<i class="menu-icon fa fa-list"></i>
+					<span class="menu-text">Jobcad Record</span>
+				</a>
+				<b class="arrow"></b>
+			</li>
+		<?php endif; ?>
+
 		<?php if (array_search("currentStock", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
 			<li class="">
 				<a href="<?php echo base_url(); ?>currentStock">
@@ -632,42 +634,6 @@ if ($module == 'dashboard' or $module == '') {
 
 
 				</ul>
-			</li>
-		<?php endif; ?>
-
-	</ul><!-- /.nav-list -->
-<?php } elseif ($module == 'JobcardModule') { ?>
-	<ul class="nav nav-list">
-
-		<li class="active">
-			<a href="<?php echo base_url(); ?>module/dashboard">
-				<i class="menu-icon fa fa-tachometer"></i>
-				<span class="menu-text"> Dashboard </span>
-			</a>
-
-			<b class="arrow"></b>
-		</li>
-		<li>
-			<a href="<?php echo base_url(); ?>module/JobcardModule" class="module_title">
-				<span> Jobcard Module </span>
-			</a>
-		</li>
-		<?php if (array_search("jobcard", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
-			<li class="">
-				<a href="<?php echo base_url(); ?>jobcard">
-					<i class="menu-icon fa fa-plus"></i>
-					<span class="menu-text">Jobcad Entry</span>
-				</a>
-				<b class="arrow"></b>
-			</li>
-		<?php endif; ?>
-		<?php if (array_search("jobcard_record", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
-			<li class="">
-				<a href="<?php echo base_url(); ?>jobcard_record">
-					<i class="menu-icon fa fa-list"></i>
-					<span class="menu-text">Jobcad Record</span>
-				</a>
-				<b class="arrow"></b>
 			</li>
 		<?php endif; ?>
 

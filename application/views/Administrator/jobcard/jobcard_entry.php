@@ -387,7 +387,8 @@
         data() {
             return {
                 sales: {
-                    work_order: '<?php echo $salesId; ?>',
+                    workId: '<?php echo $salesId; ?>',
+                    work_order: '',
                     salesId: parseInt('<?php echo $jobcardId; ?>'),
                     invoiceNo: '<?php echo $invoice; ?>',
                     salesBy: '<?php echo $this->session->userdata("FullName"); ?>',
@@ -456,6 +457,9 @@
 
             if (this.sales.salesId != 0) {
                 await this.getSales();
+            }
+            if (this.sales.workId != 0) {
+                await this.getWork();
             }
         },
         methods: {
@@ -674,11 +678,11 @@
                     // this.sales.previousDue = parseFloat((this.sales.previousDue - this.sales_due_on_update)).toFixed(2);
                 }
 
-                if (parseFloat(this.selectedCustomer.Customer_Credit_Limit) < (parseFloat(this.sales.due) + parseFloat(this.sales.previousDue))) {
-                    alert(`Buyer credit limit (${this.selectedCustomer.Customer_Credit_Limit}) exceeded`);
-                    this.saleOnProgress = false;
-                    return;
-                }
+                // if (parseFloat(this.selectedCustomer.Customer_Credit_Limit) < (parseFloat(this.sales.due) + parseFloat(this.sales.previousDue))) {
+                //     alert(`Buyer credit limit (${this.selectedCustomer.Customer_Credit_Limit}) exceeded`);
+                //     this.saleOnProgress = false;
+                //     return;
+                // }
 
                 if (this.selectedEmployee != null && this.selectedEmployee.Employee_SlNo != null) {
                     this.sales.employeeId = this.selectedEmployee.Employee_SlNo;
@@ -701,7 +705,7 @@
                     let r = res.data;
                     if (r.success) {
                         alert(r.message)
-                        location.href = '/jobcard'
+                        location.href = '/salesrecord'
                     } else {
                         alert(r.message);
                         this.saleOnProgress = false;
@@ -715,7 +719,7 @@
                     let r = res.data;
                     let sales = r.jobcard[0];
                     this.sales.salesBy = sales.AddBy;
-                    this.sales.WorkOrderId = sales.WorkOrderId;
+                    this.sales.work_order = sales.WorkOrderId;
                     this.sales.salesFrom = sales.Job_branchId;
                     this.sales.salesDate = sales.JobDate;
                     this.sales.customerId = sales.Customer_Id;
@@ -775,12 +779,36 @@
                     let gCustomerInd = this.customers.findIndex(c => c.Customer_Type == 'G');
                     this.customers.splice(gCustomerInd, 1);
                 })
+            },
+            async getWork() {
+                await axios.post('/get_sales', {
+                    salesId: this.sales.workId
+                }).then(res => {
+                    let r = res.data;
+                    let sales = r.sales[0];
+                    this.sales.customerId = sales.SalseCustomer_IDNo;
+                    this.sales.work_order = sales.SaleMaster_InvoiceNo;
+
+                    this.selectedCompany = {
+                        Company_SlNo: sales.Company_SlNo,
+                        display_name: `${sales.Company_Code} - ${sales.Company_Name} - ${sales.Company_Mobile}`,
+                    }
+
+                    this.selectedCustomer = {
+                        Customer_SlNo: sales.SalseCustomer_IDNo,
+                        Customer_Code: sales.Customer_Code,
+                        Customer_Name: sales.Customer_Name,
+                        display_name: `${sales.Customer_Code} - ${sales.Customer_Name}`,
+                        Customer_Mobile: sales.Customer_Mobile,
+                        Customer_Address: sales.Customer_Address,
+                        Customer_Type: sales.Customer_Type
+                    }
+                })
             }
         }
     })
 
-    var toCapitalize = Array.prototype.toCapitalize = function(d) {
-        // return d.charAt().toLocaleUpperCase() + d.slice(1, d.length);
+    var toCapitalize = Array.prototype.toCapitalize = (d) => {
         return d.toUpperCase().trim('');
     }
 </script>

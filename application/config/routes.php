@@ -232,6 +232,7 @@ $route['material_purchase_invoice/(:any)'] = 'Administrator/Purchase/materialPur
 
 //Material Requisition
 $route['material_requisition']                = 'Administrator/Requisition/index';
+$route['material_requisition/(:any)']         = 'Administrator/Requisition/index/$1';
 $route['material_requisition/(:any)/(:any)']  = 'Administrator/Requisition/index/$1/$2';
 $route['add_material_requisition']            = 'Administrator/Requisition/addMaterialRequisition';
 $route['update_material_requisition']         = 'Administrator/Requisition/updateMaterialRequisition';
@@ -299,8 +300,8 @@ $route['invoiceProductPrint'] = 'Administrator/Reports/branchwise_invoice_produc
 $route['chalan/(:any)'] = 'Administrator/Sales/chalan/$1';
 
 //Jobcard==================
-$route['jobcard/(:any)']               = 'Administrator/JobCard/index/$1/$2';
-$route['jobcard/(:any)/(:any)']        = 'Administrator/JobCard/jobcardEdit/$1';
+$route['jobcard/(:any)']               = 'Administrator/JobCard/index/$1';
+$route['jobcard/(:any)/(:any)']        = 'Administrator/JobCard/jobcardEdit/$1/$2';
 $route['add_jobcard']                  = 'Administrator/JobCard/addJobCard';
 $route['get_jobcard']                  = 'Administrator/JobCard/getJobCard';
 $route['update_jobcard']               = 'Administrator/JobCard/updateJobCard';

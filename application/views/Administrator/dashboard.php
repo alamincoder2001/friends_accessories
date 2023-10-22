@@ -1860,49 +1860,4 @@ if ($module == 'dashboard' or $module == '') { ?>
 			<!-- PAGE CONTENT ENDS -->
 		</div><!-- /.col -->
 	</div><!-- /.row -->
-<?php } elseif ($module == 'JobcardModule') { ?>
-
-	<div class="row">
-		<div class="col-md-12 col-xs-12">
-			<!-- PAGE CONTENT BEGINS -->
-			<div class="col-md-1"></div>
-			<div class="col-md-10">
-				<!-- Header Logo -->
-				<div class="col-md-12 header">
-					<h3> JobCard Module </h3>
-				</div>
-
-				<?php if (array_search("jobcard", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
-					<div class="col-md-2">
-						<div class="col-md-12 section20">
-							<a href="<?php echo base_url(); ?>jobcard">
-								<div class="logo">
-									<i class="menu-icon fa fa-plus"></i>
-								</div>
-								<div class="textModule" style="line-height: 13px; margin-top: 0;">
-									Jobcard Entry
-								</div>
-							</a>
-						</div>
-					</div>
-				<?php endif; ?>
-				<?php if (array_search("jobcard_record", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
-					<div class="col-md-2">
-						<div class="col-md-12 section20">
-							<a href="<?php echo base_url(); ?>jobcard_record">
-								<div class="logo">
-									<i class="menu-icon fa fa-list"></i>
-								</div>
-								<div class="textModule" style="line-height: 13px; margin-top: 0;">
-									Jobcard Record
-								</div>
-							</a>
-						</div>
-					</div>
-				<?php endif; ?>
-
-			</div>
-			<!-- PAGE CONTENT ENDS -->
-		</div><!-- /.col -->
-	</div><!-- /.row -->
 <?php } ?>

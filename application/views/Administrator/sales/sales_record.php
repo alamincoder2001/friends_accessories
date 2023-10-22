@@ -170,7 +170,7 @@
 								<td style="text-align:center;">
 									<?php if ($this->session->userdata('accountType') != 'u') { ?>
 										<a href="" :title="titleText(sale.Status)" @click.prevent="changeStatus(sale)" v-html="statusBtn(sale.Status)"></a>
-										<a href="" v-if="sale.Status != 'a'" title="Go To Jobcard" v-bind:href="`/jobcard/${sale.SaleMaster_InvoiceNo}`" target="_blank"><i class="fa fa-credit-card" style="background: #727272;padding: 3px 4px;border-radius: 5px;color: white;"></i></a>
+										<a href="" v-if="sale.WorkOrderId == null" title="Go To Jobcard" v-bind:href="`/jobcard/${sale.SaleMaster_SlNo}`" target="_blank"><i class="fa fa-credit-card" style="background: #727272;padding: 3px 4px;border-radius: 5px;color: white;"></i></a>
 									<?php } ?>
 									<a href="" title="Purchase Order Invoice" v-bind:href="`/sale_invoice_print/${sale.SaleMaster_SlNo}`" target="_blank"><i class="fa fa-file"></i></a>
 									<a href="" title="Chalan" v-bind:href="`/chalan/${sale.SaleMaster_SlNo}`" target="_blank"><i class="fa fa-file-o"></i></a>
@@ -241,7 +241,7 @@
 							<td style="text-align:center;">
 								<?php if ($this->session->userdata('accountType') != 'u') { ?>
 									<a href="" :title="titleText(sale.Status)" @click.prevent="changeStatus(sale)" v-html="statusBtn(sale.Status)"></a>
-									<a href="" v-if="sale.Status != 'a'" title="Go To Jobcard" v-bind:href="`/jobcard/${sale.SaleMaster_InvoiceNo}`" target="_blank"><i class="fa fa-credit-card" style="background: #727272;padding: 3px 4px;border-radius: 5px;color: white;"></i></a>
+									<a href="" v-if="sale.WorkOrderId == null" title="Go To Jobcard" v-bind:href="`/jobcard/${sale.SaleMaster_SlNo}`" target="_blank"><i class="fa fa-credit-card" style="background: #727272;padding: 3px 4px;border-radius: 5px;color: white;"></i></a>
 								<?php } ?>
 								<a href="" title="Purchase Order Invoice" v-bind:href="`/sale_invoice_print/${sale.SaleMaster_SlNo}`" target="_blank"><i class="fa fa-file"></i></a>
 								<a href="" title="Chalan" v-bind:href="`/chalan/${sale.SaleMaster_SlNo}`" target="_blank"><i class="fa fa-file-o"></i></a>
