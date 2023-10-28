@@ -138,7 +138,7 @@ class Requisition extends CI_Controller
                 "requisition_date"    => $data->requisition->requisition_date,
                 "requisition_for"     => $data->requisition->requisition_for,
                 "note"                => $data->requisition->note,
-                "status"              => 'p',
+                "status"              => 'a',
                 "branch_id"           => $this->brunch,
             );
             $this->db->insert('tbl_material_requisition', $requisition);
@@ -151,7 +151,7 @@ class Requisition extends CI_Controller
                     "purchase_rate"  => $requisitiondMaterial->purchase_rate,
                     "quantity"       => $requisitiondMaterial->quantity,
                     "total"          => $requisitiondMaterial->quantity * $requisitiondMaterial->purchase_rate,
-                    "status"         => 'p',
+                    "status"         => 'a',
                     "branch_id"      => $this->brunch,
                 );
                 $this->db->insert('tbl_material_requisition_details', $pm);
@@ -196,7 +196,7 @@ class Requisition extends CI_Controller
                     "purchase_rate"  => $requisitionMaterial->purchase_rate,
                     "quantity"       => $requisitionMaterial->quantity,
                     "total"          => $requisitionMaterial->quantity * $requisitionMaterial->purchase_rate,
-                    "status"         => 'p',
+                    "status"         => 'a',
                     "branch_id"      => $this->brunch,
                 );
                 $this->db->insert('tbl_material_requisition_details', $pm);

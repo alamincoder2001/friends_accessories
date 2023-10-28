@@ -55,7 +55,7 @@ class Customer extends CI_Controller
                 cm.Company_Name,
                 cm.Company_Mobile,
                 d.District_Name,
-                concat(c.Customer_Code, ' - ', c.Customer_Name, ' - ', c.owner_name, ' - ', c.Customer_Mobile) as display_name
+                concat(c.Customer_Code, ' - ', c.Customer_Name, ' - ', ' - ', c.Customer_Mobile) as display_name
             from tbl_customer c
             left join tbl_district d on d.District_SlNo = c.area_ID
             left join tbl_companies cm on cm.Company_SlNo = c.Company_Id

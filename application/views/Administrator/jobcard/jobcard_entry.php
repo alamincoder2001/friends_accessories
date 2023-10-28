@@ -705,7 +705,7 @@
                     let r = res.data;
                     if (r.success) {
                         alert(r.message)
-                        location.href = '/salesrecord'
+                        location.href = '/jobcard_record'
                     } else {
                         alert(r.message);
                         this.saleOnProgress = false;
@@ -803,6 +803,24 @@
                         Customer_Address: sales.Customer_Address,
                         Customer_Type: sales.Customer_Type
                     }
+
+                    r.saleDetails.forEach(product => {
+                        let cartProduct = {
+                            productCode: product.Product_Code,
+                            productId: product.Product_IDNo,
+                            categoryName: product.ProductCategory_Name,
+                            name: product.Product_Name,
+                            salesRate: product.SaleDetails_Rate,
+                            vat: product.SaleDetails_Tax,
+                            quantity: product.SaleDetails_TotalQuantity,
+                            total: product.SaleDetails_TotalAmount,
+                            purchaseRate: product.Purchase_Rate,
+                        }
+
+                        this.cart.push(cartProduct);
+                    })
+
+                    this.calculateTotal();
                 })
             }
         }

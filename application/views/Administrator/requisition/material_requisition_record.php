@@ -93,7 +93,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="requisition in requisitions" :style="{background: requisition.status == 'p' ? '#ffb74c' : ''}">
+                        <!-- <tr v-for="requisition in requisitions" :style="{background: requisition.status == 'p' ? '#ffb74c' : ''}"> -->
+                        <tr v-for="requisition in requisitions">
                             <td>{{ requisition.requisition_invoice }}</td>
                             <td>{{ requisition.requisition_date }}</td>
                             <td>{{ requisition.employee_code }}</td>
@@ -101,7 +102,7 @@
                             <td>{{ requisition.note }}</td>
                             <td>
                                 <?php if ($this->session->userdata('accountType') != 'u') { ?>
-                                    <a href="" v-if="requisition.status == 'p'" v-bind:href="`material_purchase/0/${requisition.requisition_id}`" target="_blank"><i class="fa fa-shopping-cart" style="font-size: 16px;"></i></a>
+                                    <!-- <a href="" v-if="requisition.status == 'p'" v-bind:href="`material_purchase/0/${requisition.requisition_id}`" target="_blank"><i class="fa fa-shopping-cart" style="font-size: 16px;"></i></a> -->
                                     <a href="" v-if="requisition.status == 'p'" v-bind:href="`material_requisition/${requisition.requisition_id}`"><i class="fa fa-pencil-square" style="font-size: 16px;"></i></a>
                                     <a href="" v-bind:href="`material_requisition_invoice/${requisition.requisition_id}`" target="_blank"><i class="fa fa-file-text" style="font-size: 16px;"></i></a>
                                     <a href="" v-if="requisition.status == 'p'" v-on:click.prevent="deleteRequisition(requisition.requisition_id, requisition.invoice_no)"><i class="fa fa-trash" style="font-size: 16px;"></i></a>
