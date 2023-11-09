@@ -239,10 +239,7 @@
 							<td style="text-align:left;">{{ sale.SaleMaster_Description }}</td>
 							<td style="text-align:left;" v-html="textStatus(sale.Status)"></td>
 							<td style="text-align:center;">
-								<?php if ($this->session->userdata('accountType') != 'u') { ?>
-									<a href="" :title="titleText(sale.Status)" @click.prevent="changeStatus(sale)" v-html="statusBtn(sale.Status)"></a>
-									<a href="" v-if="sale.WorkOrderId == null" title="Go To Jobcard" v-bind:href="`/jobcard/${sale.SaleMaster_SlNo}`" target="_blank"><i class="fa fa-credit-card" style="background: #727272;padding: 3px 4px;border-radius: 5px;color: white;"></i></a>
-								<?php } ?>
+								<a href="" title="Partial Order Deliver" v-bind:href="`/partial_delivery/${sale.SaleMaster_SlNo}`" target="_blank">Delivery</a>
 								<a href="" title="Purchase Order Invoice" v-bind:href="`/sale_invoice_print/${sale.SaleMaster_SlNo}`" target="_blank"><i class="fa fa-file"></i></a>
 								<a href="" title="Chalan" v-bind:href="`/chalan/${sale.SaleMaster_SlNo}`" target="_blank"><i class="fa fa-file-o"></i></a>
 								<?php if ($this->session->userdata('accountType') != 'u') { ?>

@@ -281,6 +281,11 @@ $route['sale_return_invoice/(:any)'] = 'Administrator/Sales/saleReturnInvoice/$1
 $route['sale_return_details'] = 'Administrator/Sales/saleReturnDetails';
 $route['check_sale_return/(:any)'] = 'Administrator/Sales/checkSaleReturn/$1';
 
+// partial delivery
+$route['partial_delivery/(:any)'] = 'Administrator/Sales/partialDelivery/$1';
+$route['get_saledetails_for_delivery'] = 'Administrator/Sales/getSaleDetailsForDelivery';
+
+
 $route['sale_invoice_print/(:any)'] = 'Administrator/Sales/saleInvoicePrint/$1';
 $route['craditlimit'] = 'Administrator/Sales/craditlimit/';
 $route['salesrecord'] = 'Administrator/Sales/sales_record';
@@ -300,8 +305,9 @@ $route['invoiceProductPrint'] = 'Administrator/Reports/branchwise_invoice_produc
 $route['chalan/(:any)'] = 'Administrator/Sales/chalan/$1';
 
 //Jobcard==================
-$route['jobcard/(:any)']               = 'Administrator/JobCard/index/$1';
-$route['jobcard/(:any)/(:any)']        = 'Administrator/JobCard/jobcardEdit/$1/$2';
+$route['order-details']                = 'Administrator/JobCard/OrderDetails';
+$route['jobcard']               = 'Administrator/JobCard/index';
+$route['jobcard/(:any)']               = 'Administrator/JobCard/jobcardEdit/$1';
 $route['add_jobcard']                  = 'Administrator/JobCard/addJobCard';
 $route['get_jobcard']                  = 'Administrator/JobCard/getJobCard';
 $route['update_jobcard']               = 'Administrator/JobCard/updateJobCard';

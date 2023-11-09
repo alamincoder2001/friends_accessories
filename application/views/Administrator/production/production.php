@@ -251,6 +251,12 @@
                                 </div>
                             </div>
                             <div class="form-group clearfix">
+                                <label class="col-xs-12 control-label">Order Invoice</label>
+                                <div class="col-xs-12">
+                                    <v-select :options="invoices" v-model="selectedInvoice" label="SaleMaster_InvoiceNo" placeholder="Select Invoice"></v-select>
+                                </div>
+                            </div>
+                            <div class="form-group clearfix">
                                 <label class="col-xs-12 control-label">Date</label>
                                 <div class="col-xs-12">
                                     <input type="date" class="form-control" v-model="production.date" required>
@@ -334,6 +340,7 @@
                 production: {
                     production_id: parseInt('<?php echo $production_id; ?>'),
                     production_sl: '<?php echo $productionSl; ?>',
+                    saleId: '',
                     date: '',
                     incharge_id: '',
                     shift: '',
@@ -376,6 +383,8 @@
                     recipe_id: '',
                     recipe_name: 'Select Recipe'
                 },
+                invoices: [],
+                selectedInvoice: null,
             }
         },
         created() {
@@ -384,6 +393,7 @@
             this.getShifts();
             this.getProducts();
             this.getMaterials();
+            this.getInvoice();
             this.production.date = moment().format('YYYY-MM-DD');
 
             if (this.production.production_id != 0) {
@@ -391,6 +401,12 @@
             }
         },
         methods: {
+            getInvoice(){
+                axios.post('/get_sales', {})
+                    .then(res => {
+                        this.invoices = res.data.sales;
+                    })
+            },
             getRecipes() {
                 axios.post('/get_recipes').then(res => {
                     this.recipes = res.data;
@@ -434,8 +450,6 @@
                     })
             },
             calculateMaterialTotal() {
-                // this.selectedMaterial.total = this.selectedMaterial.quantity * this.selectedMaterial.purchase_rate;
-
                 let unitQty = this.selectedMaterial.unitQty ? this.selectedMaterial.per_unit * this.selectedMaterial.unitQty : 0;
                 let pcsQty = this.selectedMaterial.qty ? this.selectedMaterial.qty : 0;
 
@@ -625,12 +639,14 @@
                     parseFloat(this.production.other_cost);
             },
             async saveProduction() {
-
-
                 this.productionInProgress = true;
 
                 if (this.selectedEmployee == null) {
                     alert('Select production incharge');
+                    return;
+                }
+                if (this.selectedInvoice == null) {
+                    alert('Select sales invoice');
                     return;
                 }
                 if (this.cart.length == 0) {
@@ -668,6 +684,7 @@
                 }
 
                 this.production.incharge_id = this.selectedEmployee.Employee_SlNo;
+                this.production.saleId = this.selectedInvoice.SaleMaster_SlNo;
 
                 let url = '/add_production';
                 if (this.production.production_id != 0) {

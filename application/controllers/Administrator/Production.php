@@ -49,6 +49,7 @@ class Production extends CI_Controller
             }
             $production = array(
                 'production_sl' => $data->production->production_sl,
+                'saleId' => $data->production->saleId,
                 'date' => $data->production->date,
                 'incharge_id' => $data->production->incharge_id,
                 'shift' => $data->production->shift,
@@ -134,6 +135,7 @@ class Production extends CI_Controller
             $productionId = $data->production->production_id;
             $production = array(
                 'production_sl' => $data->production->production_sl,
+                'saleId' => $data->production->saleId,
                 'date' => $data->production->date,
                 'incharge_id' => $data->production->incharge_id,
                 'shift' => $data->production->shift,

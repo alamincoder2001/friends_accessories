@@ -477,6 +477,15 @@ if ($module == 'dashboard' or $module == '') {
 			</li>
 		<?php endif; ?>
 
+		<?php if (array_search("order-details", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
+			<li class="">
+				<a href="<?php echo base_url(); ?>order-details">
+					<i class="menu-icon fa fa-plus-square"></i>
+					<span class="menu-text">Jobcard Entry</span>
+				</a>
+				<b class="arrow"></b>
+			</li>
+		<?php endif; ?>
 		<?php if (array_search("jobcard_record", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
 			<li class="">
 				<a href="<?php echo base_url(); ?>jobcard_record">

@@ -17,7 +17,18 @@ class JobCard extends CI_Controller
         $this->load->model('SMS_model', 'sms', true);
     }
 
-    public function index($salesId = 0)
+    public function OrderDetails()
+    {
+        $access = $this->mt->userAccess();
+        if (!$access) {
+            redirect(base_url());
+        }
+        $data['title'] = "JobCard Entry";
+        $data['content'] = $this->load->view('Administrator/jobcard/order_details', $data, TRUE);
+        $this->load->view('Administrator/index', $data);
+    }
+
+    public function index()
     {
         $access = $this->mt->userAccess();
         if (!$access) {
@@ -27,7 +38,6 @@ class JobCard extends CI_Controller
 
         $invoice = $this->mt->generateJobCardInvoice();
         $data['jobcardId'] = 0;
-        $data['salesId'] = $salesId;
         $data['invoice'] = $invoice;
         $data['content'] = $this->load->view('Administrator/jobcard/jobcard_entry', $data, TRUE);
         $this->load->view('Administrator/index', $data);
@@ -87,24 +97,8 @@ class JobCard extends CI_Controller
                 );
 
                 $this->db->insert('tbl_jobcarddetails', $saleDetails);
-
-                //update stock
-                // $this->db->query("
-                //     update tbl_currentinventory 
-                //     set sales_quantity = sales_quantity + ? 
-                //     where product_id = ?
-                //     and branch_id = ?
-                // ", [$cartProduct->quantity, $cartProduct->productId, $this->session->userdata('BRANCHid')]);
+                $this->db->query("UPDATE tbl_saledetails SET is_jobcard = 'true' WHERE SaleDetails_SlNo = ? AND SaleDetails_BranchId = ?", [$cartProduct->SaleDetails_SlNo, $this->sbrunch]);
             }
-            //Send sms
-            // $currentDue = $data->sales->previousDue + ($data->sales->total - $data->sales->paid);
-            // $customerInfo = $this->db->query("select * from tbl_customer where Customer_SlNo = ?", $customerId)->row();
-            // $sendToName = $customerInfo->owner_name != '' ? $customerInfo->owner_name : $customerInfo->Customer_Name;
-            // $currency = $this->session->userdata('Currency_Name');
-
-            // $message = "Dear {$sendToName},\nYour bill is {$currency} {$data->sales->total}. Received {$currency} {$data->sales->paid} and current due is {$currency} {$currentDue} for invoice {$invoice}";
-            // $recipient = $customerInfo->Customer_Mobile;
-            // $this->sms->sendSms($recipient, $message);
 
             $res = ['success' => true, 'message' => 'Jobcard add Success', 'jobcardId' => $jobcardId];
         } catch (Exception $ex) {
@@ -114,12 +108,11 @@ class JobCard extends CI_Controller
         echo json_encode($res);
     }
 
-    public function jobcardEdit($salesId = 0, $jobcardId = 0)
+    public function jobcardEdit($jobcardId = 0)
     {
         $data['title'] = "Jobcard update";
         $sales = $this->db->query("select * from tbl_jobcardmaster where id = ?", $jobcardId)->row();
         $data['jobcardId'] = $jobcardId;
-        $data['salesId'] = $salesId;
         $data['invoice'] = $sales->JobcardNo;
         $data['content'] = $this->load->view('Administrator/jobcard/jobcard_entry', $data, TRUE);
         $this->load->view('Administrator/index', $data);

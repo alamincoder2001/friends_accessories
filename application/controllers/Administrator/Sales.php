@@ -236,6 +236,7 @@ class Sales extends CI_Controller
         $data = json_decode($this->input->raw_input_stream);
         $branchId = $this->session->userdata("BRANCHid");
         $clauses = "";
+        $detailClauses = "";
         if (isset($data->dateFrom) && $data->dateFrom != '' && isset($data->dateTo) && $data->dateTo != '') {
             $clauses .= " and sm.SaleMaster_SaleDate between '$data->dateFrom' and '$data->dateTo'";
         }
@@ -252,6 +253,10 @@ class Sales extends CI_Controller
             $clauses .= " and sm.employee_id = '$data->employeeId'";
         }
 
+        if (isset($data->fromJobcard) && $data->fromJobcard != '') {
+            $detailClauses .= " and sd.is_jobcard != 'true'";
+        }
+
         $sales = $this->db->query("
             select 
                 sm.*,
@@ -260,12 +265,7 @@ class Sales extends CI_Controller
                 c.Customer_Mobile,
                 c.Customer_Address,
                 e.Employee_Name,
-                br.Brunch_name,
-                (
-                    select ifnull(count(*), 0) from tbl_saledetails sd 
-                    where sd.SaleMaster_IDNo = 1
-                    and sd.Status != 'd'
-                ) as total_products
+                br.Brunch_name                
             from tbl_salesmaster sm
             left join tbl_customer c on c.Customer_SlNo = sm.SalseCustomer_IDNo
             left join tbl_employee e on e.Employee_SlNo = sm.employee_id
@@ -287,6 +287,7 @@ class Sales extends CI_Controller
                 join tbl_productcategory pc on pc.ProductCategory_SlNo = p.ProductCategory_ID
                 where sd.SaleMaster_IDNo = ?
                 and sd.Status != 'd'
+                $detailClauses
             ", $sale->SaleMaster_SlNo)->result();
         }
 
@@ -351,14 +352,12 @@ class Sales extends CI_Controller
             cm.Company_Code,
             cm.Company_Name,
             cm.Company_Mobile,
-            cm.Company_Address,
-            jm.WorkOrderId
+            cm.Company_Address
             from tbl_salesmaster sm
             left join tbl_customer c on c.Customer_SlNo = sm.SalseCustomer_IDNo
             left join tbl_companies cm on cm.Company_SlNo = c.Company_Id
             left join tbl_employee e on e.Employee_SlNo = sm.employee_id
             left join tbl_brunch br on br.brunch_id = sm.SaleMaster_branchid
-            left join tbl_jobcardmaster jm on jm.WorkOrderId = sm.SaleMaster_InvoiceNo
             where sm.SaleMaster_branchid = '$branchId'
             and sm.Status != 'd'
             $clauses
@@ -1768,42 +1767,6 @@ class Sales extends CI_Controller
         echo json_encode($res);
     }
 
-
-
-
-
-
-
-    //     public function product_delete($id = null){
-    //       // $id = $this->input->post('deleted');
-    //        // $id = $this->input->post('SaleDetails_SlNo');
-    //        $Product_IDNo = $this->input->post('Product_IDNo');
-    //        $SaleMaster_SlNo = $this->input->post('SaleMaster_SlNo');
-    //        $SaleMaster_InvoiceNo = $this->input->post('SaleMaster_InvoiceNo');
-    //        $SaleDetails_TotalQuantity = $this->input->post('SaleDetails_TotalQuantity');
-    //        $SaleDetailsPrice = $this->input->post('SaleDetailsPrice');
-    //        $SaleMaster_TotalSaleAmount = $this->input->post('SaleMaster_TotalSaleAmount');
-    //        $SaleMaster_TaxAmount = $this->input->post('SaleMaster_TaxAmount');
-    //
-    //        $fld = 'SaleDetails_SlNo';
-    //        $delete = $this->mt->delete_data("tbl_saledetails", $id, $fld);
-    //        if(isset($delete))
-    //        {
-    //            $sirow = $this->db->where('sellProduct_IdNo',$Product_IDNo)->get('tbl_saleinventory')->row();
-    //
-    //
-    //            $data1['SaleInventory_TotalQuantity'] = $sirow->SaleInventory_TotalQuantity-$SaleDetails_TotalQuantity;
-    //            $this->Billing_model->update_saleinventory("tbl_saleinventory",$data1,$Product_IDNo);
-    //
-    //            $data2['SaleMaster_TotalSaleAmount'] = $SaleMaster_TotalSaleAmount-$SaleDetailsPrice;
-    //            $total = $data2['SaleMaster_TotalSaleAmount']/100*$SaleMaster_TaxAmount+$data2['SaleMaster_TotalSaleAmount'];
-    //            //$data2['SaleMaster_PaidAmount'] = $total;
-    //            $data2['SaleMaster_SubTotalAmount'] = $total;
-    //            $this->Billing_model->update_salesmaster("tbl_salesmaster",$data2,$SaleMaster_SlNo);
-    //        }
-    //        redirect('Administrator/Sales/sales_update_form/'.$SaleMaster_SlNo,'refresh');
-    //    }
-
     function profitLoss()
     {
         $access = $this->mt->userAccess();
@@ -1926,5 +1889,80 @@ class Sales extends CI_Controller
             $res = ['status' => false, 'message' => $e->getMessage()];
             echo json_encode($res);
         }
+    }
+
+    // partial delivery
+    public function partialDelivery($salesId)
+    {
+        $data['title'] = "Partial Order Delivery";
+
+        $data['salesId'] = $salesId;
+        $data['content'] = $this->load->view('Administrator/sales/partial_order', $data, TRUE);
+        $this->load->view('Administrator/index', $data);
+    }
+
+    public function getSaleDetailsForDelivery()
+    {
+        $data = json_decode($this->input->raw_input_stream);
+
+
+        $sales = $this->db->query("
+            select 
+            concat(sm.SaleMaster_InvoiceNo, ' - ', c.Customer_Name) as invoice_text,
+            sm.*,
+            c.Customer_Code,
+            c.Customer_Name,
+            c.Customer_Mobile,
+            c.Customer_Address,
+            c.Customer_Type,
+            e.Employee_Name,
+            br.Brunch_name,
+            cm.Company_Code,
+            cm.Company_Name,
+            cm.Company_Mobile,
+            cm.Company_Address
+            from tbl_salesmaster sm
+            left join tbl_customer c on c.Customer_SlNo = sm.SalseCustomer_IDNo
+            left join tbl_companies cm on cm.Company_SlNo = c.Company_Id
+            left join tbl_employee e on e.Employee_SlNo = sm.employee_id
+            left join tbl_brunch br on br.brunch_id = sm.SaleMaster_branchid
+            where sm.SaleMaster_branchid = '$this->sbrunch'
+            and sm.Status != 'd'
+            order by sm.SaleMaster_SlNo desc
+        ", $data->salesId)->row();
+
+        $res['sales'] = $sales;
+
+        $res['saleDetails'] = $this->db->query("
+            select
+                sd.*,
+                sd.SaleDetails_Rate as delivery_rate,
+                p.Product_Name,
+                p.Product_Code,
+                pc.ProductCategory_Name,
+                (
+                    select ifnull(sum(dd.quantity), 0)
+                    from tbl_delivered_details dd
+                    join tbl_delivered_master dm on dm.id = dd.detail_id
+                    where dm.Status = 'a'
+                    and dd.product_id = sd.Product_IDNo
+                    and dm.SaleMaster_InvoiceNo = sm.SaleMaster_InvoiceNo
+                ) as delivery_quantity,
+                (
+                    select ifnull(sum(dd.total), 0)
+                    from tbl_delivered_details dd
+                    join tbl_delivered_master dm on dm.id = dd.detail_id
+                    where dm.Status = 'a'
+                    and dd.product_id = sd.Product_IDNo
+                    and dm.SaleMaster_InvoiceNo = sm.SaleMaster_InvoiceNo
+                ) as delivery_amount
+            from tbl_saledetails sd
+            join tbl_salesmaster sm on sm.SaleMaster_SlNo = sd.SaleMaster_IDNo
+            join tbl_product p on p.Product_SlNo = sd.Product_IDNo
+            left join tbl_productcategory pc on pc.ProductCategory_SlNo = p.ProductCategory_ID
+            where sm.SaleMaster_SlNo = ?
+        ", $data->salesId)->result();
+
+        echo json_encode($res);
     }
 }

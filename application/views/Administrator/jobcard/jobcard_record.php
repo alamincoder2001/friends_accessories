@@ -275,7 +275,7 @@
 		},
 		methods: {
 			checkReturnAndEdit(sale) {
-				location.replace('/jobcard/0/' + sale.id);
+				location.replace('/jobcard/' + sale.id);
 			},
 			onChangeSearchType() {
 				this.sales = [];

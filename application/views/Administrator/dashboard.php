@@ -491,6 +491,34 @@ if ($module == 'dashboard' or $module == '') { ?>
 						</div>
 					</div>
 				<?php endif; ?>
+				<?php if (array_search("order-details", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
+					<div class="col-md-2 ">
+						<div class="col-md-12 section20">
+							<a href="<?php echo base_url(); ?>order-details">
+								<div class="logo">
+									<i class="menu-icon fa fa-plus-square"></i>
+								</div>
+								<div class="textModule">
+									Jobcard Entry
+								</div>
+							</a>
+						</div>
+					</div>
+				<?php endif; ?>
+				<?php if (array_search("jobcard_record", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
+					<div class="col-md-2 ">
+						<div class="col-md-12 section20">
+							<a href="<?php echo base_url(); ?>jobcard_record">
+								<div class="logo">
+									<i class="menu-icon fa fa-list"></i>
+								</div>
+								<div class="textModule">
+									Jobcard Record
+								</div>
+							</a>
+						</div>
+					</div>
+				<?php endif; ?>
 				<?php if (array_search("currentStock", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
 					<div class="col-md-2 ">
 						<div class="col-md-12 section20">

@@ -156,12 +156,6 @@ class Requisition extends CI_Controller
                 );
                 $this->db->insert('tbl_material_requisition_details', $pm);
             }
-
-            if ($data->requisition->work_order != 0) {
-                $sale = $this->db->query("SELECT * FROM tbl_salesmaster sm WHERE sm.SaleMaster_InvoiceNo = ?", $saleInv)->row();
-                $this->db->query("UPDATE tbl_salesmaster SET Status = 'pr' WHERE SaleMaster_SlNo = '$sale->SaleMaster_SlNo'");
-                $this->db->query("UPDATE tbl_saledetails SET Status = 'pr' WHERE Status != 'd' AND SaleMaster_IDNo = '$sale->SaleMaster_SlNo'");
-            }
             $res = ['success' => true, 'message' => 'Material Requisition Success', 'requisition_id' => $lastId];
         } catch (Exception $ex) {
             $res = ['success' => false, 'message' => $ex->getMessage()];

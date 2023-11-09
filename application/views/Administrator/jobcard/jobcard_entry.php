@@ -387,14 +387,14 @@
         data() {
             return {
                 sales: {
-                    workId: '<?php echo $salesId; ?>',
+                    workId: '',
                     work_order: '',
                     salesId: parseInt('<?php echo $jobcardId; ?>'),
                     invoiceNo: '<?php echo $invoice; ?>',
                     salesBy: '<?php echo $this->session->userdata("FullName"); ?>',
                     salesType: 'retail',
                     salesFrom: '',
-                    salesDate: '',
+                    salesDate: moment().format('YYYY-MM-DD'),
                     customerId: '',
                     employeeId: null,
                     subTotal: 0.00,
@@ -449,17 +449,17 @@
             }
         },
         async created() {
-            this.sales.salesDate = moment().format('YYYY-MM-DD');
+            let sales = JSON.parse(localStorage.getItem('sales'));
+            if (sales == null && this.sales.salesId == 0) {
+                location.href = '/order-details'
+            }
             await this.getEmployees();
             await this.getBranches();
             this.getCompanies();
             this.getProducts();
-
+            this.getSales()
             if (this.sales.salesId != 0) {
-                await this.getSales();
-            }
-            if (this.sales.workId != 0) {
-                await this.getWork();
+                await this.getJobCards();
             }
         },
         methods: {
@@ -565,13 +565,11 @@
                     }).then(res => {
                         return res.data;
                     })
-
                     this.productStockText = this.productStock > 0 ? "Available Stock" : "Stock Unavailable";
                 }
                 this.$refs.quantity.focus();
             },
             toggleProductPurchaseRate() {
-                //this.productPurchaseRate = this.productPurchaseRate == '' ? this.selectedProduct.Product_Purchase_Rate : '';
                 this.$refs.productPurchaseRate.type = this.$refs.productPurchaseRate.type == 'text' ? 'password' : 'text';
             },
             addToCart() {
@@ -675,14 +673,7 @@
                 let url = "/add_jobcard";
                 if (this.sales.salesId != 0) {
                     url = "/update_jobcard";
-                    // this.sales.previousDue = parseFloat((this.sales.previousDue - this.sales_due_on_update)).toFixed(2);
                 }
-
-                // if (parseFloat(this.selectedCustomer.Customer_Credit_Limit) < (parseFloat(this.sales.due) + parseFloat(this.sales.previousDue))) {
-                //     alert(`Buyer credit limit (${this.selectedCustomer.Customer_Credit_Limit}) exceeded`);
-                //     this.saleOnProgress = false;
-                //     return;
-                // }
 
                 if (this.selectedEmployee != null && this.selectedEmployee.Employee_SlNo != null) {
                     this.sales.employeeId = this.selectedEmployee.Employee_SlNo;
@@ -703,6 +694,7 @@
                 }
                 axios.post(url, data).then(async res => {
                     let r = res.data;
+                    localStorage.removeItem('sales');
                     if (r.success) {
                         alert(r.message)
                         location.href = '/jobcard_record'
@@ -712,7 +704,7 @@
                     }
                 })
             },
-            async getSales() {
+            async getJobCards() {
                 await axios.post('/get_jobcard', {
                     salesId: this.sales.salesId
                 }).then(res => {
@@ -780,9 +772,10 @@
                     this.customers.splice(gCustomerInd, 1);
                 })
             },
-            async getWork() {
+            async getSales() {
+                var storageSales = JSON.parse(localStorage.getItem('sales'));
                 await axios.post('/get_sales', {
-                    salesId: this.sales.workId
+                    salesId: storageSales.salesId
                 }).then(res => {
                     let r = res.data;
                     let sales = r.sales[0];
@@ -804,8 +797,9 @@
                         Customer_Type: sales.Customer_Type
                     }
 
-                    r.saleDetails.forEach(product => {
+                    storageSales.saleDetails.forEach(product => {
                         let cartProduct = {
+                            SaleDetails_SlNo: product.SaleDetails_SlNo,
                             productCode: product.Product_Code,
                             productId: product.Product_IDNo,
                             categoryName: product.ProductCategory_Name,
