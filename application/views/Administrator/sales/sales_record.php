@@ -168,10 +168,7 @@
 								<td style="text-align:center;">{{ sale.saleDetails[0].SaleDetails_TotalQuantity }}</td>
 								<td style="text-align:right;">{{ sale.saleDetails[0].SaleDetails_TotalAmount }}</td>
 								<td style="text-align:center;">
-									<?php if ($this->session->userdata('accountType') != 'u') { ?>
-										<a href="" :title="titleText(sale.Status)" @click.prevent="changeStatus(sale)" v-html="statusBtn(sale.Status)"></a>
-										<a href="" v-if="sale.WorkOrderId == null" title="Go To Jobcard" v-bind:href="`/jobcard/${sale.SaleMaster_SlNo}`" target="_blank"><i class="fa fa-credit-card" style="background: #727272;padding: 3px 4px;border-radius: 5px;color: white;"></i></a>
-									<?php } ?>
+									<a href="" title="Partial Order Deliver" v-bind:href="`/partial_delivery/${sale.SaleMaster_SlNo}`" target="_blank"><i style="font-size: 15px;color: #9c7014;" class="fa fa-shopping-cart"></i></a>
 									<a href="" title="Purchase Order Invoice" v-bind:href="`/sale_invoice_print/${sale.SaleMaster_SlNo}`" target="_blank"><i class="fa fa-file"></i></a>
 									<a href="" title="Chalan" v-bind:href="`/chalan/${sale.SaleMaster_SlNo}`" target="_blank"><i class="fa fa-file-o"></i></a>
 									<?php if ($this->session->userdata('accountType') != 'u') { ?>
@@ -218,7 +215,6 @@
 							<th>Paid</th>
 							<th>Due</th>
 							<th>Note</th>
-							<th>Status</th>
 							<th style="width: 12%;">Action</th>
 						</tr>
 					</thead>
@@ -237,9 +233,8 @@
 							<td style="text-align:right;">{{ sale.SaleMaster_PaidAmount }}</td>
 							<td style="text-align:right;">{{ sale.SaleMaster_DueAmount }}</td>
 							<td style="text-align:left;">{{ sale.SaleMaster_Description }}</td>
-							<td style="text-align:left;" v-html="textStatus(sale.Status)"></td>
 							<td style="text-align:center;">
-								<a href="" title="Partial Order Deliver" v-bind:href="`/partial_delivery/${sale.SaleMaster_SlNo}`" target="_blank">Delivery</a>
+								<a href="" title="Partial Order Deliver" v-bind:href="`/partial_delivery/${sale.SaleMaster_SlNo}`" target="_blank"><i style="font-size: 15px;color: #9c7014;" class="fa fa-shopping-cart"></i></a>
 								<a href="" title="Purchase Order Invoice" v-bind:href="`/sale_invoice_print/${sale.SaleMaster_SlNo}`" target="_blank"><i class="fa fa-file"></i></a>
 								<a href="" title="Chalan" v-bind:href="`/chalan/${sale.SaleMaster_SlNo}`" target="_blank"><i class="fa fa-file-o"></i></a>
 								<?php if ($this->session->userdata('accountType') != 'u') { ?>
@@ -355,66 +350,6 @@
 			}
 		},
 		methods: {
-			statusBtn(status) {
-				let textHtml;
-				if (status == 'p') {
-					textHtml = "<span class='fa fa-spinner' style='background:orange;padding: 3px 4px;color: white;border-radius: 5px;'></span>";
-				} else if (status == 'pr') {
-					textHtml = "<span class='fa fa-check' style='background:green;padding: 3px 4px;color: white;border-radius: 5px;'></span>";
-				}
-
-				return textHtml;
-			},
-			titleText(status) {
-				let Text;
-				if (status == 'p') {
-					Text = "Click to Process";
-				} else if (status == 'pr') {
-					Text = "Click to Delivery";
-				}
-
-				return Text;
-			},
-			textStatus(status) {
-				let textHtml;
-				if (status == 'p') {
-					textHtml = "<span class='badge badge-danger'>Pending</span>";
-				} else if (status == 'pr') {
-					textHtml = "<span class='badge badge-warning'>Processing</span>";
-				} else {
-					textHtml = "<span class='badge badge-success'>Completed</span>";
-				}
-
-				return textHtml;
-			},
-
-			changeStatus(sale) {
-				if (confirm('Are you sure!')) {
-					let filter = {
-						saleId: sale.SaleMaster_SlNo,
-						status: '',
-					}
-					if (sale.Status == 'p') {
-						filter.status = 'pr';
-					} else if (sale.Status == 'pr') {
-						filter.status = 'a';
-					}
-					axios.post('/sale_status_change', filter)
-						.then(res => {
-							if (res.data.status) {
-								if (res.data.product) {
-									alert(res.data.message + ' Product name is: ' + res.data.product.Product_Name);
-								} else {
-									alert(res.data.message);
-								}
-								this.getSalesRecord();
-							} else {
-								console.log(res.data.message);
-								this.getSalesRecord();
-							}
-						})
-				}
-			},
 			checkReturnAndEdit(sale) {
 				axios.get('/check_sale_return/' + sale.SaleMaster_InvoiceNo).then(res => {
 					if (res.data.found) {

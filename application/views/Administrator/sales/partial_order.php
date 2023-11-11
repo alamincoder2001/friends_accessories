@@ -18,15 +18,13 @@
                     <tr>
                         <th>Sl</th>
                         <th>Product</th>
-                        <th>Order Quantity</th>
+                        <th>Order Qty</th>
                         <th>Already Delivered Qty</th>
-                        <th>Already Delivered Total</th>
+                        <th>Remaining Qty</th>
                         <th>
                             <input type="checkbox" id="checkAll" @change="checkAll(event)">
                         </th>
                         <th>DeliveryQty</th>
-                        <th>Unit Price</th>
-                        <th style="width: 20%;">Total</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -34,26 +32,24 @@
                         <td>{{ind + 1}}</td>
                         <td>{{item.Product_Name}}</td>
                         <td>{{item.SaleDetails_TotalQuantity}}</td>
-                        <td>{{item.delivered_quantity}}</td>
-                        <td>{{item.delivered_amount}}</td>
+                        <td>{{item.delivery_quantity}}</td>
+                        <td>{{item.SaleDetails_TotalQuantity - item.delivery_quantity}}</td>
                         <td>
                             <input class="single" type="checkbox" v-model="item.deliveryStatus" @change="singleStatusChange">
                         </td>
                         <td>
-                            <input type="number" @input="calculateTotal(ind)" step="0.01" min="0" class="form-control text-center" v-model="item.delivery_qty">
+                            <input type="number" :disabled="item.deliveryStatus != undefined && item.deliveryStatus ? false:true" @input="calculateTotal(ind, item)" step="0.01" min="0" class="form-control text-center" v-model="item.delivery_qty">
                         </td>
-                        <td>
-                            <input type="number" @input="calculateTotal(ind)" step="0.01" min="0" class="form-control text-center" v-model="item.delivery_rate">
-                        </td>
-                        <td>
-                            {{item.total}}
-                        </td>
+                    </tr>
+                    <tr style="background: gray;color:white;">
+                        <th colspan="6" style="text-align:right;">Total Quantity</th>
+                        <th>{{cart.reduce((prev, curr) => {return prev + parseFloat(curr.delivery_qty == undefined ? 0 : curr.delivery_qty)},0).toFixed(2)}}</th>
                     </tr>
                 </tbody>
             </table>
             <div class="col-xs-12">
                 <div class="form-gorup text-right">
-                    <button type="button" class="btn btn-success">Save Order</button>
+                    <button type="button" @click="saveOrder" :disabled="onProgress" class="btn btn-success">Save Order</button>
                 </div>
             </div>
         </div>
@@ -73,9 +69,13 @@
             return {
                 sales: {
                     salesId: "<?php echo $salesId; ?>",
-                    SaleMaster_InvoiceNo: "",
+                    subtotal: 0,
+                    total: 0,
                 },
                 cart: [],
+                productStock: '',
+                productStockText: '',
+                onProgress:false,
             }
         },
         created() {
@@ -93,10 +93,73 @@
                     })
             },
 
-            calculateTotal(sl){
-                let total = this.cart[sl].delivery_rate * this.cart[sl].delivery_qty;
-                this.cart[sl].total = total;
+            async calculateTotal(sl, product) {
+                if (parseFloat(product.SaleDetails_TotalQuantity) == parseFloat(product.delivery_quantity)) {
+                    product.deliveryStatus = false;
+                }
+                product.total = product.delivery_rate * product.delivery_qty;
+                if (parseFloat(product.delivery_qty) > (parseFloat(product.SaleDetails_TotalQuantity) - parseFloat(product.delivery_quantity))) {
+                    alert("The quantity has exceeded the order quantity");
+                    product.delivery_qty = 0;
+                    product.total = 0
+                    return;
+                }
+                this.productStock = await axios.post('/get_product_stock', {
+                    productId: product.Product_IDNo
+                }).then(res => {
+                    return res.data;
+                })
+                if (parseFloat(this.productStock) < parseFloat(product.delivery_qty)) {
+                    alert('Stock Unavailable');
+                    product.delivery_qty = 0;
+                    product.total = 0
+                    return;
+                }
+                this.totalCalculate();
             },
+
+            totalCalculate() {
+                this.sales.subtotal = this.cart.reduce((prev, curr) => {
+                    return prev + parseFloat(curr.total == undefined ? 0 : curr.total)
+                }, 0).toFixed(2);
+                this.sales.total = this.sales.subtotal;
+            },
+
+            saveOrder() {
+                var checkCart = this.cart.filter(item => item.deliveryStatus != undefined && item.deliveryStatus != false);
+                if (checkCart.length == 0) {
+                    alert("At least one product select")
+                    return
+                }
+                checkCart = checkCart.filter(item => item.delivery_qty > 0);
+                if (checkCart.length == 0) {
+                    alert('Quantity is empty');
+                    return
+                }
+                let filter = {
+                    order: this.sales,
+                    carts: checkCart
+                }
+                this.onProgress = true;
+                axios.post('/partial_order_delivery', filter)
+                    .then(async res => {
+                        let r = res.data;
+                        if (r.status) {
+                            let conf = confirm(`${r.message} Sale success, Do you want to view invoice?`);
+                            if (conf) {
+                                window.open('/partial_chalan/' + r.orderId, '_blank');
+                                await new Promise(r => setTimeout(r, 1000));
+                                window.location = "/partial_order_record";
+                            }else{
+                                window.location = "/partial_order_record";
+                            }
+                        } else {
+                            this.onProgress = false;
+                            console.log(r.message);
+                        }
+                    })
+            },
+
             checkAll(event) {
                 if (event.target.checked) {
                     this.cart = this.cart.map((item, ind) => {
@@ -123,7 +186,7 @@
                 let checkInp = $(".single:checked").length
                 if (uncheckInp == checkInp) {
                     $("#checkAll").prop('checked', true)
-                }else{
+                } else {
                     $("#checkAll").prop('checked', false)
                 }
             },

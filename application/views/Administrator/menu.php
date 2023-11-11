@@ -476,6 +476,15 @@ if ($module == 'dashboard' or $module == '') {
 				<b class="arrow"></b>
 			</li>
 		<?php endif; ?>
+		<?php if (array_search("partial_order_record", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
+			<li class="">
+				<a href="<?php echo base_url(); ?>partial_order_record">
+					<i class="menu-icon fa fa-list"></i>
+					<span class="menu-text"> Partial Record </span>
+				</a>
+				<b class="arrow"></b>
+			</li>
+		<?php endif; ?>
 
 		<?php if (array_search("order-details", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
 			<li class="">

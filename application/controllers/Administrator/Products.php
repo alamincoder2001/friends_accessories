@@ -257,7 +257,7 @@ class Products extends CI_Controller {
                     " . (isset($data->date) && $data->date != null ? " and pr.PurchaseReturn_ReturnDate <= '$data->date'" : "") . "
                 ) as purchase_returned_quantity,
                         
-                (select ifnull(sum(sd.SaleDetails_TotalQuantity), 0) 
+                (select ifnull(sum(sd.partial_quantity), 0) 
                     from tbl_saledetails sd
                     join tbl_salesmaster sm on sm.SaleMaster_SlNo = sd.SaleMaster_IDNo
                     where sd.Product_IDNo = p.Product_SlNo
@@ -704,7 +704,7 @@ class Products extends CI_Controller {
                 concat('Sale - ', sm.SaleMaster_InvoiceNo, ' - ', c.Customer_Name) as description,
                 sd.SaleDetails_Rate as rate,
                 0 as in_quantity,
-                sd.SaleDetails_TotalQuantity as out_quantity
+                sd.partial_quantity as out_quantity
             from tbl_saledetails sd
             join tbl_salesmaster sm on sm.SaleMaster_SlNo = sd.SaleMaster_IDNo
             join tbl_customer c on c.Customer_SlNo = sm.SalseCustomer_IDNo

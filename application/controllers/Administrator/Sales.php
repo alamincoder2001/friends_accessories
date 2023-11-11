@@ -117,7 +117,7 @@ class Sales extends CI_Controller
                 'SaleMaster_DueAmount'           => $data->sales->due,
                 'SaleMaster_Previous_Due'        => $data->sales->previousDue,
                 'SaleMaster_Description'         => $data->sales->note,
-                'Status'                         => 'p',
+                'Status'                         => 'a',
                 'is_service'                     => $data->sales->isService,
                 "AddBy"                          => $this->session->userdata("FullName"),
                 'AddTime'                        => date("Y-m-d H:i:s"),
@@ -140,7 +140,7 @@ class Sales extends CI_Controller
                     'SaleDetails_Rate'          => $cartProduct->salesRate,
                     'SaleDetails_Tax'           => $cartProduct->vat,
                     'SaleDetails_TotalAmount'   => $cartProduct->total,
-                    'Status'                    => 'p',
+                    'Status'                    => 'a',
                     'remark'                    => $cartProduct->remark,
                     'AddBy'                     => $this->session->userdata("FullName"),
                     'AddTime'                   => date('Y-m-d H:i:s'),
@@ -410,16 +410,6 @@ class Sales extends CI_Controller
             $this->db->where('SaleMaster_SlNo', $salesId);
             $this->db->update('tbl_salesmaster', $sales);
 
-            $currentSaleDetails = $this->db->query("select * from tbl_saledetails where SaleMaster_IDNo = ?", $salesId)->result();
-
-            foreach ($currentSaleDetails as $product) {
-                $this->db->query("
-                update tbl_currentinventory 
-                set sales_quantity = sales_quantity - ? 
-                where product_id = ?
-                and branch_id = ?
-                ", [$product->SaleDetails_TotalQuantity, $product->Product_IDNo, $this->session->userdata('BRANCHid')]);
-            }
             $this->db->query("delete from tbl_saledetails where SaleMaster_IDNo = ?", $salesId);
 
             foreach ($data->cart as $cartProduct) {
@@ -442,13 +432,6 @@ class Sales extends CI_Controller
                 );
 
                 $this->db->insert('tbl_saledetails', $saleDetails);
-
-                $this->db->query("
-                    update tbl_currentinventory 
-                    set sales_quantity = sales_quantity + ? 
-                    where product_id = ?
-                    and branch_id = ?
-                ", [$cartProduct->quantity, $cartProduct->productId, $this->session->userdata('BRANCHid')]);
             }
 
             $res = ['success' => true, 'message' => 'Sales Updated', 'salesId' => $salesId];
@@ -1928,6 +1911,7 @@ class Sales extends CI_Controller
             left join tbl_brunch br on br.brunch_id = sm.SaleMaster_branchid
             where sm.SaleMaster_branchid = '$this->sbrunch'
             and sm.Status != 'd'
+            and sm.SaleMaster_SlNo = ?
             order by sm.SaleMaster_SlNo desc
         ", $data->salesId)->row();
 
@@ -1943,25 +1927,172 @@ class Sales extends CI_Controller
                 (
                     select ifnull(sum(dd.quantity), 0)
                     from tbl_delivered_details dd
-                    join tbl_delivered_master dm on dm.id = dd.detail_id
+                    left join tbl_delivered_master dm on dm.id = dd.deliver_id
                     where dm.Status = 'a'
                     and dd.product_id = sd.Product_IDNo
-                    and dm.SaleMaster_InvoiceNo = sm.SaleMaster_InvoiceNo
-                ) as delivery_quantity,
-                (
-                    select ifnull(sum(dd.total), 0)
-                    from tbl_delivered_details dd
-                    join tbl_delivered_master dm on dm.id = dd.detail_id
-                    where dm.Status = 'a'
-                    and dd.product_id = sd.Product_IDNo
-                    and dm.SaleMaster_InvoiceNo = sm.SaleMaster_InvoiceNo
-                ) as delivery_amount
+                    and dm.invoice = sm.SaleMaster_InvoiceNo
+                ) as delivery_quantity
             from tbl_saledetails sd
-            join tbl_salesmaster sm on sm.SaleMaster_SlNo = sd.SaleMaster_IDNo
-            join tbl_product p on p.Product_SlNo = sd.Product_IDNo
+            left join tbl_salesmaster sm on sm.SaleMaster_SlNo = sd.SaleMaster_IDNo
+            left join tbl_product p on p.Product_SlNo = sd.Product_IDNo
             left join tbl_productcategory pc on pc.ProductCategory_SlNo = p.ProductCategory_ID
             where sm.SaleMaster_SlNo = ?
         ", $data->salesId)->result();
+
+        echo json_encode($res);
+    }
+
+    public function savePartialOrder()
+    {
+        $res = "";
+        try {
+            $this->db->trans_begin();
+            $data = json_decode($this->input->raw_input_stream);
+            $delivary = array(
+                'invoice'     => $data->order->SaleMaster_InvoiceNo,
+                'date'        => $data->order->date,
+                'customerId'  => $data->order->SalseCustomer_IDNo,
+                'employee_id' => $data->order->employee_id,
+                'description' => $data->order->SaleMaster_Description,
+                'Status'      => 'a',
+                'AddBy'       => $this->session->userdata("FullName"),
+                'AddTime'     => date("Y-m-d H:i:s"),
+                'branchId'    => $this->session->userdata("BRANCHid"),
+            );
+            $this->db->insert('tbl_delivered_master', $delivary);
+            $orderId = $this->db->insert_id();
+            //product details
+            foreach ($data->carts as $item) {
+                $detail = array(
+                    'deliver_id'       => $orderId,
+                    'SaleDetails_SlNo' => $item->SaleDetails_SlNo,
+                    'product_id'       => $item->Product_IDNo,
+                    'quantity'         => $item->delivery_qty,
+                    'Status'           => 'a',
+                    'AddTime'          => date("Y-m-d H:i:s"),
+                    'branchId'         => $this->session->userdata("BRANCHid"),
+                );
+                $this->db->insert('tbl_delivered_details', $detail);
+
+                // update saledetails
+                $this->db->query("
+                    update tbl_saledetails 
+                    set partial_quantity = partial_quantity + ? 
+                    where SaleDetails_SlNo = ?
+                    and SaleDetails_BranchId = ?
+                ", [$item->delivery_qty, $item->SaleDetails_SlNo, $this->session->userdata('BRANCHid')]);
+                // update stock
+                $this->db->query("
+                    update tbl_currentinventory 
+                    set sales_quantity = sales_quantity + ? 
+                    where product_id = ?
+                    and branch_id = ?
+                ", [$item->delivery_qty, $item->Product_IDNo, $this->session->userdata('BRANCHid')]);
+            }
+            $this->db->trans_commit();
+            $res = ['status' => true, 'message' => 'Partial order entry success', 'orderId' => $orderId];
+            echo json_encode($res);
+        } catch (\Throwable $th) {
+            $this->db->trans_rollback();
+            $res = ['status' => false, 'message' => $th->getMessage()];
+            echo json_encode($res);
+        }
+    }
+
+    public function partialRecord()
+    {
+        $data['title'] = "Partial Order Record";
+        $data['content'] = $this->load->view('Administrator/sales/partial_order_record', $data, TRUE);
+        $this->load->view('Administrator/index', $data);
+    }
+
+    public function getPartialOrder()
+    {
+        $data = json_decode($this->input->raw_input_stream);
+        $clauses = "";
+        if (isset($data->orderId) && $data->orderId != '') {
+            $clauses .= "and sm.id = '$data->orderId'";
+        }
+        $orders = $this->db->query("
+            select 
+                sm.*,
+                c.Customer_Code,
+                c.Customer_Name,
+                c.Customer_Mobile,
+                c.Customer_Address,
+                e.Employee_Name,
+                br.Brunch_name                
+            from tbl_delivered_master sm
+            left join tbl_customer c on c.Customer_SlNo = sm.customerId
+            left join tbl_employee e on e.Employee_SlNo = sm.employee_id
+            left join tbl_brunch br on br.brunch_id = sm.branchId
+            where sm.branchId = '$this->sbrunch'
+            and sm.Status != 'd'
+            $clauses
+            order by sm.id desc
+        ")->result();
+
+        foreach ($orders as $order) {
+            $order->orderDetails = $this->db->query("
+                select 
+                    sd.*,
+                    p.Product_Name,
+                    pc.ProductCategory_Name
+                from tbl_delivered_details sd
+                join tbl_product p on p.Product_SlNo = sd.product_id
+                join tbl_productcategory pc on pc.ProductCategory_SlNo = p.ProductCategory_ID
+                where sd.deliver_id = ?
+                and sd.Status != 'd'
+            ", $order->id)->result();
+        }
+
+        echo json_encode($orders);
+    }
+
+    public function partialChalan($saleId)
+    {
+        $data['title'] = "Partial Chalan Invoice";
+        $data['saleId'] = $saleId;
+        $data['content'] = $this->load->view('Administrator/sales/partial_chalan', $data, true);
+        $this->load->view('Administrator/index', $data);
+    }
+
+    public function deletePartialOrder()
+    {
+        $res = ['success' => false, 'message' => ''];
+        try {
+            $data = json_decode($this->input->raw_input_stream);
+            $orderId = $data->orderId;
+
+            /*Get Sale Details Data*/
+            $saleDetails = $this->db->select('SaleDetails_SlNo, product_id, quantity, branchId')->where('deliver_id', $orderId)->get('tbl_delivered_details')->result();
+
+            foreach ($saleDetails as $item) {
+                // update saledetails
+                $this->db->query("
+                                update tbl_saledetails 
+                                set partial_quantity = partial_quantity - ? 
+                                where SaleDetails_SlNo = ?
+                                and SaleDetails_BranchId = ?
+                            ", [$item->quantity, $item->SaleDetails_SlNo, $this->session->userdata('BRANCHid')]);
+                // update stock
+                $this->db->query("
+                                update tbl_currentinventory 
+                                set sales_quantity = sales_quantity - ? 
+                                where product_id = ?
+                                and branch_id = ?
+                            ", [$item->quantity, $item->product_id, $this->session->userdata('BRANCHid')]);
+            }
+
+            /*Delete Sale Details*/
+            $this->db->set('Status', 'd')->where('deliver_id', $orderId)->update('tbl_delivered_details');
+
+            /*Delete Sale Master Data*/
+            $this->db->set('Status', 'd')->where('id', $orderId)->update('tbl_delivered_master');
+            $res = ['success' => true, 'message' => 'Partial order deleted'];
+        } catch (Exception $ex) {
+            $res = ['success' => false, 'message' => $ex->getMessage()];
+        }
 
         echo json_encode($res);
     }

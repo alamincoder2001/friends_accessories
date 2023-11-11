@@ -88,77 +88,6 @@
 			</div>
 		</div>
 	</div>
-
-	<!-- <div class="col-xs-12 col-md-12 col-lg-12">
-		<div style="border: 1px solid #b5b1b1a8;margin:0;padding:8px 0;background: #f9f9f9;">
-			<div class="row" style="margin: 0;">
-				<div class="form-group">
-					<label class="col-md-1 col-xs-4 control-label no-padding-right"> Product </label>
-					<div class="col-md-3 col-xs-8 no-padding-left">
-						<v-select id="product" v-bind:options="products" v-model="selectedProduct" label="display_text" v-on:input="productOnChange"></v-select>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-md-2 col-xs-4 control-label no-padding-right">Supp Mat Code: </label>
-					<div class="col-md-2 col-xs-8 no-padding-left">
-						<input type="text" class="form-control" v-model="selectedProduct.supp_mat_code" />
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-md-2 col-xs-4 control-label no-padding-right">Ship Date(ETA):</label>
-					<div class="col-md-2 col-xs-8 no-padding-left">
-						<input type="date" class="form-control" v-model="selectedProduct.ship_date" />
-					</div>
-				</div>
-			</div>
-			<div class="row" style="margin: 0;">
-				<div class="form-group">
-					<label class="col-md-2 col-xs-4 control-label no-padding-right">Prod/Subprocess:</label>
-					<div class="col-md-2 col-xs-8 no-padding-left">
-						<input type="text" class="form-control" v-model="selectedProduct.prod_subprocess" />
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-md-2 col-xs-4 control-label no-padding-right">Price/Unit:</label>
-					<div class="col-md-2 col-xs-8 no-padding-left">
-						<input type="number" min="0" step="0.01" class="form-control" v-model="selectedProduct.quantity" />
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-md-2 col-xs-4 control-label no-padding-right">Amount:</label>
-					<div class="col-md-2 col-xs-8 no-padding-left">
-						<input type="number" min="0" step="0.01" class="form-control" v-model="selectedProduct.Product_SellingPrice" />
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-md-2 col-xs-4 control-label no-padding-right">Acceptable(%):</label>
-					<div class="col-md-2 col-xs-8 no-padding-left">
-						<input type="text" class="form-control" v-model="selectedProduct.acceptable" />
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-md-2 col-xs-4 control-label no-padding-right">Contract No:</label>
-					<div class="col-md-2 col-xs-8 no-padding-left">
-						<input type="text" class="form-control" v-model="selectedProduct.contract_no" />
-					</div>
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-md-2 col-xs-4 control-label no-padding-right">Description:</label>
-				<div class="col-md-2 col-xs-8 no-padding-left">
-					<input type="text" class="form-control" v-model="selectedProduct.description" />
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-md-2 col-xs-4 control-label no-padding-right" style="font-size: 13px;">Purchase Remark:</label>
-				<div class="col-md-2 col-xs-8 no-padding-left">
-					<input type="text" class="form-control" v-model="selectedProduct.remark" />
-				</div>
-			</div>
-		</div>
-	</div> -->
-
-
 	<div class="col-xs-12 col-md-9 col-lg-9">
 		<div class="widget-box">
 			<div class="widget-header">
@@ -288,12 +217,6 @@
 										<input type="text" placeholder="Remark" class="form-control" v-model="selectedProduct.remark" />
 									</div>
 								</div>
-								<!-- <div class="form-group">
-									<label class="col-xs-3 control-label no-padding"> Amount </label>
-									<div class="col-xs-9">
-										<input type="text" id="productTotal" placeholder="Amount" class="form-control" v-model="selectedProduct.total" readonly />
-									</div>
-								</div> -->
 
 								<div class="form-group">
 									<label class="col-xs-3 control-label no-padding"> </label>
@@ -592,6 +515,7 @@
 					vat: 0.00,
 					total: 0.00,
 					contract_no: '',
+					remark: '',
 				},
 				ship_date: moment().format('YYYY-MM-DD'),
 				productPurchaseRate: '',
@@ -761,7 +685,7 @@
 					total: this.selectedProduct.total,
 					contract_no: this.sales.contract_no,
 					ship_date: this.ship_date,
-					remark: this.selectedProduct.remark,
+					remark: this.selectedProduct.remark ?? '',
 					purchaseRate: this.selectedProduct.Product_Purchase_Rate
 				}
 
@@ -774,11 +698,6 @@
 					alert('Enter sales rate');
 					return;
 				}
-
-				// if (product.quantity > this.productStock && this.sales.isService == 'false') {
-				// 	alert('Stock unavailable');
-				// 	return;
-				// }
 
 				let cartInd = this.cart.findIndex(p => p.productId == product.productId);
 				if (cartInd > -1) {

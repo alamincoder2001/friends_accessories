@@ -284,6 +284,11 @@ $route['check_sale_return/(:any)'] = 'Administrator/Sales/checkSaleReturn/$1';
 // partial delivery
 $route['partial_delivery/(:any)'] = 'Administrator/Sales/partialDelivery/$1';
 $route['get_saledetails_for_delivery'] = 'Administrator/Sales/getSaleDetailsForDelivery';
+$route['partial_order_delivery'] = 'Administrator/Sales/savePartialOrder';
+$route['get_partial_order'] = 'Administrator/Sales/getPartialOrder';
+$route['partial_order_record'] = 'Administrator/Sales/partialRecord';
+$route['partial_chalan/(:any)'] = 'Administrator/Sales/partialChalan/$1';
+$route['delete_partial_order'] = 'Administrator/Sales/deletePartialOrder';
 
 
 $route['sale_invoice_print/(:any)'] = 'Administrator/Sales/saleInvoicePrint/$1';

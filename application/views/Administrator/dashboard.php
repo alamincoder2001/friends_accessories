@@ -482,10 +482,24 @@ if ($module == 'dashboard' or $module == '') { ?>
 						<div class="col-md-12 section20">
 							<a href="<?php echo base_url(); ?>salesrecord">
 								<div class="logo">
-									<i class="menu-icon fa fa-file"></i>
+									<i class="menu-icon fa fa-list"></i>
 								</div>
 								<div class="textModule">
 									Order Record
+								</div>
+							</a>
+						</div>
+					</div>
+				<?php endif; ?>
+				<?php if (array_search("partial_order_record", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
+					<div class="col-md-2 ">
+						<div class="col-md-12 section20">
+							<a href="<?php echo base_url(); ?>partial_order_record">
+								<div class="logo">
+									<i class="menu-icon fa fa-list"></i>
+								</div>
+								<div class="textModule">
+									Partial Record
 								</div>
 							</a>
 						</div>

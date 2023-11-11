@@ -11,7 +11,7 @@
                 <div class="row">
                     <div class="col-xs-12 text-center">
                         <div _h098asdh>
-                            Chalan
+                            Partial Chalan
                         </div>
                     </div>
                 </div>
@@ -24,8 +24,8 @@
                     </div>
                     <div class="col-xs-4 text-right">
                         <strong>Order by:</strong> {{ sales.AddBy }}<br>
-                        <strong>Invoice No.:</strong> {{ sales.SaleMaster_InvoiceNo }}<br>
-                        <strong>Order Date:</strong> {{ sales.SaleMaster_SaleDate }} {{ formatDateTime(sales.AddTime, 'h:mm a') }}
+                        <strong>Invoice No.:</strong> {{ sales.invoice }}<br>
+                        <strong>Order Date:</strong> {{ sales.date }} {{ formatDateTime(sales.AddTime, 'h:mm a') }}
                     </div>
                 </div>
                 <div class="row">
@@ -47,7 +47,7 @@
                                 <tr v-for="(product, sl) in cart">
                                     <td>{{ sl + 1 }}</td>
                                     <td>{{ product.Product_Name }}</td>
-                                    <td>{{ product.SaleDetails_TotalQuantity }} {{ product.Unit_Name }}</td>
+                                    <td>{{ product.quantity }} {{ product.Unit_Name }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -76,15 +76,9 @@
                     Customer_Name: null,
                     Customer_Address: null,
                     Customer_Mobile: null,
-                    SaleMaster_TotalSaleAmount: null,
-                    SaleMaster_TotalDiscountAmount: null,
-                    SaleMaster_TaxAmount: null,
-                    SaleMaster_Freight: null,
-                    SaleMaster_SubTotalAmount: null,
-                    SaleMaster_PaidAmount: null,
-                    SaleMaster_DueAmount: null,
-                    SaleMaster_Previous_Due: null,
-                    SaleMaster_Description: null,
+                    subtotal: null,
+                    total: null,
+                    description: null,
                     AddBy: null
                 },
                 cart: [],
@@ -101,11 +95,11 @@
         },
         methods: {
             getSales() {
-                axios.post('/get_sales', {
-                    salesId: this.sales.SaleMaster_SlNo
+                axios.post('/get_partial_order', {
+                    orderId: this.sales.id
                 }).then(res => {
-                    this.sales = res.data.sales[0];
-                    this.cart = res.data.saleDetails;
+                    this.sales = res.data[0];
+                    this.cart = this.sales.orderDetails;
                 })
             },
             getCompanyProfile() {

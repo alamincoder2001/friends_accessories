@@ -167,7 +167,7 @@
                                 <td style="text-align:right;">{{ sale.saleDetails[0].SaleDetails_TotalAmount }}</td>
                                 <td style="text-align:center;">
                                     <?php if ($this->session->userdata('accountType') != 'u') { ?>
-                                        <a v-if="jobcard.saleId == sale.SaleMaster_SlNo && jobcard.saleDetails.length > 0" href="" title="Go To Jobcard" v-bind:href="`/jobcard`" target="_blank">
+                                        <a v-if="jobcard.saleId == sale.SaleMaster_SlNo && jobcard.saleDetails.length > 0" href="" title="Go To Jobcard" @click.prevent="gotoJobcard" target="_blank">
                                             <i class="fa fa-credit-card" style="background: #727272;padding: 3px 4px;border-radius: 5px;color: white;"></i>
                                         </a>
                                     <?php } ?>
@@ -238,6 +238,10 @@
             }
         },
         methods: {
+            gotoJobcard(){
+                window.open("/jobcard/", "_blank");
+                location.reload();
+            },
             checkAllGroup(event, sale, index) {
                 if (event.target.checked) {
                     this.jobcard = {
